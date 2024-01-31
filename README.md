@@ -1,0 +1,71 @@
+# Fully featured
+
+Journaling + TODO + Notes + Glossary
+
+
+```bash
+git clone git@github.com:pedromadureira000/fully_featured.git
+cd fully_featured
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-test.txt
+cp contrib/env-sample .env
+psql postgres://username:pass@localhost:5432/postgres
+postgres=# create database fully_featured;
+postgres=# \q
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+## Running celery
+```
+celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_completion_to_user
+```
+
+## Header Authentication
+* For clients to authenticate, the token key should be included in the Authorization HTTP header. The key should be prefixed by the string literal "Token", with whitespace separating the two strings. For example:
+```
+Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
+```
+
+## Get Auth Token
+
+```
+curl -X POST -d '
+    {
+        "whatsapp": "556299999999",
+        "password": "pass"
+    }
+    ' -H "Content-Type: application/json;" http://127.0.0.1:8000/user/gettoken
+```
+
+## Authenticated API calls
+`
+curl -X POST -d '{}' -H "Authorization: Token <your-token>" -H "Content-Type: application/json" http://127.0.0.1:8000/api_path
+`
+
+## Test View
+* Get
+`
+curl -X GET -H "Authorization: Token <Token>" http://127.0.0.1:8000/test_view
+`
+* Post
+`
+curl -X POST -d '{"test_field": "right_field"}' -H "Authorization: Token <Token>" -H "Content-Type: application/json" http://127.0.0.1:8000/test_view
+`
+* Post with validation error
+`
+curl -X POST -d '{"test_field": "wrong_field"}' -H "Authorization: Token <Token>" -H "Content-Type: application/json" http://127.0.0.1:8000/test_view
+`
+
+## Create TODO
+* 'completed' is optional.
+``
+curl -X POST -d '
+    {
+        "title": "Todo 01",
+        "description": "THis is a nice todo",
+        "completed": false
+    }
+    ' -H "Content-Type: application/json;" -H "Authorization: Token <token>" http://127.0.0.1:8000/todo_view
+``

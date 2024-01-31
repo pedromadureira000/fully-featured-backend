@@ -1,0 +1,13 @@
+Django
+djangorestframework
+celery[redis]
+gevent
+dj-database-url
+python-decouple
+django-celery-beat
+django-extensions
+gunicorn
+psycopg2-binary
+sentry-sdk
+requests
+stripe
