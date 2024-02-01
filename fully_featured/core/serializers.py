@@ -22,6 +22,18 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed']
-        #  read_only_fields = ['id']
+        fields = ['id','title', 'description', 'completed', 'user_id']
+        read_only_fields = ['id', 'user_id']
+
+
+    #  def update(self, instance, validated_data):
+        #  print('========================> test: ',validated_data['testing'] )
+        #  ordered_items = validated_data.get('ordered_items')
+        #  return super().update(instance, validated_data)
+
+
+    #  def create(self, validated_data):
+        #  print('========================> test:adfadsf ' )
+        #  return super().create(validated_data)
+        #  return instance
 

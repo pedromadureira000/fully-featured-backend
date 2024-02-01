@@ -123,7 +123,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "pt-BR"
+#  LANGUAGE_CODE = "pt-BR"
+LANGUAGE_CODE =  'en-us'
 
 TIME_ZONE = "America/Sao_Paulo"
 
