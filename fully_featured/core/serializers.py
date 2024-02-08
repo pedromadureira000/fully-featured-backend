@@ -1,10 +1,9 @@
-from fully_featured.core.models import ToDo
+from fully_featured.core.models import Journal, Note, Term, ToDo
 from rest_framework import serializers
 
 
 class TestSerializer(serializers.Serializer):
     test_field = serializers.CharField()
-    #  content = serializers.CharField()
 
     def validate_test_field(self, value):
         if value != 'right_field':
@@ -37,3 +36,23 @@ class ToDoSerializer(serializers.ModelSerializer):
         #  return super().create(validated_data)
         #  return instance
 
+
+class JournalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Journal
+        fields = ['id', 'user_id', 'text']
+        read_only_fields = ['id', 'user_id']
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = ['id', 'user_id', 'title', 'text']
+        read_only_fields = ['id', 'user_id']
+
+
+class TermSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Term
+        fields = ['id', 'user_id', 'term', 'definition']
+        read_only_fields = ['id', 'user_id']

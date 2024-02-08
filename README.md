@@ -22,6 +22,13 @@ python manage.py createsuperuser
 celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_completion_to_user
 ```
 
+## Run server dev mode
+```
+ip addr show
+python manage.py runserver <local-ip>:8000
+sudo systemctl start docker # docker might be off
+```
+
 ## Header Authentication
 * For clients to authenticate, the token key should be included in the Authorization HTTP header. The key should be prefixed by the string literal "Token", with whitespace separating the two strings. For example:
 ```
