@@ -26,6 +26,11 @@ celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname
 ```
 ip addr show
 python manage.py runserver <local-ip>:8000
+```
+
+## Nice commands
+```
+python manage.py shell_plus --print-sql --ipython
 sudo systemctl start docker # docker might be off
 ```
 

@@ -40,8 +40,8 @@ class ToDoSerializer(serializers.ModelSerializer):
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal
-        fields = ['id', 'user_id', 'text']
-        read_only_fields = ['id', 'user_id']
+        fields = ['id', 'user_id', 'text', 'created_at']
+        read_only_fields = ['id', 'user_id', 'created_at']
 
 
 class NoteSerializer(serializers.ModelSerializer):
