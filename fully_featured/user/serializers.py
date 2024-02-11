@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate
+from fully_featured.user.models import UserModel
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
 
 class AuthTokenSerializer(serializers.Serializer):
-    whatsapp = serializers.CharField(
-        label="Whatsapp",
+    email = serializers.CharField(
+        label="Email",
         write_only=True
     )
     password = serializers.CharField(
@@ -20,11 +21,11 @@ class AuthTokenSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        whatsapp = attrs.get('whatsapp')
+        email = attrs.get('email')
         password = attrs.get('password')
 
-        if whatsapp and password:
-            user = authenticate(request=self.context.get('request'), username=whatsapp, password=password)
+        if email and password:
+            user = authenticate(request=self.context.get('request'), username=email, password=password)
             # The authenticate call simply returns None for is_active=False
             # users. (Assuming the default ModelBackend authentication
             # backend.)
@@ -32,8 +33,15 @@ class AuthTokenSerializer(serializers.Serializer):
                 msg = 'Unable to log in with provided credentials.'
                 raise serializers.ValidationError(msg, code='authorization')
         else:
-            msg = 'Must include "whatsapp" and "password".'
+            msg = 'Must include "email" and "password".'
             raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user
         return attrs
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['id', 'name', 'email', 'whatsapp']
+        read_only_fields = ['id', 'email']

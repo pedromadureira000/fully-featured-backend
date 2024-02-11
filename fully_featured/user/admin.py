@@ -34,8 +34,8 @@ class UserModelAdmin(admin.ModelAdmin):
     add_form_template = "admin/auth/user/add_form.html"
     change_user_password_template = None
     fieldsets = (
-        (None, {"fields": ("whatsapp", "password")}),
-        (_("Personal info"), {"fields": ("name",)}),
+        (None, {"fields": ("email", "password")}),
+        (_("Personal info"), {"fields": ("name", "whatsapp")}),
         (
             _("Permissions"),
             {
@@ -55,16 +55,16 @@ class UserModelAdmin(admin.ModelAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("name", "whatsapp", "password1", "password2"),
+                "fields": ("name", "email", "whatsapp", "password1", "password2"),
             },
         ),
     )
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ("id", "name", "whatsapp", "is_staff")
+    list_display = ("id", "name", "email", "whatsapp", "is_staff")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
-    search_fields = ("whatsapp", "name")
+    search_fields = ("email", "whatsapp", "name")
     ordering = ("created_at",)
     filter_horizontal = (
         "groups",
