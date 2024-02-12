@@ -45,3 +45,36 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = ['id', 'name', 'email', 'whatsapp']
         read_only_fields = ['id', 'email']
+
+
+class ChangeUserPasswordSerializer(serializers.ModelSerializer):
+    current_password = serializers.CharField(
+        label="Current Password",
+        style={'input_type': 'password'},
+        trim_whitespace=False,
+        write_only=True
+    )
+    new_password = serializers.CharField(
+        label="Current Password",
+        style={'input_type': 'password'},
+        trim_whitespace=False,
+        write_only=True
+    )
+
+    class Meta:
+        model = UserModel
+        fields = ['current_password', 'new_password']
+        extra_kwargs = {
+            'current_password': {'write_only': True},
+            'new_password': {'write_only': True},
+        }
+
+    def validate(self, data):
+        user = self.context['request'].user
+        if not user.check_password(data.get('current_password')):
+            raise serializers.ValidationError("The password is wrong", code='authorization')
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['new_password'])
+        instance.save()
+        return instance

@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
 
-from .serializers import AuthTokenSerializer, UserSerializer
+from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, UserSerializer
 
 
 @api_view(['POST'])
@@ -53,5 +53,21 @@ def sign_in(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
+            print(er)
+            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        try:
+            serializer = ChangeUserPasswordSerializer(data=request.data, context={"request": request})
+            if serializer.is_valid():
+                serializer.validated_data['user'] = request.user
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as er:
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
