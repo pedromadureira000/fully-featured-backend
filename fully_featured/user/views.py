@@ -62,7 +62,7 @@ def sign_in(request):
 def change_password(request):
     if request.method == 'POST':
         try:
-            serializer = ChangeUserPasswordSerializer(data=request.data, context={"request": request})
+            serializer = ChangeUserPasswordSerializer(request.user, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.validated_data['user'] = request.user
                 serializer.save()

@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 from fully_featured.user.models import UserModel
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
+from rest_framework.authtoken.models import Token
 
 
 class AuthTokenSerializer(serializers.Serializer):
@@ -69,12 +70,15 @@ class ChangeUserPasswordSerializer(serializers.ModelSerializer):
             'new_password': {'write_only': True},
         }
 
-    def validate(self, data):
+    def validate(self, attrs):
         user = self.context['request'].user
-        if not user.check_password(data.get('current_password')):
+        if not user.check_password(attrs.get('current_password')):
             raise serializers.ValidationError("The password is wrong", code='authorization')
+        return attrs
 
     def update(self, instance, validated_data):
         instance.set_password(validated_data['new_password'])
         instance.save()
+        Token.objects.get(user=validated_data['user']).delete()
+        Token.objects.create(user=validated_data['user'])
         return instance

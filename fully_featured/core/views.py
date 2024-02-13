@@ -201,61 +201,6 @@ def note_view(request):
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
 @login_required
 @csrf_exempt
-def note_view(request):
-    if request.method == 'GET':
-        registers = Note.objects.filter(user=request.user).order_by('created_at')
-        serializer = NoteSerializer(registers, many=True)
-        return Response(serializer.data)
-    if request.method == 'POST':
-        try:
-            serializer = NoteSerializer(data=request.data, context={"request": request})
-            if serializer.is_valid():
-                serializer.validated_data['user'] = request.user
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as er: 
-            print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
-    if request.method == 'PATCH':
-        try:
-            id = request.data.get('id')
-            if not id:
-                return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            try:
-                order = Note.objects.get(id=id)
-            except Note.DoesNotExist:
-                return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
-            serializer = NoteSerializer(order, data=request.data, context={"request": request})
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as er: 
-            print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
-    if request.method == 'DELETE':
-        try:
-            id = request.data.get('id')
-            if not id:
-                return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            try:
-                instance = Note.objects.get(id=id)
-                instance.delete()
-                return Response({'message': 'Note deleted successfully'}, status=status.HTTP_200_OK)
-            except Note.DoesNotExist:
-                return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as er: 
-            print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST', 'GET', 'PATCH', 'DELETE'])
-@login_required
-@csrf_exempt
 def glossary_view(request):
     if request.method == 'GET':
         registers = Term.objects.filter(user=request.user).order_by('created_at')
