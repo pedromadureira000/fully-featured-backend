@@ -8,7 +8,6 @@ from rest_framework import status, permissions
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, UserSerializer
 
 
