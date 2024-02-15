@@ -2,8 +2,18 @@ from fully_featured.core.models import Journal, Note, Term, ToDo
 from rest_framework import serializers
 
 
+class NestedFieldSerializer(serializers.Serializer):
+    test_field_n = serializers.CharField()
+
+    def validate_test_field_n(self, value):
+        if value != 'right_field_n':
+            raise serializers.ValidationError("This is an error for the purpose of testing.")
+        return value
+
+
 class TestSerializer(serializers.Serializer):
     test_field = serializers.CharField()
+    nested_field = NestedFieldSerializer()
 
     def validate_test_field(self, value):
         if value != 'right_field':

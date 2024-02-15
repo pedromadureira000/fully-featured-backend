@@ -22,7 +22,7 @@ def test_view(request):
             serializer = TestSerializer(data=request.data, context={"request": request})
             if serializer.is_valid():
                 return Response({'data sent': f'everything is fine'})
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             # this is for unpredicted errors
             print(er)
@@ -48,7 +48,7 @@ def todo_view(request):
                 serializer.validated_data['user'] = request.user
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -56,7 +56,7 @@ def todo_view(request):
         try:
             todoId = request.data.get('id')
             if not todoId:
-                return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 order = ToDo.objects.get(id=todoId)
@@ -67,7 +67,7 @@ def todo_view(request):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -75,7 +75,7 @@ def todo_view(request):
         try:
             todo_id = request.data.get('id')
             if not todo_id:
-                return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 todo = ToDo.objects.get(id=todo_id)
@@ -103,7 +103,7 @@ def journal_view(request):
                 serializer.validated_data['user'] = request.user
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -111,7 +111,7 @@ def journal_view(request):
         try:
             id = request.data.get('id')
             if not id:
-                return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 order = Journal.objects.get(id=id)
@@ -122,7 +122,7 @@ def journal_view(request):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -158,7 +158,7 @@ def note_view(request):
                 serializer.validated_data['user'] = request.user
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -177,7 +177,7 @@ def note_view(request):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -213,7 +213,7 @@ def glossary_view(request):
                 serializer.validated_data['user'] = request.user
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -232,7 +232,7 @@ def glossary_view(request):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)

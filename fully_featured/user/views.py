@@ -50,7 +50,7 @@ def sign_in(request):
                 serializer.validated_data['user'] = request.user
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
@@ -66,7 +66,7 @@ def change_password(request):
                 serializer.validated_data['user'] = request.user
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'validation error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er:
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)

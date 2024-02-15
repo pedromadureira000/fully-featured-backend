@@ -70,6 +70,11 @@ class ChangeUserPasswordSerializer(serializers.ModelSerializer):
             'new_password': {'write_only': True},
         }
 
+    def validate_new_password(self, value):
+        if len(value) < 8:
+            raise serializers.ValidationError("The password field should have 8 characters or more.")
+        return value
+
     def validate(self, attrs):
         user = self.context['request'].user
         if not user.check_password(attrs.get('current_password')):
