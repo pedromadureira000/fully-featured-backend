@@ -11,3 +11,4 @@ psycopg2-binary
 sentry-sdk
 requests
 stripe
+django-cors-headers

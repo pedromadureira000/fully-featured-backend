@@ -22,6 +22,35 @@ DEBUG = config("DEBUG", cast=bool)
 BASE_URL = config("BASE_URL", default="http://localhost:8000")
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+#  CORS_ORIGIN_WHITELIST = (
+    #  'http://localhost:5000',
+#  )
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -34,6 +63,7 @@ INSTALLED_APPS = [
     "django_extensions",
     'rest_framework',
     'rest_framework.authtoken',
+    "corsheaders",
     "fully_featured.core.apps.CoreConfig",
     "fully_featured.user.apps.UserConfig",
 ]
@@ -42,6 +72,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     #  "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

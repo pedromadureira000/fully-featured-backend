@@ -13,6 +13,7 @@ from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, User
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
+@csrf_exempt
 def obtain_auth_token(request):
     if request.user.is_authenticated:
         return Response("User is already authenticated")
@@ -42,6 +43,7 @@ def user_view(request):
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
+@csrf_exempt
 def sign_in(request):
     if request.method == 'POST':
         try:
@@ -58,6 +60,7 @@ def sign_in(request):
 
 @api_view(['POST'])
 @login_required
+@csrf_exempt
 def change_password(request):
     if request.method == 'POST':
         try:
