@@ -15,9 +15,13 @@ flutter_app_routes = [
     path("profile", lambda r: flutter_redirect(r, 'index.html')),
     path("menu", lambda r: flutter_redirect(r, 'index.html')),
     path("todo", lambda r: flutter_redirect(r, 'index.html')),
+    path("todo_create", lambda r: flutter_redirect(r, 'index.html')),
     path("journal", lambda r: flutter_redirect(r, 'index.html')),
+    path("journal_create", lambda r: flutter_redirect(r, 'index.html')),
     path("note", lambda r: flutter_redirect(r, 'index.html')),
+    path("note_create", lambda r: flutter_redirect(r, 'index.html')),
     path("glossary", lambda r: flutter_redirect(r, 'index.html')),
+    path("glossary_create", lambda r: flutter_redirect(r, 'index.html')),
 ]
 
 urlpatterns = [
