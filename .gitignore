@@ -136,3 +136,6 @@ pnpm-debug.log*
 celerybeat-schedule
 
 pgdata/
+
+# flutter build
+flutter_web_app/
