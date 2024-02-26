@@ -13,6 +13,7 @@ def flutter_redirect(request, resource):
 flutter_app_routes = [
     path("login", lambda r: flutter_redirect(r, 'index.html')),
     path("profile", lambda r: flutter_redirect(r, 'index.html')),
+    path("sign_up", lambda r: flutter_redirect(r, 'index.html')),
     path("menu", lambda r: flutter_redirect(r, 'index.html')),
     path("todo", lambda r: flutter_redirect(r, 'index.html')),
     path("todo_create", lambda r: flutter_redirect(r, 'index.html')),
