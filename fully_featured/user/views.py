@@ -44,18 +44,16 @@ def user_view(request):
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
-def sign_in(request):
-    if request.method == 'POST':
-        try:
-            serializer = UserSerializer(data=request.data, context={"request": request})
-            if serializer.is_valid():
-                serializer.validated_data['user'] = request.user
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as er: 
-            print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+def sign_up(request):
+    try:
+        serializer = UserSerializer(data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as er:
+        print(er)
+        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
