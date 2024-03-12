@@ -44,8 +44,29 @@ class AuthTokenSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ['id', 'name', 'email', 'whatsapp']
-        read_only_fields = ['id', 'email']
+        fields = ['id', 'name', 'email', 'whatsapp', 'password']
+        read_only_fields = ['id']
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
+
+    def create(self, validated_data):
+        username_field = validated_data['email']
+        password = validated_data['password']
+        name = validated_data['name']
+        whatsapp = validated_data['whatsapp']
+        user = UserModel.objects.create_user(username_field, password, name=name, whatsapp=whatsapp)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        name = validated_data['name']
+        whatsapp = validated_data['whatsapp']
+        instance.name = name
+        instance.whatsapp = whatsapp
+        instance.save()
+        return instance
 
 
 class ChangeUserPasswordSerializer(serializers.ModelSerializer):

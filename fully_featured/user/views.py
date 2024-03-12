@@ -48,11 +48,12 @@ def sign_up(request):
     try:
         serializer = UserSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            instance = serializer.save()
+            #  send_account_confirmation_email(instance.id)
+            return Response({"success": "user created. Pls confirm email."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
-        print(er)
+        print(f"{er}")
         return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 
 
