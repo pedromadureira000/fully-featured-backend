@@ -19,7 +19,7 @@ python manage.py createsuperuser
 
 ## Running celery
 ```
-celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_completion_to_user
+celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_email
 ```
 
 ## Run server dev mode

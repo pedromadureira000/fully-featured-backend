@@ -12,3 +12,4 @@ sentry-sdk
 requests
 stripe
 django-cors-headers
+django-anymail[mailgun]

@@ -51,6 +51,28 @@ CORS_ALLOW_HEADERS = (
     "x-requested-with",
 )
 
+
+
+
+# SMTP
+#  if DEBUG:
+    #  EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    #  DEFAULT_FROM_EMAIL = "webmaster@localhost"
+    #  EMAIL_HOST = "localhost"
+    #  EMAIL_PORT = "1025"
+    #  EMAIL_HOST_USER = ""
+    #  EMAIL_HOST_PASSWORD = ""
+    #  EMAIL_USE_TLS = False
+#  else: 
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+SERVER_EMAIL = config('SERVER_EMAIL')  # default from-email for Django errors
+ANYMAIL = {
+    'MAILGUN_API_KEY': config('MAILGUN_API_KEY'),
+    'MAILGUN_SENDER_DOMAIN': config('MAILGUN_SENDER_DOMAIN'),
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -66,6 +88,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "fully_featured.core.apps.CoreConfig",
     "fully_featured.user.apps.UserConfig",
+    "anymail",
 ]
 
 MIDDLEWARE = [

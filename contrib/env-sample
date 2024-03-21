@@ -10,3 +10,10 @@ CELERY_BROKER_URL=redis://127.0.0.1:6379
 
 # Sentry
 SENTRY_DSN=
+
+#---------SMTP mailgun
+EMAIL_BACKEND=anymail.backends.mailgun.EmailBackend
+DEFAULT_FROM_EMAIL=
+SERVER_EMAIL=
+MAILGUN_API_KEY=
+MAILGUN_SENDER_DOMAIN=

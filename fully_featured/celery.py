@@ -7,4 +7,4 @@ app = Celery("fully_featured")
 app.config_from_object(settings, namespace="CELERY")
 app.autodiscover_tasks()
 
-app.conf.task_routes = {"fully_featured.core.tasks.*": {"queue": "send_completion_to_user"}}
+app.conf.task_routes = {"fully_featured.core.tasks.*": {"queue": "send_email"}}
