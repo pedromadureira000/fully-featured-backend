@@ -1,4 +1,4 @@
-from django.conf import settings
+from fully_featured.core.facade import send_account_confirmation_email
 from fully_featured.user.models import UserModel
 from rest_framework import status
 from rest_framework.response import Response
@@ -7,6 +7,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status, permissions
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from fully_featured.settings import BASE_URL
+from django.db import transaction
 
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, UserSerializer
 
@@ -48,8 +51,9 @@ def sign_up(request):
     try:
         serializer = UserSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
-            instance = serializer.save()
-            #  send_account_confirmation_email(instance.id)
+            with transaction.atomic():
+                instance = serializer.save()
+                send_account_confirmation_email(instance.email, instance.auth_token.key)
             return Response({"success": "user created. Pls confirm email."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
@@ -72,3 +76,30 @@ def change_password(request):
         except Exception as er:
             print(er)
             return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def activate_account(request, verification_code):
+    try:
+        user = UserModel.objects.get(auth_token=verification_code)
+        user.is_active = True
+        user.save()
+        Token.objects.get(user=user).delete()
+        Token.objects.create(user=user)
+    except UserModel.DoesNotExist:
+        return render(
+            request,
+            "failed_account_verification.html",
+        )
+    #  try:
+        #  send_account_verified_with_success_email(user.email)
+    #  except Exception as er:
+        #  print(f"{er}")
+    login_url = f"{BASE_URL}/login"
+    return render(
+        request,
+        "successful_account_verification.html",
+        context={'login_url': login_url}
+    )

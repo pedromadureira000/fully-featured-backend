@@ -3,7 +3,7 @@ from fully_featured.user.views import (
     change_password,
     obtain_auth_token,
     sign_up,
-    user_view
+    user_view,
 )
 
 urlpatterns = [

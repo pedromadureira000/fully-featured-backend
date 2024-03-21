@@ -2,6 +2,10 @@ from django.urls import path, include
 from django.contrib import admin
 from django.views.static import serve
 import os
+from fully_featured.user.views import (
+    activate_account
+)
+
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,6 +32,7 @@ flutter_app_routes = [
 urlpatterns = [
     path("", lambda r: flutter_redirect(r, 'index.html')),
     *flutter_app_routes,
+    path("activate_account/<str:verification_code>", activate_account, name="activate_account"),
     path("api/", include("fully_featured.core.urls")),
     path("api/user/", include("fully_featured.user.urls")),
     path("admin/", admin.site.urls),
