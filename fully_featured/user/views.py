@@ -1,4 +1,6 @@
+from django.db.models.fields.json import json
 from fully_featured.core.facade import send_account_confirmation_email
+from fully_featured.user.facade import send_reset_user_password_email
 from fully_featured.user.models import UserModel
 from rest_framework import status
 from rest_framework.response import Response
@@ -103,3 +105,74 @@ def activate_account(request, verification_code):
         "successful_account_verification.html",
         context={'login_url': login_url}
     )
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def reset_password_email(request):
+    try:
+        email = request.data.get("email")
+        if not email:
+            return Response({"error": "Email must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = UserModel.objects.get(email=email)
+        except UserModel.DoesNotExist:
+            return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        send_reset_user_password_email(user.email, user.auth_token.key)
+        return Response(status=status.HTTP_200_OK)
+    except Exception as er:
+        print(er)
+        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def reset_password(request, verification_code):
+    try:
+        user = UserModel.objects.get(auth_token=verification_code)
+        token = user.auth_token.key
+    except UserModel.DoesNotExist:
+        return render(
+            request,
+            "invalid_reset_password_link.html",
+        )
+    if request.method == 'GET':
+        return render(
+            request,
+            "reset_password.html",
+            context={'token': token}
+        )
+    if request.method == 'POST':
+        password = request.POST.get("password")
+        password_confirm = request.POST.get("password_confirm")
+        token = request.POST.get("token")
+        error_msg = None
+        if password != password_confirm:
+            error_msg = "Passwords do not match. Please ensure that both passwords are iqual."
+        if error_msg:
+            return render(
+                request,
+                "reset_password.html",
+                {"error": error_msg},
+                status=400
+            )
+        else:
+            try:
+                with transaction.atomic():
+                    user.set_password(password)
+                    user.save()
+                    Token.objects.get(user=user).delete()
+                    Token.objects.create(user=user)
+                return render(
+                    request,
+                    "reset_password_success.html",
+                    status=200
+                )
+            except Exception as er:
+                return render(
+                    request,
+                    "reset_password.html",
+                    {"error": "Something went wrong."},
+                    status=500
+                )

@@ -1,3 +1,6 @@
+start_docker_and_source_venv:
+	@sudo systemctl start docker && source .venv/bin/activate
+
 dev:
 	@python manage.py runserver -v2
 

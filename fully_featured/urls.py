@@ -3,7 +3,8 @@ from django.contrib import admin
 from django.views.static import serve
 import os
 from fully_featured.user.views import (
-    activate_account
+    activate_account,
+    reset_password
 )
 
 
@@ -18,6 +19,7 @@ flutter_app_routes = [
     path("login", lambda r: flutter_redirect(r, 'index.html')),
     path("profile", lambda r: flutter_redirect(r, 'index.html')),
     path("sign_up", lambda r: flutter_redirect(r, 'index.html')),
+    path("reset_password_email", lambda r: flutter_redirect(r, 'index.html')),
     path("menu", lambda r: flutter_redirect(r, 'index.html')),
     path("todo", lambda r: flutter_redirect(r, 'index.html')),
     path("todo_create", lambda r: flutter_redirect(r, 'index.html')),
@@ -33,6 +35,7 @@ urlpatterns = [
     path("", lambda r: flutter_redirect(r, 'index.html')),
     *flutter_app_routes,
     path("activate_account/<str:verification_code>", activate_account, name="activate_account"),
+    path("reset_password/<str:verification_code>", reset_password, name="reset_password"),
     path("api/", include("fully_featured.core.urls")),
     path("api/user/", include("fully_featured.user.urls")),
     path("admin/", admin.site.urls),
