@@ -37,13 +37,12 @@ def obtain_auth_token(request):
 @login_required
 @csrf_exempt
 def user_view(request):
-    if request.method == 'GET':
-        try:
-            user = UserModel.objects.get(id=request.user.id)
-        except UserModel.DoesNotExist:
-            return Response(data={"error": "Something weird happened. This is not supposed to throw error"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+    try:
+        user = UserModel.objects.get(id=request.user.id)
+    except UserModel.DoesNotExist:
+        return Response(data={"error": "Something weird happened. This is not supposed to throw error"}, status=status.HTTP_404_NOT_FOUND)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])
@@ -67,17 +66,16 @@ def sign_up(request):
 @login_required
 @csrf_exempt
 def change_password(request):
-    if request.method == 'POST':
-        try:
-            serializer = ChangeUserPasswordSerializer(request.user, data=request.data, context={"request": request})
-            if serializer.is_valid():
-                serializer.validated_data['user'] = request.user
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as er:
-            print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = ChangeUserPasswordSerializer(request.user, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.validated_data['user'] = request.user
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as er:
+        print(er)
+        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -199,3 +197,15 @@ def get_or_create_account_with_google(request):
     except Exception as er:
         print(f"{er}")
         return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@login_required
+@csrf_exempt
+def delete_user_view(request):
+    try:
+        user = UserModel.objects.get(id=request.user.id)
+        user.delete()
+        return Response({"success": "user deleted"}, status=status.HTTP_200_OK)
+    except UserModel.DoesNotExist:
+        return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
