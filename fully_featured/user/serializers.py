@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.models import Token
 
+from django.utils.crypto import get_random_string
 
 class AuthTokenSerializer(serializers.Serializer):
     email = serializers.CharField(
@@ -108,3 +109,25 @@ class ChangeUserPasswordSerializer(serializers.ModelSerializer):
         Token.objects.get(user=validated_data['user']).delete()
         Token.objects.create(user=validated_data['user'])
         return instance
+
+
+class GoogleUserSerializer(serializers.Serializer):
+    email = serializers.CharField(
+        label="Email",
+        write_only=True
+    )
+    displayName = serializers.CharField(
+        label="displayName",
+        write_only=True
+    )
+
+    def create(self, validated_data):
+        username_field = validated_data['email']
+        password = get_random_string(length=26)
+        print('========================> password: ',password )
+        name = validated_data['displayName']
+        whatsapp = ""
+        user = UserModel.objects.create_user(username_field, password, name=name, whatsapp=whatsapp)
+        user.set_password(password)
+        user.save()
+        return user

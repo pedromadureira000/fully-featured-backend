@@ -13,7 +13,7 @@ from django.shortcuts import render
 from fully_featured.settings import BASE_URL
 from django.db import transaction
 
-from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, UserSerializer
+from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, UserSerializer
 
 
 @api_view(['POST'])
@@ -176,3 +176,26 @@ def reset_password(request, verification_code):
                     {"error": "Something went wrong."},
                     status=500
                 )
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def get_or_create_account_with_google(request):
+    try:
+        try:
+            email = request.data.get("email")
+            user = UserModel.objects.get(email=email)
+            return Response({"token": user.auth_token.key, "created": False}, status=status.HTTP_200_OK)
+        except UserModel.DoesNotExist:
+            pass
+        serializer = GoogleUserSerializer(data=request.data, context={"request": request})
+        if serializer.is_valid():
+            with transaction.atomic():
+                instance = serializer.save()
+                #  send_account_confirmation_email(instance.email, instance.auth_token.key)
+                return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as er:
+        print(f"{er}")
+        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
