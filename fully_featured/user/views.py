@@ -40,7 +40,8 @@ def user_view(request):
     try:
         user = UserModel.objects.get(id=request.user.id)
     except UserModel.DoesNotExist:
-        return Response(data={"error": "Something weird happened. This is not supposed to throw error"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(data={"error": "Something weird happened. This is not supposed to throw error"},
+                        status=status.HTTP_404_NOT_FOUND)
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
@@ -189,10 +190,9 @@ def get_or_create_account_with_google(request):
             pass
         serializer = GoogleUserSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
-            with transaction.atomic():
-                instance = serializer.save()
-                #  send_account_confirmation_email(instance.email, instance.auth_token.key)
-                return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
+            instance = serializer.save()
+            #  send_account_confirmation_email(instance.email, instance.auth_token.key)
+            return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
         print(f"{er}")
