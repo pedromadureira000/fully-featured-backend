@@ -13,7 +13,7 @@ from django.shortcuts import render
 from fully_featured.settings import BASE_URL
 from django.db import transaction
 
-from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, UserSerializer
+from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, ProfileUpdateSerializer, UserSerializer
 
 
 @api_view(['POST'])
@@ -33,17 +33,28 @@ def obtain_auth_token(request):
         return Response(data={"error": "This user does not have a token."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @login_required
 @csrf_exempt
 def user_view(request):
-    try:
-        user = UserModel.objects.get(id=request.user.id)
-    except UserModel.DoesNotExist:
-        return Response(data={"error": "Something weird happened. This is not supposed to throw error"},
-                        status=status.HTTP_404_NOT_FOUND)
-    serializer = UserSerializer(user)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        try:
+            user = UserModel.objects.get(id=request.user.id)
+        except UserModel.DoesNotExist:
+            return Response(data={"error": "Something weird happened. This is not supposed to throw error"},
+                            status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    if request.method == 'PUT':
+        try:
+            serializer = ProfileUpdateSerializer(request.user, data=request.data, context={"request": request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as er:
+            print(er)
+            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

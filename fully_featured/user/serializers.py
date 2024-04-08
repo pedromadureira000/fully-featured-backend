@@ -61,6 +61,11 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['name', 'whatsapp']
+
     def update(self, instance, validated_data):
         name = validated_data['name']
         whatsapp = validated_data['whatsapp']
