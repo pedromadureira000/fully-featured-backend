@@ -1,9 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account verification failed</title>
+    {% if lang == "pt" %}
+        <title>Verificação da conta falhou</title>
+    {% else %}
+        <title>Account verification failed</title>
+    {% endif %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,8 +45,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>Account verification failed</h1>
-        <p>You failed to verify your account. Invalid verification token.</p>
+        {% if lang == "pt" %}
+            <h1>Falha na verificação da conta</h1>
+            <p>Você não conseguiu verificar sua conta. Token de verificação inválido.</p>
+        {% else %}
+            <h1>Account verification failed</h1>
+            <p>You failed to verify your account. Invalid verification token.</p>
+        {% endif %}
     </div>
 </body>
 </html>

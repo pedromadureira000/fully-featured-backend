@@ -88,6 +88,10 @@ def change_password(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def activate_account(request, verification_code):
+    language = "en"
+    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    if "pt" in http_accept_language:
+        language = "pt"
     try:
         user = UserModel.objects.get(auth_token=verification_code)
         user.is_active = True
@@ -98,6 +102,7 @@ def activate_account(request, verification_code):
         return render(
             request,
             "failed_account_verification.html",
+            context={'lang': language}
         )
     #  try:
         #  send_account_verified_with_success_email(user.email)
@@ -107,7 +112,7 @@ def activate_account(request, verification_code):
     return render(
         request,
         "successful_account_verification.html",
-        context={'login_url': login_url}
+        context={'login_url': login_url, 'lang': language}
     )
 
 @api_view(['POST'])
@@ -133,6 +138,10 @@ def reset_password_email(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def reset_password(request, verification_code):
+    language = "en"
+    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    if "pt" in http_accept_language:
+        language = "pt"
     try:
         user = UserModel.objects.get(auth_token=verification_code)
         token = user.auth_token.key
@@ -140,12 +149,13 @@ def reset_password(request, verification_code):
         return render(
             request,
             "invalid_reset_password_link.html",
+            context={'lang': language}
         )
     if request.method == 'GET':
         return render(
             request,
             "reset_password.html",
-            context={'token': token}
+            context={'token': token, 'lang': language}
         )
     if request.method == 'POST':
         password = request.POST.get("password")
@@ -153,12 +163,15 @@ def reset_password(request, verification_code):
         token = request.POST.get("token")
         error_msg = None
         if password != password_confirm:
-            error_msg = "Passwords do not match. Please ensure that both passwords are iqual."
+            if language == "en":
+                error_msg = "Passwords do not match. Please ensure that both passwords are equal."  
+            else:
+                error_msg = "As senhas não coincidem. Certifique-se de que ambas as senhas sejam iguais."
         if error_msg:
             return render(
                 request,
                 "reset_password.html",
-                {"error": error_msg},
+                {"error": error_msg, 'lang': language},
                 status=400
             )
         else:
@@ -171,13 +184,19 @@ def reset_password(request, verification_code):
                 return render(
                     request,
                     "reset_password_success.html",
+                    {'lang': language},
                     status=200
                 )
             except Exception as er:
+                print('========================> er: ',er )
+                if language == "en":
+                    error_msg = "An unexpected error occurred. Try again later."
+                else:
+                    error_msg = "Um erro inesperado ocorreu. Tente novamente mais tarde."
                 return render(
                     request,
                     "reset_password.html",
-                    {"error": "An unexpected error occurred. Try again later.."},
+                    {"error": error_msg, 'lang': language},
                     status=500
                 )
 
