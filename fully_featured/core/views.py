@@ -35,8 +35,6 @@ def test_view(request):
 @login_required
 @csrf_exempt
 def todo_view(request):
-    if not request.user.is_authenticated:
-        return Response("(user.is_authenticated) it should have already be handled. What's going on?")
     if request.method == 'GET':
         user_todos = ToDo.objects.filter(user=request.user).order_by('created_at')
         serializer = ToDoSerializer(user_todos, many=True)
