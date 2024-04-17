@@ -38,7 +38,7 @@ def stripe_payment(request):
 
         except Exception as e:  
             #  sentry_sdk.capture_exception(e) XXX
-            return HttpResponse("<h1>Something went wrong!</h1>")
+            return HttpResponse("<h1>An unexpected error occurred. Try again later.</h1>")
 
         #Stripe charge 
         charge = stripe.Charge.create(

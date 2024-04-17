@@ -1,4 +1,3 @@
-from django.db.models.fields.json import json
 from fully_featured.core.facade import send_account_confirmation_email
 from fully_featured.user.facade import send_reset_user_password_email
 from fully_featured.user.models import UserModel
@@ -38,12 +37,7 @@ def obtain_auth_token(request):
 @csrf_exempt
 def user_view(request):
     if request.method == 'GET':
-        try:
-            user = UserModel.objects.get(id=request.user.id)
-        except UserModel.DoesNotExist:
-            return Response(data={"error": "Something weird happened. This is not supposed to throw error"},
-                            status=status.HTTP_404_NOT_FOUND)
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(request.user)
         return Response(serializer.data)
     if request.method == 'PUT':
         try:
@@ -54,7 +48,7 @@ def user_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er:
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -71,7 +65,7 @@ def sign_up(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
         print(f"{er}")
-        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -87,7 +81,7 @@ def change_password(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
         print(er)
-        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -132,7 +126,7 @@ def reset_password_email(request):
         return Response(status=status.HTTP_200_OK)
     except Exception as er:
         print(er)
-        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST'])
@@ -183,7 +177,7 @@ def reset_password(request, verification_code):
                 return render(
                     request,
                     "reset_password.html",
-                    {"error": "Something went wrong."},
+                    {"error": "An unexpected error occurred. Try again later.."},
                     status=500
                 )
 
@@ -207,7 +201,7 @@ def get_or_create_account_with_google(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
         print(f"{er}")
-        return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])

@@ -51,7 +51,7 @@ def todo_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
             todoId = request.data.get('id')
@@ -70,7 +70,7 @@ def todo_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
             todo_id = request.data.get('id')
@@ -85,7 +85,7 @@ def todo_view(request):
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
@@ -106,7 +106,7 @@ def journal_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
             id = request.data.get('id')
@@ -125,7 +125,7 @@ def journal_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
             id = request.data.get('id')
@@ -140,7 +140,7 @@ def journal_view(request):
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
@@ -161,7 +161,7 @@ def note_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
             id = request.data.get('id')
@@ -180,7 +180,7 @@ def note_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
             id = request.data.get('id')
@@ -195,7 +195,7 @@ def note_view(request):
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
@@ -216,7 +216,7 @@ def glossary_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
             id = request.data.get('id')
@@ -235,7 +235,7 @@ def glossary_view(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
             id = request.data.get('id')
@@ -250,4 +250,4 @@ def glossary_view(request):
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
             print(er)
-            return Response(data={"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
