@@ -101,7 +101,7 @@ class ChangeUserPasswordSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         user = self.context['request'].user
         if not user.check_password(attrs.get('current_password')):
-            raise serializers.ValidationError("The password is wrong", code='authorization')
+            raise serializers.ValidationError("The password entered is incorrect", code='authorization')
         return attrs
 
     def update(self, instance, validated_data):
