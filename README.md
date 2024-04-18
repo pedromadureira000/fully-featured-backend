@@ -17,6 +17,12 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+## django-extension commands
+* generate admin
+`
+python manage.py admin_generator app_name
+`
+
 ## Running celery
 ```
 celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_email
