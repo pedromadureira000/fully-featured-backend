@@ -34,6 +34,11 @@ class ToDoSerializer(serializers.ModelSerializer):
         fields = ['id','title', 'description', 'completed', 'user_id', 'group_id']
         read_only_fields = ['id', 'user_id']
 
+    #  def to_representation(self, instance):
+        #  data = super().to_representation(instance)
+        #  data['todos'] = []
+        #  return data
+
 
     #  def update(self, instance, validated_data):
         #  print('========================> test: ',validated_data['testing'] )
@@ -42,7 +47,7 @@ class ToDoSerializer(serializers.ModelSerializer):
 
 
     #  def create(self, validated_data):
-        #  print('========================> test:adfadsf ' )
+        #  print('========================> validated_data ', validated_data )
         #  return super().create(validated_data)
         #  return instance
 

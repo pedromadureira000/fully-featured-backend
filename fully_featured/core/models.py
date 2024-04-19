@@ -15,7 +15,7 @@ class ToDo(Base):
     title = models.CharField("Title", max_length=255)
     description = models.CharField("Description", max_length=255)
     completed = models.BooleanField(default=False)
-    group = models.ForeignKey("ToDoGroup", on_delete=models.CASCADE)
+    group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT)
 
     def save(self, *args, **kwargs):
         #  if self.agent != Conversation.objects.get(id=self.id).agent:
@@ -29,7 +29,7 @@ class ToDoGroup(Base):
 class Journal(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journals")
     text = models.TextField("Text", max_length=4000)
-    group = models.ForeignKey("JournalGroup", on_delete=models.CASCADE)
+    group = models.ForeignKey("JournalGroup", on_delete=models.PROTECT)
 
 class JournalGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journal_groups")
@@ -39,7 +39,7 @@ class Note(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="notes")
     title = models.CharField("Title", max_length=255)
     text = models.CharField("Text", max_length=255)
-    group = models.ForeignKey("NoteGroup", on_delete=models.CASCADE)
+    group = models.ForeignKey("NoteGroup", on_delete=models.PROTECT)
 
 class NoteGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="note_groups")
@@ -49,7 +49,7 @@ class Term(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="glossary")
     term = models.CharField("Term", max_length=255)
     definition = models.CharField("Definition", max_length=255)
-    group = models.ForeignKey("TermGroup", on_delete=models.CASCADE)
+    group = models.ForeignKey("TermGroup", on_delete=models.PROTECT)
 
 class TermGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="term_groups")
