@@ -31,25 +31,8 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed', 'user_id', 'group_id']
+        fields = ['id','title', 'description', 'completed', 'user_id', 'group']
         read_only_fields = ['id', 'user_id']
-
-    #  def to_representation(self, instance):
-        #  data = super().to_representation(instance)
-        #  data['todos'] = []
-        #  return data
-
-
-    #  def update(self, instance, validated_data):
-        #  print('========================> test: ',validated_data['testing'] )
-        #  ordered_items = validated_data.get('ordered_items')
-        #  return super().update(instance, validated_data)
-
-
-    #  def create(self, validated_data):
-        #  print('========================> validated_data ', validated_data )
-        #  return super().create(validated_data)
-        #  return instance
 
 class TodoGroupSerializer(serializers.ModelSerializer):
     class Meta:

@@ -48,9 +48,6 @@ def todo_view(request):
             serializer = ToDoSerializer(data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.validated_data['user'] = request.user
-                group_id = request.data.get('group_id')
-                if group_id: # TODO A bit of a workaround. (drf is ignoring the group_id field, it's readOnly)
-                    serializer.validated_data['group_id'] = group_id
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
