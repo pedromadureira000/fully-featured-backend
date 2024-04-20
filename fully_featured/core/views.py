@@ -3,9 +3,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status, permissions
-
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.db.models.deletion import ProtectedError
 
 from .serializers import JournalGroupSerializer, JournalSerializer, NoteGroupSerializer, NoteSerializer, TermGroupSerializer, TermSerializer, ToDoSerializer, TestSerializer, TodoGroupSerializer
 
@@ -140,6 +140,9 @@ def todo_group_view(request):
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except ToDoGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+        except ProtectedError:
+            return Response(data={"error": "You cannot delete this group because it has tasks linked to it."},
+                            status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
