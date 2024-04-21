@@ -1,3 +1,4 @@
+from fully_featured.core.facade import get_paginated_results
 from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup
 from rest_framework import status
 from rest_framework.response import Response
@@ -35,9 +36,17 @@ def test_view(request):
 @csrf_exempt
 def todo_get_view(request, group_id):
     if request.method == 'GET':
-        user_todos = ToDo.objects.filter(user=request.user, group_id=group_id).order_by('created_at')
-        serializer = ToDoSerializer(user_todos, many=True)
-        return Response(serializer.data)
+        startingIndex = request.GET.get("startingIndex")
+        print(startingIndex)
+        model = ToDo
+        serializer = ToDoSerializer
+        sort_by = '-created_at'
+        kwargs = {"user": request.user, "group_id": group_id}
+        paginated_results = get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs)
+        return Response({
+            "result": paginated_results["result"],
+            "totalRecords": paginated_results["totalRecords"]
+        })
 
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required

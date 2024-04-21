@@ -1,4 +1,5 @@
 from django.core.mail import EmailMultiAlternatives, EmailMessage
+from django.core.validators import math
 #  from anymail.message import attach_inline_image_file
 from fully_featured.settings import BASE_URL
 
@@ -33,3 +34,19 @@ def send_account_confirmation_email(email, auth_token):
     #  html = f'<p><b>Please</b> <a href="{activate_url}">activate</a>your account</p>'
     msg.attach_alternative(html, "text/html")
     msg.send()
+
+def get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs):
+    startingIndex = int(startingIndex) if startingIndex and startingIndex.isdigit() else 0
+    items_per_page = 5
+    start = startingIndex
+    end = startingIndex + items_per_page
+
+    queryset = model.objects.filter(**kwargs).order_by(sort_by)
+
+    totalRecords = queryset.count()
+    result = serializer(queryset[start:end], many=True).data
+
+    return {
+        "result": result,
+        "totalRecords": totalRecords
+    }
