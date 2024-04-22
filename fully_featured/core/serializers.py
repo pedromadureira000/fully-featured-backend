@@ -40,22 +40,22 @@ class TodoGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'name']
         read_only_fields = ['id', 'user_id']
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['todos'] = []
-        return data
-
     def validate_name(self, value):
         request_user = self.context['request'].user
         if ToDoGroup.objects.filter(user_id=request_user.id, name=value).exists():
             raise serializers.ValidationError("A group with this name already exists")
         return value
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['todos'] = []
+        return data
+
 
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal
-        fields = ['id', 'user_id', 'text', 'created_at', 'group_id']
+        fields = ['id', 'user_id', 'text', 'created_at', 'group']
         read_only_fields = ['id', 'user_id', 'created_at']
 
 class JournalGroupSerializer(serializers.ModelSerializer):
@@ -70,10 +70,15 @@ class JournalGroupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A group with this name already exists")
         return value
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['records'] = []
+        return data
+
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ['id', 'user_id', 'title', 'text', 'group_id']
+        fields = ['id', 'user_id', 'title', 'text', 'group']
         read_only_fields = ['id', 'user_id']
 
 class NoteGroupSerializer(serializers.ModelSerializer):
@@ -88,10 +93,15 @@ class NoteGroupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A group with this name already exists")
         return value
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['records'] = []
+        return data
+
 class TermSerializer(serializers.ModelSerializer):
     class Meta:
         model = Term
-        fields = ['id', 'user_id', 'term', 'definition', 'group_id']
+        fields = ['id', 'user_id', 'term', 'definition', 'group']
         read_only_fields = ['id', 'user_id']
 
 class TermGroupSerializer(serializers.ModelSerializer):
@@ -106,3 +116,7 @@ class TermGroupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A group with this name already exists")
         return value
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['records'] = []
+        return data

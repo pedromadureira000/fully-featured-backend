@@ -37,7 +37,6 @@ def test_view(request):
 def todo_get_view(request, group_id):
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
-        print(startingIndex)
         model = ToDo
         serializer = ToDoSerializer
         sort_by = '-created_at'
@@ -162,9 +161,17 @@ def todo_group_view(request):
 @csrf_exempt
 def journal_get_view(request, group_id):
     if request.method == 'GET':
-        user_todos = Journal.objects.filter(user=request.user, group_id=group_id).order_by('created_at')
-        serializer = JournalSerializer(user_todos, many=True)
-        return Response(serializer.data)
+        startingIndex = request.GET.get("startingIndex")
+        model = Journal
+        serializer = JournalSerializer
+        sort_by = '-created_at'
+        kwargs = {"user": request.user, "group_id": group_id}
+        paginated_results = get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs)
+        return Response({
+            "result": paginated_results["result"],
+            "totalRecords": paginated_results["totalRecords"]
+        })
+
 
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
@@ -275,9 +282,16 @@ def journal_group_view(request):
 @csrf_exempt
 def note_get_view(request, group_id):
     if request.method == 'GET':
-        user_todos = Note.objects.filter(user=request.user, group_id=group_id).order_by('created_at')
-        serializer = NoteSerializer(user_todos, many=True)
-        return Response(serializer.data)
+        startingIndex = request.GET.get("startingIndex")
+        model = Note
+        serializer = NoteSerializer
+        sort_by = '-created_at'
+        kwargs = {"user": request.user, "group_id": group_id}
+        paginated_results = get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs)
+        return Response({
+            "result": paginated_results["result"],
+            "totalRecords": paginated_results["totalRecords"]
+        })
 
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
@@ -388,9 +402,17 @@ def note_group_view(request):
 @csrf_exempt
 def glossary_get_view(request, group_id):
     if request.method == 'GET':
-        user_todos = Term.objects.filter(user=request.user, group_id=group_id).order_by('created_at')
-        serializer = TermSerializer(user_todos, many=True)
-        return Response(serializer.data)
+        startingIndex = request.GET.get("startingIndex")
+        model = Term
+        serializer = TermSerializer
+        sort_by = '-created_at'
+        kwargs = {"user": request.user, "group_id": group_id}
+        paginated_results = get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs)
+        return Response({
+            "result": paginated_results["result"],
+            "totalRecords": paginated_results["totalRecords"]
+        })
+
 
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
