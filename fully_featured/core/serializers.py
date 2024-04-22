@@ -45,6 +45,13 @@ class TodoGroupSerializer(serializers.ModelSerializer):
         data['todos'] = []
         return data
 
+    def validate_name(self, value):
+        request_user = self.context['request'].user
+        if ToDoGroup.objects.filter(user_id=request_user.id, name=value).exists():
+            raise serializers.ValidationError("A group with this name already exists")
+        return value
+
+
 class JournalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Journal
@@ -56,6 +63,12 @@ class JournalGroupSerializer(serializers.ModelSerializer):
         model = JournalGroup
         fields = ['id', 'user_id', 'name']
         read_only_fields = ['id', 'user_id']
+
+    def validate_name(self, value):
+        request_user = self.context['request'].user
+        if JournalGroup.objects.filter(user_id=request_user.id, name=value).exists():
+            raise serializers.ValidationError("A group with this name already exists")
+        return value
 
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,6 +82,12 @@ class NoteGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'name']
         read_only_fields = ['id', 'user_id']
 
+    def validate_name(self, value):
+        request_user = self.context['request'].user
+        if NoteGroup.objects.filter(user_id=request_user.id, name=value).exists():
+            raise serializers.ValidationError("A group with this name already exists")
+        return value
+
 class TermSerializer(serializers.ModelSerializer):
     class Meta:
         model = Term
@@ -80,4 +99,10 @@ class TermGroupSerializer(serializers.ModelSerializer):
         model = TermGroup
         fields = ['id', 'user_id', 'name']
         read_only_fields = ['id', 'user_id']
+
+    def validate_name(self, value):
+        request_user = self.context['request'].user
+        if TermGroup.objects.filter(user_id=request_user.id, name=value).exists():
+            raise serializers.ValidationError("A group with this name already exists")
+        return value
 
