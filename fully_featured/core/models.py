@@ -13,7 +13,7 @@ class Base(models.Model):
 class ToDo(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todos")
     title = models.CharField("Title", max_length=255)
-    description = models.CharField("Description", max_length=255)
+    description = models.CharField("Description", max_length=500)
     completed = models.BooleanField(default=False)
     group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT)
 
@@ -38,7 +38,7 @@ class JournalGroup(Base):
 class Note(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="notes")
     title = models.CharField("Title", max_length=255)
-    text = models.CharField("Text", max_length=255)
+    text = models.CharField("Text", max_length=500)
     group = models.ForeignKey("NoteGroup", on_delete=models.PROTECT)
 
 class NoteGroup(Base):
@@ -48,7 +48,7 @@ class NoteGroup(Base):
 class Term(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="glossary")
     term = models.CharField("Term", max_length=255)
-    definition = models.CharField("Definition", max_length=255)
+    definition = models.CharField("Definition", max_length=500)
     group = models.ForeignKey("TermGroup", on_delete=models.PROTECT)
 
 class TermGroup(Base):
