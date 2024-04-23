@@ -24,6 +24,7 @@ class ToDo(Base):
     completed = models.BooleanField(default=False)
     group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT)
     status = models.IntegerField(choices=status_choices, default=2)
+    due_date = models.DateTimeField("Due date", blank=True, null=True)
 
     def save(self, *args, **kwargs):
         #  if self.agent != Conversation.objects.get(id=self.id).agent:

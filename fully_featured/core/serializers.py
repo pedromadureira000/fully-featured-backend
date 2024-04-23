@@ -33,7 +33,7 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status']
+        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'due_date']
         read_only_fields = ['id', 'user_id']
 
 class TodoGroupSerializer(serializers.ModelSerializer):

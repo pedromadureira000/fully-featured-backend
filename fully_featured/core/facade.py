@@ -37,7 +37,7 @@ def send_account_confirmation_email(email, auth_token):
 
 def get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs):
     startingIndex = int(startingIndex) if startingIndex and startingIndex.isdigit() else 0
-    items_per_page = 5
+    items_per_page = 20
     start = startingIndex
     end = startingIndex + items_per_page
 
