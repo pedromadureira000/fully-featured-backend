@@ -11,11 +11,19 @@ class Base(models.Model):
 
 
 class ToDo(Base):
+    status_choices = (
+        (1, "Postponed"),
+        (2, "Pendent"),
+        (3, "Doing"),
+        (4, "Done"),
+    )
+
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todos")
     title = models.CharField("Title", max_length=255)
     description = models.CharField("Description", max_length=500)
     completed = models.BooleanField(default=False)
     group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT)
+    status = models.IntegerField(choices=status_choices, default=2)
 
     def save(self, *args, **kwargs):
         #  if self.agent != Conversation.objects.get(id=self.id).agent:

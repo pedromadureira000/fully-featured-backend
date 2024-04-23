@@ -29,9 +29,11 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     #  ordered_items = OrderedItemPOSTSerializer(many=True)
 
+    status = serializers.ChoiceField(choices=[x[0] for x in ToDo.status_choices], required=False)
+
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed', 'user_id', 'group']
+        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status']
         read_only_fields = ['id', 'user_id']
 
 class TodoGroupSerializer(serializers.ModelSerializer):
