@@ -1,5 +1,6 @@
 from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup
 from rest_framework import serializers
+from datetime import datetime
 
 
 class NestedFieldSerializer(serializers.Serializer):
@@ -36,6 +37,11 @@ class ToDoSerializer(serializers.ModelSerializer):
         fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'due_date']
         read_only_fields = ['id', 'user_id']
 
+    def update(self, instance, validated_data):
+        if validated_data["group"] != instance.group_id:
+            validated_data["created_at"] = datetime.now()
+        return super().update(instance, validated_data)
+
 class TodoGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoGroup
@@ -60,6 +66,11 @@ class JournalSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'text', 'created_at', 'group']
         read_only_fields = ['id', 'user_id', 'created_at']
 
+    def update(self, instance, validated_data):
+        if validated_data["group"] != instance.group_id:
+            validated_data["created_at"] = datetime.now()
+        return super().update(instance, validated_data)
+
 class JournalGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = JournalGroup
@@ -83,6 +94,11 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'title', 'text', 'group']
         read_only_fields = ['id', 'user_id']
 
+    def update(self, instance, validated_data):
+        if validated_data["group"] != instance.group_id:
+            validated_data["created_at"] = datetime.now()
+        return super().update(instance, validated_data)
+
 class NoteGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = NoteGroup
@@ -105,6 +121,12 @@ class TermSerializer(serializers.ModelSerializer):
         model = Term
         fields = ['id', 'user_id', 'term', 'definition', 'group']
         read_only_fields = ['id', 'user_id']
+
+    def update(self, instance, validated_data):
+        if validated_data["group"] != instance.group_id:
+            validated_data["created_at"] = datetime.now()
+        return super().update(instance, validated_data)
+
 
 class TermGroupSerializer(serializers.ModelSerializer):
     class Meta:
