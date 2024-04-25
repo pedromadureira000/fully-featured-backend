@@ -1,6 +1,7 @@
 from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup
 from rest_framework import serializers
 from datetime import datetime
+from django.db.models import F
 
 
 class NestedFieldSerializer(serializers.Serializer):
@@ -45,19 +46,46 @@ class ToDoSerializer(serializers.ModelSerializer):
 class TodoGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoGroup
-        fields = ['id', 'user_id', 'name']
+        fields = ['id', 'user_id', 'name', 'order']
         read_only_fields = ['id', 'user_id']
 
     def validate_name(self, value):
         request_user = self.context['request'].user
-        if ToDoGroup.objects.filter(user_id=request_user.id, name=value).exists():
-            raise serializers.ValidationError("A group with this name already exists")
+        if self.instance and self.instance.name != value:
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
+        if not self.instance: # if it's create
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
         return value
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['todos'] = []
         return data
+
+    def create(self, validated_data):
+        index = 0
+        validated_data['order'] = index
+        groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+        if len(groups) > 0:
+            groups.update(order=F('order') + 1)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'order' in validated_data:
+            new_order = validated_data['order']
+            old_order = instance.order
+            if new_order != old_order:  # If order has changed
+                groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+                if new_order < old_order:
+                    # Moving up: Increment the order of groups between new_order and old_order
+                    groups.filter(order__gte=new_order, order__lt=old_order).update(order=F('order') + 1)
+                else:
+                    # Moving down: Decrement the order of groups between old_order and new_order
+                    groups.filter(order__gt=old_order, order__lte=new_order).update(order=F('order') - 1)
+                instance.order = new_order
+        return super().update(instance, validated_data)
 
 
 class JournalSerializer(serializers.ModelSerializer):
@@ -74,19 +102,46 @@ class JournalSerializer(serializers.ModelSerializer):
 class JournalGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = JournalGroup
-        fields = ['id', 'user_id', 'name']
+        fields = ['id', 'user_id', 'name', 'order']
         read_only_fields = ['id', 'user_id']
 
     def validate_name(self, value):
         request_user = self.context['request'].user
-        if JournalGroup.objects.filter(user_id=request_user.id, name=value).exists():
-            raise serializers.ValidationError("A group with this name already exists")
+        if self.instance and self.instance.name != value:
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
+        if not self.instance: # if it's create
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
         return value
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['records'] = []
         return data
+
+    def create(self, validated_data):
+        index = 0
+        validated_data['order'] = index
+        groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+        if len(groups) > 0:
+            groups.update(order=F('order') + 1)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'order' in validated_data:
+            new_order = validated_data['order']
+            old_order = instance.order
+            if new_order != old_order:  # If order has changed
+                groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+                if new_order < old_order:
+                    # Moving up: Increment the order of groups between new_order and old_order
+                    groups.filter(order__gte=new_order, order__lt=old_order).update(order=F('order') + 1)
+                else:
+                    # Moving down: Decrement the order of groups between old_order and new_order
+                    groups.filter(order__gt=old_order, order__lte=new_order).update(order=F('order') - 1)
+                instance.order = new_order
+        return super().update(instance, validated_data)
 
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -102,19 +157,46 @@ class NoteSerializer(serializers.ModelSerializer):
 class NoteGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = NoteGroup
-        fields = ['id', 'user_id', 'name']
+        fields = ['id', 'user_id', 'name', 'order']
         read_only_fields = ['id', 'user_id']
 
     def validate_name(self, value):
         request_user = self.context['request'].user
-        if NoteGroup.objects.filter(user_id=request_user.id, name=value).exists():
-            raise serializers.ValidationError("A group with this name already exists")
+        if self.instance and self.instance.name != value:
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
+        if not self.instance: # if it's create
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
         return value
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['records'] = []
         return data
+
+    def create(self, validated_data):
+        index = 0
+        validated_data['order'] = index
+        groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+        if len(groups) > 0:
+            groups.update(order=F('order') + 1)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'order' in validated_data:
+            new_order = validated_data['order']
+            old_order = instance.order
+            if new_order != old_order:  # If order has changed
+                groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+                if new_order < old_order:
+                    # Moving up: Increment the order of groups between new_order and old_order
+                    groups.filter(order__gte=new_order, order__lt=old_order).update(order=F('order') + 1)
+                else:
+                    # Moving down: Decrement the order of groups between old_order and new_order
+                    groups.filter(order__gt=old_order, order__lte=new_order).update(order=F('order') - 1)
+                instance.order = new_order
+        return super().update(instance, validated_data)
 
 class TermSerializer(serializers.ModelSerializer):
     class Meta:
@@ -131,16 +213,43 @@ class TermSerializer(serializers.ModelSerializer):
 class TermGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = TermGroup
-        fields = ['id', 'user_id', 'name']
+        fields = ['id', 'user_id', 'name', 'order']
         read_only_fields = ['id', 'user_id']
 
     def validate_name(self, value):
         request_user = self.context['request'].user
-        if TermGroup.objects.filter(user_id=request_user.id, name=value).exists():
-            raise serializers.ValidationError("A group with this name already exists")
+        if self.instance and self.instance.name != value:
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
+        if not self.instance: # if it's create
+            if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
+                raise serializers.ValidationError("A group with this name already exists")
         return value
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['records'] = []
         return data
+
+    def create(self, validated_data):
+        index = 0
+        validated_data['order'] = index
+        groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+        if len(groups) > 0:
+            groups.update(order=F('order') + 1)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'order' in validated_data:
+            new_order = validated_data['order']
+            old_order = instance.order
+            if new_order != old_order:  # If order has changed
+                groups = self.Meta.model.objects.filter(user_id=self.context['request'].user.id).order_by('order')
+                if new_order < old_order:
+                    # Moving up: Increment the order of groups between new_order and old_order
+                    groups.filter(order__gte=new_order, order__lt=old_order).update(order=F('order') + 1)
+                else:
+                    # Moving down: Decrement the order of groups between old_order and new_order
+                    groups.filter(order__gt=old_order, order__lte=new_order).update(order=F('order') - 1)
+                instance.order = new_order
+        return super().update(instance, validated_data)

@@ -34,6 +34,7 @@ class ToDo(Base):
 class ToDoGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todo_groups")
     name = models.CharField("name", max_length=30)
+    order = models.IntegerField(blank=True, null=True)
 
 class Journal(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journals")
@@ -43,6 +44,7 @@ class Journal(Base):
 class JournalGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journal_groups")
     name = models.CharField("name", max_length=30)
+    order = models.IntegerField(blank=True, null=True)
 
 class Note(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="notes")
@@ -53,6 +55,7 @@ class Note(Base):
 class NoteGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="note_groups")
     name = models.CharField("name", max_length=30)
+    order = models.IntegerField(blank=True, null=True)
 
 class Term(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="glossary")
@@ -63,3 +66,4 @@ class Term(Base):
 class TermGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="term_groups")
     name = models.CharField("name", max_length=30)
+    order = models.IntegerField(blank=True, null=True)

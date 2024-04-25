@@ -69,11 +69,11 @@ def todo_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = ToDo.objects.get(id=todoId)
+                record = ToDo.objects.get(id=todoId)
             except ToDo.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = ToDoSerializer(order, data=request.data, context={"request": request})
+            serializer = ToDoSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -103,8 +103,8 @@ def todo_view(request):
 @csrf_exempt
 def todo_group_view(request):
     if request.method == 'GET':
-        todo_groups = ToDoGroup.objects.filter(user=request.user).order_by('created_at')
-        serializer = TodoGroupSerializer(todo_groups, many=True)
+        groups = ToDoGroup.objects.filter(user=request.user).order_by('order')
+        serializer = TodoGroupSerializer(groups, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
         try:
@@ -124,11 +124,11 @@ def todo_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = ToDoGroup.objects.get(id=todoId)
+                group = ToDoGroup.objects.get(id=todoId)
             except ToDoGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = TodoGroupSerializer(order, data=request.data, context={"request": request})
+            serializer = TodoGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -143,8 +143,8 @@ def todo_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                todo = ToDoGroup.objects.get(id=id)
-                todo.delete()
+                group = ToDoGroup.objects.get(id=id)
+                group.delete()
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except ToDoGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -195,11 +195,11 @@ def journal_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = Journal.objects.get(id=id)
+                record = Journal.objects.get(id=id)
             except Journal.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = JournalSerializer(order, data=request.data, context={"request": request})
+            serializer = JournalSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -228,8 +228,8 @@ def journal_view(request):
 @csrf_exempt
 def journal_group_view(request):
     if request.method == 'GET':
-        todo_groups = JournalGroup.objects.filter(user=request.user).order_by('created_at')
-        serializer = JournalGroupSerializer(todo_groups, many=True)
+        groups = JournalGroup.objects.filter(user=request.user).order_by('order')
+        serializer = JournalGroupSerializer(groups, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
         try:
@@ -249,11 +249,11 @@ def journal_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = JournalGroup.objects.get(id=todoId)
+                group = JournalGroup.objects.get(id=todoId)
             except JournalGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = JournalGroupSerializer(order, data=request.data, context={"request": request})
+            serializer = JournalGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -268,8 +268,8 @@ def journal_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                todo = JournalGroup.objects.get(id=id)
-                todo.delete()
+                group = JournalGroup.objects.get(id=id)
+                group.delete()
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except JournalGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -315,11 +315,11 @@ def note_view(request):
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = Note.objects.get(id=id)
+                record = Note.objects.get(id=id)
             except Note.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = NoteSerializer(order, data=request.data, context={"request": request})
+            serializer = NoteSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -348,8 +348,8 @@ def note_view(request):
 @csrf_exempt
 def note_group_view(request):
     if request.method == 'GET':
-        todo_groups = NoteGroup.objects.filter(user=request.user).order_by('created_at')
-        serializer = NoteGroupSerializer(todo_groups, many=True)
+        groups = NoteGroup.objects.filter(user=request.user).order_by('order')
+        serializer = NoteGroupSerializer(groups, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
         try:
@@ -369,11 +369,11 @@ def note_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = NoteGroup.objects.get(id=todoId)
+                group = NoteGroup.objects.get(id=todoId)
             except NoteGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = NoteGroupSerializer(order, data=request.data, context={"request": request})
+            serializer = NoteGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -388,8 +388,8 @@ def note_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                todo = NoteGroup.objects.get(id=id)
-                todo.delete()
+                group = NoteGroup.objects.get(id=id)
+                group.delete()
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except NoteGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -436,11 +436,11 @@ def glossary_view(request):
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = Term.objects.get(id=id)
+                record = Term.objects.get(id=id)
             except Term.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = TermSerializer(order, data=request.data, context={"request": request})
+            serializer = TermSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -469,8 +469,8 @@ def glossary_view(request):
 @csrf_exempt
 def glossary_group_view(request):
     if request.method == 'GET':
-        todo_groups = TermGroup.objects.filter(user=request.user).order_by('created_at')
-        serializer = TermGroupSerializer(todo_groups, many=True)
+        groups = TermGroup.objects.filter(user=request.user).order_by('order')
+        serializer = TermGroupSerializer(groups, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
         try:
@@ -490,11 +490,11 @@ def glossary_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                order = TermGroup.objects.get(id=todoId)
+                group = TermGroup.objects.get(id=todoId)
             except TermGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = TermGroupSerializer(order, data=request.data, context={"request": request})
+            serializer = TermGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -509,8 +509,8 @@ def glossary_group_view(request):
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                todo = TermGroup.objects.get(id=id)
-                todo.delete()
+                group = TermGroup.objects.get(id=id)
+                group.delete()
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except TermGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
