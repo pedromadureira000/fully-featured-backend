@@ -141,7 +141,6 @@ def todo_group_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 group = ToDoGroup.objects.get(id=id)
                 group.delete()
@@ -266,13 +265,15 @@ def journal_group_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 group = JournalGroup.objects.get(id=id)
                 group.delete()
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except JournalGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+        except ProtectedError:
+            return Response(data={"error": "You cannot delete this group because it has records linked to it."},
+                            status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
@@ -393,6 +394,9 @@ def note_group_view(request):
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except NoteGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+        except ProtectedError:
+            return Response(data={"error": "You cannot delete this group because it has records linked to it."},
+                            status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
@@ -514,6 +518,9 @@ def glossary_group_view(request):
                 return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
             except TermGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+        except ProtectedError:
+            return Response(data={"error": "You cannot delete this group because it has records linked to it."},
+                            status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
             print(er)
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
