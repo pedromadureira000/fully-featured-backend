@@ -59,11 +59,6 @@ class TodoGroupSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("A group with this name already exists")
         return value
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['todos'] = []
-        return data
-
     def create(self, validated_data):
         index = 0
         validated_data['order'] = index
@@ -115,11 +110,6 @@ class JournalGroupSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("A group with this name already exists")
         return value
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['records'] = []
-        return data
-
     def create(self, validated_data):
         index = 0
         validated_data['order'] = index
@@ -169,11 +159,6 @@ class NoteGroupSerializer(serializers.ModelSerializer):
             if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
                 raise serializers.ValidationError("A group with this name already exists")
         return value
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['records'] = []
-        return data
 
     def create(self, validated_data):
         index = 0
@@ -225,11 +210,6 @@ class TermGroupSerializer(serializers.ModelSerializer):
             if self.Meta.model.objects.filter(user_id=request_user.id, name=value).exists():
                 raise serializers.ValidationError("A group with this name already exists")
         return value
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['records'] = []
-        return data
 
     def create(self, validated_data):
         index = 0
