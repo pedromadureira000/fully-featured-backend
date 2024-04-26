@@ -22,7 +22,7 @@ class ToDo(Base):
     title = models.CharField("Title", max_length=70)
     description = models.CharField("Description", max_length=500)
     completed = models.BooleanField(default=False)
-    group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT)
+    group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT, related_name="group_records")
     status = models.IntegerField(choices=status_choices, default=2)
     due_date = models.DateTimeField("Due date", blank=True, null=True)
 
@@ -39,7 +39,7 @@ class ToDoGroup(Base):
 class Journal(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journals")
     text = models.TextField("Text", max_length=4000)
-    group = models.ForeignKey("JournalGroup", on_delete=models.PROTECT)
+    group = models.ForeignKey("JournalGroup", on_delete=models.PROTECT, related_name="group_records")
 
 class JournalGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journal_groups")
@@ -50,7 +50,7 @@ class Note(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="notes")
     title = models.CharField("Title", max_length=70)
     text = models.CharField("Text", max_length=500)
-    group = models.ForeignKey("NoteGroup", on_delete=models.PROTECT)
+    group = models.ForeignKey("NoteGroup", on_delete=models.PROTECT, related_name="group_records")
 
 class NoteGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="note_groups")
@@ -61,7 +61,7 @@ class Term(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="glossary")
     term = models.CharField("Term", max_length=70)
     definition = models.CharField("Definition", max_length=500)
-    group = models.ForeignKey("TermGroup", on_delete=models.PROTECT)
+    group = models.ForeignKey("TermGroup", on_delete=models.PROTECT, related_name="group_records")
 
 class TermGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="term_groups")
