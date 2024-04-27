@@ -1,4 +1,4 @@
-from fully_featured.core.facade import get_paginated_results
+from fully_featured.core.facade import get_paginated_results, reorder_group_after_delete
 from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup
 from rest_framework import status
 from rest_framework.response import Response
@@ -64,15 +64,13 @@ def todo_view(request):
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
-            todoId = request.data.get('id')
-            if not todoId:
+            id = request.data.get('id')
+            if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                record = ToDo.objects.get(id=todoId)
+                record = ToDo.objects.get(id=id)
             except ToDo.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = ToDoSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -86,11 +84,10 @@ def todo_view(request):
             todo_id = request.data.get('id')
             if not todo_id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 todo = ToDo.objects.get(id=todo_id)
                 todo.delete()
-                return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
+                return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except ToDo.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
@@ -119,15 +116,13 @@ def todo_group_view(request):
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
-            todoId = request.data.get('id')
-            if not todoId:
+            id = request.data.get('id')
+            if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                group = ToDoGroup.objects.get(id=todoId)
+                group = ToDoGroup.objects.get(id=id)
             except ToDoGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = TodoGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -142,9 +137,10 @@ def todo_group_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                group = ToDoGroup.objects.get(id=id)
+                group = ToDoGroup.objects.get(id=id, user_id=request.user.id)
                 group.delete()
-                return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
+                reorder_group_after_delete(request.user, ToDoGroup)
+                return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except ToDoGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except ProtectedError:
@@ -192,12 +188,10 @@ def journal_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 record = Journal.objects.get(id=id)
             except Journal.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = JournalSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -211,7 +205,6 @@ def journal_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 instance = Journal.objects.get(id=id)
                 instance.delete()
@@ -243,15 +236,13 @@ def journal_group_view(request):
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
-            todoId = request.data.get('id')
-            if not todoId:
+            id = request.data.get('id')
+            if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                group = JournalGroup.objects.get(id=todoId)
+                group = JournalGroup.objects.get(id=id)
             except JournalGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = JournalGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -266,9 +257,10 @@ def journal_group_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                group = JournalGroup.objects.get(id=id)
+                group = JournalGroup.objects.get(id=id, user_id=request.user.id)
                 group.delete()
-                return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
+                reorder_group_after_delete(request.user, JournalGroup)
+                return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except JournalGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except ProtectedError:
@@ -314,12 +306,10 @@ def note_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 record = Note.objects.get(id=id)
             except Note.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = NoteSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -333,7 +323,6 @@ def note_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 instance = Note.objects.get(id=id)
                 instance.delete()
@@ -365,15 +354,13 @@ def note_group_view(request):
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
-            todoId = request.data.get('id')
-            if not todoId:
+            id = request.data.get('id')
+            if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                group = NoteGroup.objects.get(id=todoId)
+                group = NoteGroup.objects.get(id=id)
             except NoteGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = NoteGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -387,11 +374,11 @@ def note_group_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                group = NoteGroup.objects.get(id=id)
+                group = NoteGroup.objects.get(id=id, user_id=request.user.id)
                 group.delete()
-                return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
+                reorder_group_after_delete(request.user, NoteGroup)
+                return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except NoteGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except ProtectedError:
@@ -438,12 +425,10 @@ def glossary_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 record = Term.objects.get(id=id)
             except Term.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = TermSerializer(record, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -457,7 +442,6 @@ def glossary_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
                 instance = Term.objects.get(id=id)
                 instance.delete()
@@ -489,15 +473,13 @@ def glossary_group_view(request):
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
-            todoId = request.data.get('id')
-            if not todoId:
+            id = request.data.get('id')
+            if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                group = TermGroup.objects.get(id=todoId)
+                group = TermGroup.objects.get(id=id)
             except TermGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
-
             serializer = TermGroupSerializer(group, data=request.data, context={"request": request})
             if serializer.is_valid():
                 serializer.save()
@@ -511,11 +493,11 @@ def glossary_group_view(request):
             id = request.data.get('id')
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
-
             try:
-                group = TermGroup.objects.get(id=id)
+                group = TermGroup.objects.get(id=id, user_id=request.user.id)
                 group.delete()
-                return Response({'message': 'Todo deleted successfully'}, status=status.HTTP_200_OK)
+                reorder_group_after_delete(request.user, TermGroup)
+                return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except TermGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except ProtectedError:

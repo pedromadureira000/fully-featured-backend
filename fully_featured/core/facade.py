@@ -2,6 +2,7 @@ from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.core.validators import math
 #  from anymail.message import attach_inline_image_file
 from fully_featured.settings import BASE_URL
+from django.db.models import F
 
 
 def send_account_confirmation_email__(email, auth_token):
@@ -50,3 +51,12 @@ def get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs):
         "result": result,
         "totalRecords": totalRecords
     }
+
+def reorder_group_after_delete(user, model):
+    groups = model.objects.filter(user=user).order_by('order')
+    index = 0
+    if len(groups) > 0:
+        for group in groups:
+            group.order = index
+            index = index + 1
+    model.objects.bulk_update(groups, ["order"]);
