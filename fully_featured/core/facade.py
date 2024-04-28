@@ -36,13 +36,13 @@ def send_account_confirmation_email(email, auth_token):
     msg.attach_alternative(html, "text/html")
     msg.send()
 
-def get_paginated_results(startingIndex, model, serializer, sort_by, **kwargs):
+def get_paginated_results(user, startingIndex, model, serializer, sort_by, **kwargs):
     startingIndex = int(startingIndex) if startingIndex and startingIndex.isdigit() else 0
     items_per_page = 20
     start = startingIndex
     end = startingIndex + items_per_page
 
-    queryset = model.objects.filter(**kwargs).order_by(sort_by)
+    queryset = model.objects.filter(user_id=user.id, **kwargs).order_by(sort_by)
 
     totalRecords = queryset.count()
     result = serializer(queryset[start:end], many=True).data
