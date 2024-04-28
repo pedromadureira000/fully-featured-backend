@@ -40,7 +40,7 @@ def todo_get_view(request, group_id):
         model = ToDo
         serializer = ToDoSerializer
         sort_by = '-created_at'
-        kwargs = {"user": request.user, "group_id": group_id}
+        kwargs = {"group_id": group_id}
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
@@ -160,7 +160,7 @@ def journal_get_view(request, group_id):
         model = Journal
         serializer = JournalSerializer
         sort_by = '-created_at'
-        kwargs = {"user": request.user, "group_id": group_id}
+        kwargs = {"group_id": group_id}
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
@@ -279,7 +279,7 @@ def note_get_view(request, group_id):
         model = Note
         serializer = NoteSerializer
         sort_by = '-created_at'
-        kwargs = {"user": request.user, "group_id": group_id}
+        kwargs = {"group_id": group_id}
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
@@ -397,7 +397,7 @@ def glossary_get_view(request, group_id):
         model = Term
         serializer = TermSerializer
         sort_by = '-created_at'
-        kwargs = {"user": request.user, "group_id": group_id}
+        kwargs = {"group_id": group_id}
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
