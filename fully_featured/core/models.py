@@ -19,8 +19,8 @@ class ToDo(Base):
     )
 
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todos")
-    title = models.CharField("Title", max_length=70)
-    description = models.CharField("Description", max_length=500)
+    title = models.CharField("Title", max_length=135)
+    description = models.CharField("Description", max_length=551)
     completed = models.BooleanField(default=False)
     group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT, related_name="group_records")
     status = models.IntegerField(choices=status_choices, default=2)
@@ -48,8 +48,8 @@ class JournalGroup(Base):
 
 class Note(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="notes")
-    title = models.CharField("Title", max_length=70)
-    text = models.CharField("Text", max_length=500)
+    title = models.CharField("Title", max_length=135)
+    text = models.CharField("Text", max_length=551)
     group = models.ForeignKey("NoteGroup", on_delete=models.PROTECT, related_name="group_records")
 
 class NoteGroup(Base):
@@ -59,8 +59,8 @@ class NoteGroup(Base):
 
 class Term(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="glossary")
-    term = models.CharField("Term", max_length=70)
-    definition = models.CharField("Definition", max_length=500)
+    term = models.CharField("Term", max_length=135)
+    definition = models.CharField("Definition", max_length=551)
     group = models.ForeignKey("TermGroup", on_delete=models.PROTECT, related_name="group_records")
 
 class TermGroup(Base):
