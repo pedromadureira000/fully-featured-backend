@@ -47,6 +47,17 @@ def todo_get_view(request, group_id):
             "totalRecords": paginated_results["totalRecords"]
         })
 
+@api_view(['GET'])
+@login_required
+@csrf_exempt
+def todo_get_single_view(request, record_id):
+    try:
+        record = ToDo.objects.get(user_id=request.user.id, id=record_id)
+    except ToDo.DoesNotExist:
+        return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = ToDoSerializer(record, context={"request": request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
 @csrf_exempt
@@ -167,6 +178,16 @@ def journal_get_view(request, group_id):
             "totalRecords": paginated_results["totalRecords"]
         })
 
+@api_view(['GET'])
+@login_required
+@csrf_exempt
+def journal_get_single_view(request, record_id):
+    try:
+        record = Journal.objects.get(user_id=request.user.id, id=record_id)
+    except Journal.DoesNotExist:
+        return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = JournalSerializer(record, context={"request": request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
@@ -286,6 +307,17 @@ def note_get_view(request, group_id):
             "totalRecords": paginated_results["totalRecords"]
         })
 
+@api_view(['GET'])
+@login_required
+@csrf_exempt
+def note_get_single_view(request, record_id):
+    try:
+        record = Note.objects.get(user_id=request.user.id, id=record_id)
+    except Note.DoesNotExist:
+        return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = NoteSerializer(record, context={"request": request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
 @csrf_exempt
@@ -404,6 +436,16 @@ def glossary_get_view(request, group_id):
             "totalRecords": paginated_results["totalRecords"]
         })
 
+@api_view(['GET'])
+@login_required
+@csrf_exempt
+def glossary_get_single_view(request, record_id):
+    try:
+        record = Term.objects.get(user_id=request.user.id, id=record_id)
+    except Term.DoesNotExist:
+        return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = TermSerializer(record, context={"request": request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST', 'PATCH', 'DELETE'])
 @login_required
