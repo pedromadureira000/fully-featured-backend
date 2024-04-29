@@ -68,7 +68,7 @@ def todo_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                record = ToDo.objects.get(user_id=request.user_id, id=id)
+                record = ToDo.objects.get(user_id=request.user.id, id=id)
             except ToDo.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = ToDoSerializer(record, data=request.data, context={"request": request})
@@ -85,7 +85,7 @@ def todo_view(request):
             if not todo_id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                todo = ToDo.objects.get(user_id=request.user_id, id=todo_id)
+                todo = ToDo.objects.get(user_id=request.user.id, id=todo_id)
                 todo.delete()
                 return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except ToDo.DoesNotExist:
@@ -120,7 +120,7 @@ def todo_group_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                group = ToDoGroup.objects.get(user_id=request.user_id, id=id)
+                group = ToDoGroup.objects.get(user_id=request.user.id, id=id)
             except ToDoGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = TodoGroupSerializer(group, data=request.data, context={"request": request})
@@ -189,7 +189,7 @@ def journal_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                record = Journal.objects.get(user_id=request.user_id, id=id)
+                record = Journal.objects.get(user_id=request.user.id, id=id)
             except Journal.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = JournalSerializer(record, data=request.data, context={"request": request})
@@ -206,7 +206,7 @@ def journal_view(request):
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                instance = Journal.objects.get(user_id=request.user_id, id=id)
+                instance = Journal.objects.get(user_id=request.user.id, id=id)
                 instance.delete()
                 return Response({'message': 'Journal deleted successfully'}, status=status.HTTP_200_OK)
             except Journal.DoesNotExist:
@@ -240,7 +240,7 @@ def journal_group_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                group = JournalGroup.objects.get(user_id=request.user_id, id=id)
+                group = JournalGroup.objects.get(user_id=request.user.id, id=id)
             except JournalGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = JournalGroupSerializer(group, data=request.data, context={"request": request})
@@ -307,7 +307,7 @@ def note_view(request):
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                record = Note.objects.get(user_id=request.user_id, id=id)
+                record = Note.objects.get(user_id=request.user.id, id=id)
             except Note.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = NoteSerializer(record, data=request.data, context={"request": request})
@@ -324,7 +324,7 @@ def note_view(request):
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                instance = Note.objects.get(user_id=request.user_id, id=id)
+                instance = Note.objects.get(user_id=request.user.id, id=id)
                 instance.delete()
                 return Response({'message': 'Note deleted successfully'}, status=status.HTTP_200_OK)
             except Note.DoesNotExist:
@@ -358,7 +358,7 @@ def note_group_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                group = NoteGroup.objects.get(user_id=request.user_id, id=id)
+                group = NoteGroup.objects.get(user_id=request.user.id, id=id)
             except NoteGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = NoteGroupSerializer(group, data=request.data, context={"request": request})
@@ -426,7 +426,7 @@ def glossary_view(request):
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                record = Term.objects.get(user_id=request.user_id, id=id)
+                record = Term.objects.get(user_id=request.user.id, id=id)
             except Term.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = TermSerializer(record, data=request.data, context={"request": request})
@@ -443,7 +443,7 @@ def glossary_view(request):
             if not id:
                 return Response({'validation error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                instance = Term.objects.get(user_id=request.user_id, id=id)
+                instance = Term.objects.get(user_id=request.user.id, id=id)
                 instance.delete()
                 return Response({'message': 'Record deleted successfully'}, status=status.HTTP_200_OK)
             except Term.DoesNotExist:
@@ -477,7 +477,7 @@ def glossary_group_view(request):
             if not id:
                 return Response({'error': 'ID field is missing.'}, status=status.HTTP_400_BAD_REQUEST)
             try:
-                group = TermGroup.objects.get(user_id=request.user_id, id=id)
+                group = TermGroup.objects.get(user_id=request.user.id, id=id)
             except TermGroup.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
             serializer = TermGroupSerializer(group, data=request.data, context={"request": request})
