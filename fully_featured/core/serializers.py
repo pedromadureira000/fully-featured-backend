@@ -35,12 +35,16 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'due_date']
-        read_only_fields = ['id', 'user_id']
+        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'due_date', 'created_at', 'done_date']
+        read_only_fields = ['id', 'user_id', 'created_at', 'done_date']
 
     def update(self, instance, validated_data):
         if validated_data["group"] != instance.group_id:
             validated_data["created_at"] = datetime.now()
+        if validated_data["status"] == 4 and instance.status != 4:
+            validated_data["done_date"] = datetime.now()
+        if validated_data["status"] != 4 and instance.status == 4:
+            validated_data["done_date"] = None
         return super().update(instance, validated_data)
 
 class TodoGroupSerializer(serializers.ModelSerializer):
