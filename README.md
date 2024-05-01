@@ -8,7 +8,7 @@ git clone git@github.com:pedromadureira000/fully_featured.git
 cd fully_featured
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements-test.txt
+pip install -r requirements.txt
 cp contrib/env-sample .env
 psql postgres://username:pass@localhost:5432/postgres
 postgres=# create database fully_featured;
@@ -51,10 +51,10 @@ Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
 ```
 curl -X POST -d '
     {
-        "whatsapp": "556299999999",
+        "email": "email@email.com",
         "password": "pass"
     }
-    ' -H "Content-Type: application/json;" http://127.0.0.1:8000/user/gettoken
+    ' -H "Content-Type: application/json;" http://127.0.0.1:8000/api/user/gettoken
 ```
 
 ## Authenticated API calls

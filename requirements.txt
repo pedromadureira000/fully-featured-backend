@@ -13,3 +13,4 @@ requests
 stripe
 django-cors-headers
 django-anymail[mailgun]
+ipython
