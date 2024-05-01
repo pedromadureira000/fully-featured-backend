@@ -1,13 +1,13 @@
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.core.validators import math
 #  from anymail.message import attach_inline_image_file
-from fully_featured.settings import BASE_URL
+from fully_featured.settings import BASE_URL, FROM_EMAIL
 from django.db.models import F
 
 
 def send_account_confirmation_email__(email, auth_token):
     subject = "Please activate your account"
-    from_email = "Mailgun Sandbox <postmaster@sandboxa3124ed5bfe242c69aec66978f252bf2.mailgun.org>"
+    from_email = FROM_EMAIL
     to = email
     activate_url =  f"{BASE_URL}/activate_account/{auth_token}"
     html_content = f'<p><b>Please</b> <a href="{activate_url}">activate</a> your account</p>'
@@ -16,14 +16,14 @@ def send_account_confirmation_email__(email, auth_token):
     msg.send()
 
     #  send_mail("It works!", f"Click to activate your account: {activate_url}",
-              #  "Mailgun Sandbox <postmaster@sandboxa3124ed5bfe242c69aec66978f252bf2.mailgun.org>", [email])
+              # from_email, [email])
 
 def send_account_confirmation_email(email, auth_token):
     activate_url =  f"{BASE_URL}/activate_account/{auth_token}"
     msg = EmailMultiAlternatives(
         subject="Please activate your account",
         body=f"Click to activate your account: {activate_url}",
-        from_email="Mailgun Sandbox <postmaster@sandboxa3124ed5bfe242c69aec66978f252bf2.mailgun.org>",
+        from_email = FROM_EMAIL,
         to=[email],
     )
     #  logo_cid = attach_inline_image_file(msg, "/path/to/logo.jpg")
