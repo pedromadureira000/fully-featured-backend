@@ -7,6 +7,7 @@ ssh -i ~/.ssh/zap_ass.pem ubuntu@<ip>
 # Check system version
 ``
 cat /etc/os-release
+lsb_release -a
 ``
 
 # Update system packages
@@ -341,11 +342,26 @@ Solving common errors
 
 frontend make build
 ----------------------------------------
-* make web build and send it with scp
+* make web build
 ``
 ./build_apk.sh 54.87.198.44
 ./build_web.sh 54.87.198.44
-scp -i ~/.ssh/zap_ass.pem ~/Projects/fully-featured-backend/flutter_web_app/version.json.zip ubuntu@54.87.198.44:/home/ubuntu/fully-featured-backend/flutter_web_app
+``
+* prepare on server
+``
+cd fully-featured-backend/flutter_web_app/
+rm -rf *
+``
+* send build
+``
+scp -i ~/.ssh/zap_ass.pem ~/Projects/fully-featured/flutter_web_build/web_build.zip ubuntu@54.87.198.44:/home/ubuntu/fully-featured-backend/flutter_web_app
+``
+* unzip
+``
+unzip web_build.zip
+mv home/ph/Projects/fully-featured/build/web/* .
+mv home/ph/Projects/fully-featured/build/web/.last_build_id .
+rm -rf home web_build.zip
 ``
 
 
@@ -477,7 +493,7 @@ sudo yum install cronie
 */30 * * * * find /tmp/temp_transcription_audio/ -type f -mmin +3 -delete
 ``
 
-Install SSL (22-04)
+Install SSL and set domain (22-04)
 -----------------------------------------
 *OBS: Don't use UFW (You might lost SSH access 💀💀💀)*
 
@@ -489,8 +505,13 @@ https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-
 ``
 lsb_release -a
 ``
-* check ALLOWED_HOSTS on settings.py
+* check ALLOWED_HOSTS on settings.py (add the domain name)
 * Check server_name on nginx config file
+`
+sudo vim /etc/nginx/sites-available/fully-featured
+sudo systemctl restart nginx
+sudo systemctl restart gunicorn
+`
 
 ## Installing Certbot 
 * make sure your snapd core is up to date
@@ -513,12 +534,12 @@ sudo snap install --classic certbot
 
 ## Point the A register from your domain to ec2 instance IP
 
-## Delete any AAAA register, becouse certbot will try to use it instead of A @ register
+## Delete any AAAA register, because certbot will try to use it instead of A @ register
 
 ## Obtaining an SSL Certificate
 * run it (with nginx plugin)
 ``
-sudo certbot --nginx -d pedromadureira.xyz
+sudo certbot --nginx -d petersaas.com
 ``
 
 ## Verifying Certbot Auto-Renewal
@@ -527,9 +548,10 @@ sudo systemctl status snap.certbot.renew.service
 sudo certbot renew --dry-run
 ``
 
+## Change domain ssl config to Full SSL encryption on Cloundflare (not the restric option)
+
 Next steps
 -----------------------------------------
-* update webhook on https://mega-api-painel.app.br/
-``
-https://pedromadureira.xyz/webhook/<uuid-like-code>
-``
+* Setup google's credentials and OAuth with domain
+* Sentry configurations
+* Add domain to mailgun 

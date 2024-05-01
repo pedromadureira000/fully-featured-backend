@@ -7,6 +7,8 @@ from rest_framework import status, permissions
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.db.models.deletion import ProtectedError
+import sentry_sdk
+from fully_featured.settings import DEBUG
 
 from .serializers import JournalGroupSerializer, JournalSerializer, NoteGroupSerializer, NoteSerializer, TermGroupSerializer, TermSerializer, ToDoSerializer, TestSerializer, TodoGroupSerializer
 
@@ -71,7 +73,9 @@ def todo_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -88,7 +92,9 @@ def todo_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -102,7 +108,9 @@ def todo_view(request):
             except ToDo.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -123,7 +131,9 @@ def todo_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -140,7 +150,9 @@ def todo_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -158,7 +170,9 @@ def todo_group_view(request):
             return Response(data={"error": "You cannot delete this group because it has tasks linked to it."},
                             status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -202,7 +216,9 @@ def journal_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -219,7 +235,9 @@ def journal_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -233,7 +251,9 @@ def journal_view(request):
             except Journal.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
@@ -253,7 +273,9 @@ def journal_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -270,7 +292,9 @@ def journal_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -288,7 +312,9 @@ def journal_group_view(request):
             return Response(data={"error": "You cannot delete this group because it has records linked to it."},
                             status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -331,7 +357,9 @@ def note_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -348,7 +376,9 @@ def note_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -362,7 +392,9 @@ def note_view(request):
             except Note.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
@@ -382,7 +414,9 @@ def note_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -399,7 +433,9 @@ def note_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -417,7 +453,9 @@ def note_group_view(request):
             return Response(data={"error": "You cannot delete this group because it has records linked to it."},
                             status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -460,7 +498,9 @@ def glossary_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -477,7 +517,9 @@ def glossary_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -491,7 +533,9 @@ def glossary_view(request):
             except Term.DoesNotExist:
                 return Response({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
@@ -511,7 +555,9 @@ def glossary_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'PATCH':
         try:
@@ -528,7 +574,9 @@ def glossary_group_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'DELETE':
         try:
@@ -546,5 +594,7 @@ def glossary_group_view(request):
             return Response(data={"error": "You cannot delete this group because it has records linked to it."},
                             status=status.HTTP_400_BAD_REQUEST)
         except Exception as er: 
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)

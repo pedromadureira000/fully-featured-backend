@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from fully_featured.settings import BASE_URL
 from django.db import transaction
+import sentry_sdk
+from fully_featured.settings import DEBUG
 
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, ProfileUpdateSerializer, UserSerializer
 
@@ -47,7 +49,9 @@ def user_view(request):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as er:
-            print(er)
+            sentry_sdk.capture_exception(er)
+            if DEBUG:
+                print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -64,7 +68,9 @@ def sign_up(request):
             return Response({"success": "user created. Pls confirm email."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
-        print(f"{er}")
+        sentry_sdk.capture_exception(er)
+        if DEBUG:
+            print(f"{er}")
         return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -80,7 +86,9 @@ def change_password(request):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
-        print(er)
+        sentry_sdk.capture_exception(er)
+        if DEBUG:
+            print(f"{er}")
         return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -130,7 +138,9 @@ def reset_password_email(request):
         send_reset_user_password_email(user.email, user.auth_token.key)
         return Response(status=status.HTTP_200_OK)
     except Exception as er:
-        print(er)
+        sentry_sdk.capture_exception(er)
+        if DEBUG:
+            print(f"{er}")
         return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -188,7 +198,9 @@ def reset_password(request, verification_code):
                     status=200
                 )
             except Exception as er:
-                print('========================> er: ',er )
+                sentry_sdk.capture_exception(er)
+                if DEBUG:
+                    print('========================> er: ',er )
                 if language == "en":
                     error_msg = "An unexpected error occurred. Try again later."
                 else:
@@ -219,7 +231,9 @@ def get_or_create_account_with_google(request):
             return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
-        print(f"{er}")
+        sentry_sdk.capture_exception(er)
+        if DEBUG:
+            print(f"{er}")
         return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 

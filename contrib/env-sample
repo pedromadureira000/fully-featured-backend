@@ -20,3 +20,5 @@ DEFAULT_FROM_EMAIL=
 SERVER_EMAIL=
 MAILGUN_API_KEY=
 MAILGUN_SENDER_DOMAIN=
+
+FROM_EMAIL="Mailgun Sandbox <postmaster@sandboxa3124ed5bfe242c69aec66978f252bf2.mailgun.org>"

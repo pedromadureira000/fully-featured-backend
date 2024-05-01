@@ -72,6 +72,7 @@ ANYMAIL = {
     'MAILGUN_SENDER_DOMAIN': config('MAILGUN_SENDER_DOMAIN'),
 }
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+FROM_EMAIL = config('FROM_EMAIL')
 
 # Application definition
 

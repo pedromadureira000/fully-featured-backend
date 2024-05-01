@@ -1,5 +1,5 @@
 from django.core.mail import EmailMultiAlternatives
-from fully_featured.settings import BASE_URL
+from fully_featured.settings import BASE_URL, FROM_EMAIL
 
 
 def send_reset_user_password_email(email, auth_token):
@@ -7,7 +7,7 @@ def send_reset_user_password_email(email, auth_token):
     msg = EmailMultiAlternatives(
         subject="Reset password",
         body=f"Click to reset your password: {url}",
-        from_email="Mailgun Sandbox <postmaster@sandboxa3124ed5bfe242c69aec66978f252bf2.mailgun.org>",
+        from_email=FROM_EMAIL,
         to=[email],
     )
 
