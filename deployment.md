@@ -51,46 +51,40 @@ git config --global user.name "PedroS3"
 git config --global user.email "ph.websolucoes@gmail.com"
 cd ~/.ssh
 ssh-keygen -t ed25519 -C "ph.websolucoes@gmail.com"
-chmod  400 ~/.ssh/fullyfeaturedback
-chmod  400 ~/.ssh/fullyfeaturedback.pub
+chmod  400 ~/.ssh/fullyfeatured
+chmod  400 ~/.ssh/fullyfeatured.pub
 ``
-* Add public key to repository's Deploy-keys
+* Add public key ssh keys (https://github.com/settings/keys)
 ``
-cat ~/.ssh/fullyfeaturedback.pub
+cat ~/.ssh/fullyfeatured.pub
 ``
-* Create .ssh/config
+
+# Add SSH Key to SSH Agent: Start the SSH agent if it's not already running, then add your SSH private key to it
 ``
-nvim ~/.ssh/config
+eval `ssh-agent -s`
+ssh-add ~/.ssh/fullyfeatured
 ``
-* past it
+
+# test if it's working
 ``
-Host github-fully-featured-backend-ec2-hostname
-	HostName github.com
-	IdentityFile /home/ubuntu/.ssh/fullyfeaturedback
+ssh -T git@github.com
 ``
 
 # Clone the project
-
-* OBS _The hostname must the the same as defined before_
 ``
-git clone git@github-fully-featured-backend-ec2-hostname:pedromadureira000/fully-featured-backend.git
+git clone git@github.com:pedromadureira000/fully-featured.git
+git clone git@github.com:pedromadureira000/fully-featured-backend.git
 ``
 
-* snippet for the frontend part
-``
-cd ~/.ssh
-ssh-keygen -t ed25519 -C "ph.websolucoes@gmail.com"
-chmod  400 ~/.ssh/fullyfeatured
-chmod  400 ~/.ssh/fullyfeatured.pub
-cat ~/.ssh/fullyfeatured.pub
-nvim ~/.ssh/config
+# more git commands
+* git pull => 'here is no tracking information for the current branch.'
+`
+git remote -v
+git remote set-url origin git@github.com:pedromadureira000/fully-featured-backend.git
+git remote add origin git@github.com:pedromadureira000/fully-featured-backend.git
+git branch --set-upstream-to=origin/main main
+`
 
-Host github-fully-featured-frontend-ec2-hostname
-	HostName github.com
-	IdentityFile /home/ubuntu/.ssh/fullyfeatured
-
-git clone git@github-fully-featured-frontend-ec2-hostname:pedromadureira000/fully-featured.git
-``
 
 # Other configs
 ``
