@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if lang == "pt" %}
+            <h1>Política de Privacidade</h1>
+        {% else %}
+            <h1>Privacy Policy</h1>
+        {% endif %}
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #181414;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #444444;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        {% comment %} h1 { {% endcomment %}
+            {% comment %} color: #abb2bf; {% endcomment %}
+            {% comment %} margin-bottom: 20px; {% endcomment %}
+        {% comment %} } {% endcomment %}
+        p {
+            color: #abb2bf;
+            margin-bottom: 20px;
+        }
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .feature {
+            flex: 1;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #302a2a;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+        }
+        .feature h2 {
+            color: #abb2bf;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #8c8b8b;
+            color: #181414;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 5px;
+            font-size: 18px;
+        }
+        .button p {
+            color: #181414
+        }
+        .button + .button {
+            margin-left: 20px; /* Adjust the padding between buttons here */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        {% if lang == "pt" %}
+            <h1>Política de Privacidade</h1>
+        {% else %}
+            <h1>Privacy Policy</h1>
+        {% endif %}
+
+        {% if lang == "pt" %}
+         <p>A Mind-Organizer está comprometida em garantir que sua privacidade seja protegida. Esta Política de Privacidade explica como coletamos, usamos e divulgamos as informações que coletamos dos usuários do nosso aplicativo.</p>
+
+        <h3>Informações que coletamos</h3>
+<p>Podemos coletar informações de identificação pessoal dos Usuários de diversas maneiras, incluindo, entre outras, quando os Usuários visitam nosso Aplicativo, se registram no Aplicativo, respondem a uma pesquisa, preenchem um formulário e em conexão com outras atividades, serviços, recursos ou recursos que disponibilizamos em nosso aplicativo. Pode ser solicitado aos usuários, conforme apropriado, nome, endereço de e-mail e número de telefone.</p>
+
+        <h3>Como usamos as informações coletadas</h3>
+<p>A Mind-Organizer pode coletar e usar informações pessoais dos Usuários para os seguintes fins:</p>
+<p>Para melhorar o atendimento ao cliente: as informações que você fornece nos ajudam a responder às suas solicitações de atendimento ao cliente e necessidades de suporte com mais eficiência.</p>
+<p>Para personalizar a experiência do usuário: podemos usar informações agregadas para entender como nossos usuários, como um grupo, usam os serviços e recursos fornecidos em nosso aplicativo.</p>
+<p>Para melhorar nosso aplicativo: podemos usar o feedback que você fornece para melhorar nossos produtos e serviços.</p>
+<p>Para enviar e-mails periódicos: Poderemos usar o endereço de e-mail para enviar informações e atualizações do Usuário relativas ao seu pedido. Também pode ser usado para responder às suas dúvidas, perguntas e/ou outras solicitações. Se o Usuário decidir aderir à nossa lista de e-mails, ele receberá e-mails que podem incluir notícias da empresa, atualizações, informações relacionadas a produtos ou serviços, etc. instruções de cancelamento de assinatura na parte inferior de cada e-mail ou o usuário pode entrar em contato conosco através do nosso aplicativo.</p>
+
+        <h3>Como protegemos suas informações</h3>
+<p>Adotamos práticas adequadas de coleta, armazenamento e processamento de dados e medidas de segurança para proteger contra acesso não autorizado, alteração, divulgação ou destruição de suas informações pessoais, nome de usuário, senha, informações de transação e dados armazenados em nosso aplicativo.</ p>
+
+        <h3>Alterações nesta Política de Privacidade</h3>
+<p>A Mind-Organizer tem o poder de atualizar esta política de privacidade a qualquer momento. Quando o fizermos, revisaremos a data atualizada na parte inferior desta página. Encorajamos os usuários a verificar frequentemente esta página para verificar quaisquer alterações, para se manterem informados sobre como estamos ajudando a proteger as informações pessoais que coletamos. Você reconhece e concorda que é sua responsabilidade revisar esta política de privacidade periodicamente e tomar conhecimento de modificações.</p>
+
+        <h3>Sua aceitação destes termos</h3>
+<p>Ao usar este aplicativo, você indica que aceita esta política. Se você não concorda com esta política, não use nosso aplicativo. O uso continuado do Aplicativo após a publicação de alterações nesta política será considerado sua aceitação dessas alterações.</p>
+
+        <h3>Entre em contato conosco</h3>
+<p>Se você tiver alguma dúvida sobre esta Política de Privacidade, as práticas deste App ou suas relações com este App, entre em contato conosco pelo e-mail pedrohvmadureira@gmail.com ou envie uma mensagem Whatsapp para 5562993810827.</p>
+<p>Este documento foi atualizado pela última vez em 02/05/2024.</p>
+        {% else %}
+
+        <h3>Privacy Policy</h3>
+        <p>Mind-Organizer is committed to ensuring that your privacy is protected. This Privacy Policy explains how we collect, use, and disclose the information we collect from users of our application.</p>
+
+        <h3>Information We Collect</h3>
+<p>We may collect personal identification information from Users in a variety of ways, including, but not limited to, when Users visit our App, register on the App, respond to a survey, fill out a form, and in connection with other activities, services, features, or resources we make available on our App. Users may be asked for, as appropriate, name, email address, and phone number.</p>
+
+        <h3>How We Use Collected Information</h3>
+<p>Mind-Organizer may collect and use Users personal information for the following purposes:</p>
+<p>To improve customer service: Information you provide helps us respond to your customer service requests and support needs more efficiently.</p>
+<p>To personalize user experience: We may use information in the aggregate to understand how our Users as a group use the services and resources provided on our App.</p>
+<p>To improve our App: We may use feedback you provide to improve our products and services.</p>
+<p>To send periodic emails: We may use the email address to send User information and updates pertaining to their order. It may also be used to respond to their inquiries, questions, and/or other requests. If User decides to opt-in to our mailing list, they will receive emails that may include company news, updates, related product or service information, etc. If at any time the User would like to unsubscribe from receiving future emails, we include detailed unsubscribe instructions at the bottom of each email or User may contact us via our App.</p>
+
+        <h3>How We Protect Your Information</h3>
+<p>We adopt appropriate data collection, storage, and processing practices and security measures to protect against unauthorized access, alteration, disclosure, or destruction of your personal information, username, password, transaction information, and data stored on our App.</p>
+
+        <h3>Changes to This Privacy Policy</h3>
+<p>Mind-Organizer has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the bottom of this page. We encourage Users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.</p>
+
+        <h3>Your Acceptance of These Terms</h3>
+<p>By using this App, you signify your acceptance of this policy. If you do not agree to this policy, please do not use our App. Your continued use of the App following the posting of changes to this policy will be deemed your acceptance of those changes.</p>
+
+        <h3>Contacting Us</h3>
+<p>If you have any questions about this Privacy Policy, the practices of this App, or your dealings with this App, please contact us at pedrohvmadureira@gmail.com or send a Whatsapp message at 5562993810827.</p>
+<p>This document was last updated on 05/02/2024.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -13,6 +13,7 @@ from fully_featured.settings import BASE_URL
 from django.db import transaction
 import sentry_sdk
 from fully_featured.settings import DEBUG
+from django.shortcuts import redirect
 
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, ProfileUpdateSerializer, UserSerializer
 
@@ -247,3 +248,48 @@ def delete_user_view(request):
         return Response({"success": "user deleted"}, status=status.HTTP_200_OK)
     except UserModel.DoesNotExist:
         return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect("app_menu")
+    language = "en"
+    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    if "pt" in http_accept_language:
+        language = "pt"
+    return render(
+        request,
+        "landing_page.html",
+        context={'lang': language}
+    )
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def privacy_policy(request):
+    language = "en"
+    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    if "pt" in http_accept_language:
+        language = "pt"
+    return render(
+        request,
+        "privacy_policy.html",
+        context={'lang': language}
+    )
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def terms_of_use(request):
+    language = "en"
+    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    if "pt" in http_accept_language:
+        language = "pt"
+    return render(
+        request,
+        "terms_of_use.html",
+        context={'lang': language}
+    )

@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind-Organizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 3px auto;
+            padding: 20px;
+            {% comment %} background-color: #181414; // dark red{% endcomment %}
+            {% comment %} background-color: #141518; //dark-blue {% endcomment %}
+            {% comment %} background-color: #1d1f24; //dark-blue-brighter{% endcomment %}
+            {% comment %} background-color: #3e4147; {% endcomment %}
+            background-color: #2f3033;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #abb2bf;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #abb2bf;
+            margin-bottom: 20px;
+        }
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .feature {
+            flex: 1;
+            padding: 3px;
+            border-radius: 5px;
+            background-color: #42474f;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+        }
+        .feature h2 {
+            color: #abb2bf;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #5c6169;
+            {% comment %} background-color: #5e5e5e; {% endcomment %}
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 5px;
+            font-size: 18px;
+        }
+        .button p {
+            color: #181414
+        }
+        .button + .button {
+            margin-left: 20px; /* Adjust the padding between buttons here */
+        }
+        .center-links {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            justify-content: center;
+            gap: 20px; /* Adjust the space between links as needed */
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .left-link {
+            display: flex;
+            justify-content: flex-end; /* Align items to the right */
+            padding: 10px 20px;
+        }
+        .login-button {
+            padding: 10px 20px; /* Add padding to the button */
+            background-color: #5c6169;
+            color: #fff; /* Example text color */
+            text-decoration: none; /* Remove underline */
+        }
+    </style>
+</head>
+<body>
+    <div class="left-link">
+        <a href="https://petersaas.com/login" class="login-button">
+            Login
+        </a>
+    </div>
+    <div class="container" id="app">
+        <h1>Mind-Organizer</h1>
+        <p>
+        {% if lang == "pt" %}
+Transforme sua organização pessoal com o Mind-Organizer. Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário, tudo em uma plataforma simples e intuitiva.
+        {% else %}
+Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
+        {% endif %}
+        </p>
+        <div class="features">
+            <div class="feature">
+                <h2>
+                    {% if lang == "pt" %}
+                        Gerenciar tarefas
+                    {% else %}
+                        Manage Tasks
+                    {% endif %}
+                </h2>
+                <p>
+                    {% if lang == "pt" %}
+                        Simplifique sua vida gerenciando tarefas sem esforço.
+                    {% else %}
+                        Simplify your life by effortlessly managing tasks.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="feature">
+                <h2>
+                    {% if lang == "pt" %}
+                        Faça anotações
+                    {% else %}
+                        Take Notes
+                    {% endif %}
+                </h2>
+                <p>
+                    {% if lang == "pt" %}
+                        Faça anotações para manter seus pensamentos organizados.
+                    {% else %}
+                        Jot down notes to keep your thoughts organized.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="feature">
+                <h2>
+                    {% if lang == "pt" %}
+                        Pratique Journaling
+                    {% else %}
+                        Practice Journaling
+                    {% endif %}
+                </h2>
+                <p>
+                    {% if lang == "pt" %}
+                        Registre seus pensamentos para obter clareza mental.
+                    {% else %}
+                        Journal your thoughts for mental clarity.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="feature">
+                <h2>
+                    {% if lang == "pt" %}
+                        Construa glossários
+                    {% else %}
+                        Build Glossaries
+                    {% endif %}
+                </h2>
+                <p>
+                    {% if lang == "pt" %}
+                        Expanda seu vocabulário para aumentar a produtividade.
+                    {% else %}
+                        Expand your vocabulary for enhanced productivity.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="button-container">
+            <div class="button" onclick="window.location='https://petersaas.com/sign_up';">
+                <p>
+                    {% if lang == "pt" %}
+                        Iniciar teste gratuito de 30 dias
+                    {% else %}
+                        Start a 30 Days Free Trial 
+                    {% endif %}
+                </p>
+                <p>
+                    {% if lang == "pt" %}
+                        (Não é necessário cartão de crédito)
+                    {% else %}
+                        (No credit card required)
+                    {% endif %}
+                </p>
+            </div>
+            <div class="button">
+                <p>
+                    {% if lang == "pt" %}
+                        Baixe o App para Android
+                    {% else %}
+                        Download the app for Android
+                    {% endif %}
+                </p>
+                <p>
+                    {% if lang == "pt" %}
+                        {% comment %} (I'm working on publishing it on Google Play. For now, you can download and install it directly) {% endcomment %}
+                        (Disponível em breve)
+                    {% else %}
+                        {% comment %} (Estou trabalhando para publicá-lo no Google Play. Por enquanto, você pode baixá-lo e instalá-lo diretamente) {% endcomment %}
+                        (Available soon)
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="center-links">
+        <a href="https://petersaas.com/privacy_policy">
+        {% if lang == "pt" %}
+            Políticas de privacidade
+        {% else %}
+            Privacy Policy
+        {% endif %}
+        </a>
+        <a href="https://petersaas.com/terms_of_use">
+        {% if lang == "pt" %}
+            Termos de uso
+        {% else %}
+            Terms of use
+        {% endif %}
+        </a>
+    </div>
+</body>
+</html>

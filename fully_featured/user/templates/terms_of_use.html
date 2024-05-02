@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if lang == "pt" %}
+            Termos de uso
+        {% else %}
+            Terms of use
+        {% endif %}
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #181414;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #444444;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        {% comment %} h1 { {% endcomment %}
+            {% comment %} color: #abb2bf; {% endcomment %}
+            {% comment %} margin-bottom: 20px; {% endcomment %}
+        {% comment %} } {% endcomment %}
+        p {
+            color: #abb2bf;
+            margin-bottom: 20px;
+        }
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .feature {
+            flex: 1;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #302a2a;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+        }
+        .feature h2 {
+            color: #abb2bf;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #8c8b8b;
+            color: #181414;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 5px;
+            font-size: 18px;
+        }
+        .button p {
+            color: #181414
+        }
+        .button + .button {
+            margin-left: 20px; /* Adjust the padding between buttons here */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        {% if lang == "pt" %}
+            <h1>Termos de uso</h1>
+        {% else %}
+            <h1>Terms of use</h1>
+        {% endif %}
+
+        {% if lang == "pt" %}
+        <p>Estes Termos de Uso regem o uso do aplicativo Mind-Organizer fornecido por Peter-Saas. Ao acessar ou usar o Aplicativo, você concorda em obedecer a estes Termos de Uso. Se você discordar de qualquer parte destes termos, não use nosso aplicativo.</p>
+
+         <h3>Registro de conta e avaliação gratuita</h3>
+
+         <p>Para acessar determinados recursos do Aplicativo, pode ser necessário registrar uma conta. Durante o processo de registro, você poderá ter um período de teste gratuito de 30 dias, durante o qual poderá usar o Aplicativo sem fornecer qualquer informação de pagamento. O período de teste gratuito não requer cartão de crédito.</p>
+
+         <h3>Assinatura e Pagamento</h3>
+         <p>Após o período de teste gratuito, você poderá optar por assinar o Aplicativo selecionando um plano de assinatura e fornecendo informações de pagamento. Ao assinar, você concorda em pagar as taxas recorrentes associadas ao plano de assinatura escolhido. O pagamento será cobrado na forma de pagamento fornecida no início de cada ciclo de faturamento.</p>
+
+         <h3>Cancelamento</h3>
+         <p>Você pode cancelar sua assinatura a qualquer momento acessando as configurações da sua conta no aplicativo. Após o cancelamento, você continuará tendo acesso ao Aplicativo até o final do seu ciclo de cobrança atual, após o qual seu acesso será encerrado. Nenhum reembolso será fornecido por qualquer parte não utilizada do período de sua assinatura.</p>
+
+         <h3>Propriedade Intelectual</h3>
+         <p>O aplicativo e seu conteúdo, recursos e funcionalidades originais são de propriedade da Peter-Saas e são protegidos por direitos autorais internacionais, marcas registradas, patentes, segredos comerciais e outras leis de propriedade intelectual ou direitos de propriedade.</p>
+
+         <h3>Limitação de responsabilidade</h3>
+         <p>Em nenhum caso a Peter-Saas será responsável por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos, incluindo, sem limitação, perda de lucros, dados, uso, boa vontade ou outras perdas intangíveis, resultantes de (i) seu acesso, uso ou incapacidade de acessar ou usar o Aplicativo; (ii) qualquer conduta ou conteúdo de terceiros no Aplicativo; (iii) qualquer conteúdo obtido do Aplicativo; e (iv) acesso, uso ou alteração não autorizado de suas transmissões ou conteúdo, seja com base em garantia, contrato, ato ilícito (incluindo negligência) ou qualquer outra teoria jurídica, independentemente de termos sido informados ou não da possibilidade de tais danos, e mesmo se uma solução aqui estabelecida falhar em seu propósito essencial.</p>
+
+         <h3>Alterações nos Termos</h3>
+         <p>Peter-Saas reserva-se o direito de revisar estes Termos de Uso a qualquer momento sem aviso prévio. Ao usar o Aplicativo, você concorda em ficar vinculado à versão atual destes Termos de Uso.</p>
+
+         <h3>Lei Aplicável</h3>
+         <p>Estes Termos de Uso serão regidos e interpretados de acordo com as leis do Brasil, independentemente de conflitos de disposições legais.</p>
+
+         <h3>Entre em contato conosco</h3>
+
+         <p>Se você tiver alguma dúvida sobre estes Termos de Uso, entre em contato conosco pelo e-mail pedrohvmadureira@gmail.com ou envie uma mensagem de Whatsapp para 5562993810827.</p>
+         <p>Este documento foi atualizado pela última vez em 02/05/2024.</p>
+        {% else %}
+        <p>These Terms of Use govern your use of Mind-Organizer application provided by Peter-Saas. By accessing or using the App, you agree to be bound by these Terms of Use. If you disagree with any part of these terms, please do not use our App.</p>
+
+        <h3>Account Registration and Free Trial</h3>
+
+        <p>To access certain features of the App, you may be required to register for an account. During the registration process, you may be provided with a free trial period of 30 days, during which you can use the App without providing any payment information. The free trial period does not require a credit card.</p>
+
+        <h3>Subscription and Payment</h3>
+        <p>After the free trial period, you may choose to subscribe to the App by selecting a subscription plan and providing payment information. By subscribing, you agree to pay the recurring fees associated with your chosen subscription plan. Payment will be charged to your provided payment method at the beginning of each billing cycle.</p>
+
+        <h3>Cancellation</h3>
+        <p>You may cancel your subscription at any time by accessing your account settings within the App. Upon cancellation, you will continue to have access to the App until the end of your current billing cycle, after which your access will be terminated. No refunds will be provided for any unused portion of your subscription term.</p>
+
+        <h3>Intellectual Property</h3>
+        <p>The App and its original content, features, and functionality are owned by Peter-Saas and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
+
+        <h3>Limitation of Liability</h3>
+        <p>In no event shall Peter-Saas be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the App; (ii) any conduct or content of any third party on the App; (iii) any content obtained from the App; and (iv) unauthorized access, use, or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence), or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose.</p>
+
+        <h3>Changes to Terms</h3>
+        <p>Peter-Saas reserves the right to revise these Terms of Use at any time without prior notice. By using the App, you are agreeing to be bound by the current version of these Terms of Use.</p>
+
+        <h3>Governing Law</h3>
+        <p>These Terms of Use shall be governed and construed in accordance with the laws of Brazil, without regard to its conflict of law provisions.</p>
+
+        <h3>Contact Us</h3>
+
+        <p>If you have any questions about these Terms of Use, please contact us at pedrohvmadureira@gmail.com or send a Whatsapp message at 5562993810827.</p>
+        <p>This document was last updated on 05/02/2024.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
