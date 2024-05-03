@@ -52,6 +52,33 @@ def get_paginated_results(user, startingIndex, model, serializer, sort_by, **kwa
         "totalRecords": totalRecords
     }
 
+def get_paginated_tasks_results(user, startingIndex, model, serializer, sort_by, **kwargs):
+    startingIndex = int(startingIndex) if startingIndex and startingIndex.isdigit() else 0
+    items_per_page = 50
+    start = startingIndex
+    end = startingIndex + items_per_page
+
+    queryset = model.objects.filter(user_id=user.id, **kwargs).order_by(sort_by)
+
+    totalRecords = queryset.count()
+    tasks = queryset[start:end]
+    #  status_choices = (
+        #  (1, "Postponed"),
+        #  (2, "Pendent"),
+        #  (3, "Doing"),
+        #  (4, "Done"),
+    #  )
+    order = [3, 2, 1, 4]
+    order = {key: i for i, key in enumerate(order)}
+    ordered_tasks = sorted(tasks, key=lambda item: order.get(item.status, 0))
+
+    result = serializer(ordered_tasks, many=True).data
+
+    return {
+        "result": result,
+        "totalRecords": totalRecords
+    }
+
 def reorder_group_after_delete(user, model):
     groups = model.objects.filter(user=user).order_by('order')
     index = 0

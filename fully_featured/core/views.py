@@ -1,4 +1,4 @@
-from fully_featured.core.facade import get_paginated_results, reorder_group_after_delete
+from fully_featured.core.facade import get_paginated_results, get_paginated_tasks_results, reorder_group_after_delete
 from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup
 from rest_framework import status
 from rest_framework.response import Response
@@ -43,7 +43,7 @@ def todo_get_view(request, group_id):
         serializer = ToDoSerializer
         sort_by = '-created_at'
         kwargs = {"group_id": group_id}
-        paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
+        paginated_results = get_paginated_tasks_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
             "totalRecords": paginated_results["totalRecords"]
