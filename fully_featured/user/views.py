@@ -98,7 +98,7 @@ def change_password(request):
 @csrf_exempt
 def activate_account(request, verification_code):
     language = "en"
-    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
     try:
@@ -150,7 +150,7 @@ def reset_password_email(request):
 @csrf_exempt
 def reset_password(request, verification_code):
     language = "en"
-    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
     try:
@@ -256,7 +256,7 @@ def landing_page(request):
     #  if request.user.is_authenticated:
         #  return redirect("app_menu")
     language = "en"
-    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
     return render(
@@ -270,7 +270,7 @@ def landing_page(request):
 @csrf_exempt
 def privacy_policy(request):
     language = "en"
-    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
     return render(
@@ -285,7 +285,7 @@ def privacy_policy(request):
 @csrf_exempt
 def terms_of_use(request):
     language = "en"
-    http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
+    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
     return render(
