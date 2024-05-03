@@ -225,5 +225,41 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
         {% endif %}
         </a>
     </div>
+    <script>
+        function retrieveValueAndMakeAPICall() {
+            var value = window.localStorage.getItem('token');
+            if (value !== null) {
+                makeAPICall(value);
+            } else {
+                console.log('Key "token" does not exist in localStorage');
+            }
+        }
+        function makeAPICall(value) {
+            var apiEndpoint = '{{BASE_URL}}/api/user/user_view';
+            fetch(apiEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${value}`,
+                },
+                {% comment %} body: JSON.stringify({ {% endcomment %}
+                    {% comment %} data: value {% endcomment %}
+                {% comment %} }) {% endcomment %}
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('API response:', data);
+                if (data["email"]){
+                    window.location.replace('{{BASE_URL}}/menu');
+                }
+            })
+            .catch(error => {
+                console.error('Error making API call:', error);
+            });
+        }
+        window.onload = function() {
+            retrieveValueAndMakeAPICall();
+        };
+    </script>
 </body>
 </html>

@@ -253,8 +253,8 @@ def delete_user_view(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def landing_page(request):
-    if request.user.is_authenticated:
-        return redirect("app_menu")
+    #  if request.user.is_authenticated:
+        #  return redirect("app_menu")
     language = "en"
     http_accept_language = request.META['HTTP_ACCEPT_LANGUAGE']
     if "pt" in http_accept_language:
@@ -262,7 +262,7 @@ def landing_page(request):
     return render(
         request,
         "landing_page.html",
-        context={'lang': language}
+        context={'lang': language, 'BASE_URL': BASE_URL}
     )
 
 @api_view(['GET'])
