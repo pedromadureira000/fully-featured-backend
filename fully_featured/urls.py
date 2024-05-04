@@ -8,9 +8,10 @@ from fully_featured.user.views import (
     privacy_policy,
     reset_password,
     peter_saas_root,
-    terms_of_use
+    terms_of_use,
 )
-
+from fully_featured.settings import DEBUG
+from django.shortcuts import redirect
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FLUTTER_WEB_APP = os.path.join(BASE_DIR, 'flutter_web_app')
@@ -19,19 +20,19 @@ def flutter_redirect(request, resource):
     return serve(request, resource, FLUTTER_WEB_APP)
 
 flutter_app_routes = [
-    path("login", lambda r: flutter_redirect(r, 'index.html')),
-    path("profile", lambda r: flutter_redirect(r, 'index.html')),
-    path("sign_up", lambda r: flutter_redirect(r, 'index.html')),
-    path("reset_password_email", lambda r: flutter_redirect(r, 'index.html')),
-    path("menu", lambda r: flutter_redirect(r, 'index.html'), name="app_menu"),
-    path("todo", lambda r: flutter_redirect(r, 'index.html')),
-    path("todo_create", lambda r: flutter_redirect(r, 'index.html')),
-    path("journal", lambda r: flutter_redirect(r, 'index.html')),
-    path("journal_create", lambda r: flutter_redirect(r, 'index.html')),
-    path("note", lambda r: flutter_redirect(r, 'index.html')),
-    path("note_create", lambda r: flutter_redirect(r, 'index.html')),
-    path("glossary", lambda r: flutter_redirect(r, 'index.html')),
-    path("glossary_create", lambda r: flutter_redirect(r, 'index.html')),
+    path("login", lambda r: get_app_route(r)),
+    path("profile", lambda r: get_app_route(r)),
+    path("sign_up", lambda r: get_app_route(r)),
+    path("reset_password_email", lambda r: get_app_route(r)),
+    path("menu", lambda r: get_app_route(r), name="app_menu"),
+    path("todo", lambda r: get_app_route(r)),
+    path("todo_create", lambda r: get_app_route(r)),
+    path("journal", lambda r: get_app_route(r)),
+    path("journal_create", lambda r: get_app_route(r)),
+    path("note", lambda r: get_app_route(r)),
+    path("note_create", lambda r: get_app_route(r)),
+    path("glossary", lambda r: get_app_route(r)),
+    path("glossary_create", lambda r: get_app_route(r)),
 ]
 
 urlpatterns = [
@@ -47,3 +48,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("<path:resource>", flutter_redirect),
 ]
+
+def get_app_route(r):
+    if DEBUG or r.get_host() == "app.petersaas.com":
+        return flutter_redirect(r, 'index.html')
+    return redirect("peter_saas_root")
