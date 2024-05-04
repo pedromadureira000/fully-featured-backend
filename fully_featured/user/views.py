@@ -257,15 +257,7 @@ def peter_saas_root(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    host = request.get_host()
-    if DEBUG:
-        return render(
-            request,
-            "home.html",
-            context={'lang': language, 'BASE_URL': BASE_URL}
-        )
-    else :
-        if host == "petersaas.com":
+    if DEBUG or request.get_host() == "petersaas.com":
             return render(
                 request,
                 "home.html",
@@ -281,11 +273,13 @@ def mind_organizer_landing_page(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    return render(
-        request,
-        "mind_organizer_landing_page.html",
-        context={'lang': language, 'BASE_URL': BASE_URL}
-    )
+    if DEBUG or request.get_host() == "petersaas.com":
+        return render(
+            request,
+            "mind_organizer_landing_page.html",
+            context={'lang': language, 'BASE_URL': BASE_URL}
+        )
+    return redirect("app_menu")
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
@@ -295,11 +289,13 @@ def privacy_policy(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    return render(
-        request,
-        "privacy_policy.html",
-        context={'lang': language}
-    )
+    if DEBUG or request.get_host() == "petersaas.com":
+        return render(
+            request,
+            "privacy_policy.html",
+            context={'lang': language}
+        )
+    return redirect("app_menu")
 
 
 @api_view(['GET'])
@@ -310,8 +306,10 @@ def terms_of_use(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    return render(
-        request,
-        "terms_of_use.html",
-        context={'lang': language}
-    )
+    if DEBUG or request.get_host() == "petersaas.com":
+        return render(
+            request,
+            "terms_of_use.html",
+            context={'lang': language}
+        )
+    return redirect("app_menu")
