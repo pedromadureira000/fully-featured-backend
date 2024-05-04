@@ -252,16 +252,38 @@ def delete_user_view(request):
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
-def landing_page(request):
-    #  if request.user.is_authenticated:
-        #  return redirect("app_menu")
+def peter_saas_root(request):
+    language = "en"
+    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
+    if "pt" in http_accept_language:
+        language = "pt"
+    host = request.get_host()
+    if DEBUG:
+        return render(
+            request,
+            "home.html",
+            context={'lang': language, 'BASE_URL': BASE_URL}
+        )
+    else :
+        if host == "petersaas.com":
+            return render(
+                request,
+                "home.html",
+                context={'lang': language, 'BASE_URL': BASE_URL}
+            )
+    return redirect("app_menu")
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def mind_organizer_landing_page(request):
     language = "en"
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
     return render(
         request,
-        "landing_page.html",
+        "mind_organizer_landing_page.html",
         context={'lang': language, 'BASE_URL': BASE_URL}
     )
 

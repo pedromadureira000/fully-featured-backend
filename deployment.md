@@ -262,7 +262,7 @@ sudo nvim /etc/nginx/sites-available/fully-featured
 server {
         listen 80;
         # Above is the server IP
-        server_name <your server ip or domain>;
+        server_name petersaas.com app.petersaas.com;
 
         location = /favicon.ico { access_log off; log_not_found off; }
 
@@ -524,14 +524,6 @@ sudo apt remove certbot
 sudo snap install --classic certbot
 ``
 
-## adding this (not sure if it's neeeded or not)
-``
-        location ^~ /.well-known/acme-challenge/ {
-                allow all;
-                alias /var/www/html/.well-known/acme-challenge/;
-        }
-``
-
 ## Point the A register from your domain to ec2 instance IP
 
 ## Delete any AAAA register, because certbot will try to use it instead of A @ register
@@ -539,7 +531,7 @@ sudo snap install --classic certbot
 ## Obtaining an SSL Certificate
 * run it (with nginx plugin)
 ``
-sudo certbot --nginx -d petersaas.com
+sudo certbot --nginx -d petersaas.com -d app.petersaas.com
 ``
 
 ## Verifying Certbot Auto-Renewal

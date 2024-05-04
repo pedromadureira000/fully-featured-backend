@@ -4,9 +4,10 @@ from django.views.static import serve
 import os
 from fully_featured.user.views import (
     activate_account,
+    mind_organizer_landing_page,
     privacy_policy,
     reset_password,
-    landing_page,
+    peter_saas_root,
     terms_of_use
 )
 
@@ -34,10 +35,10 @@ flutter_app_routes = [
 ]
 
 urlpatterns = [
-    path("", landing_page, name="landing_page"),
+    path("", peter_saas_root, name="peter_saas_root"),
+    path("mind-organizer", mind_organizer_landing_page, name="mind_organizer_landing_page"),
     path("privacy_policy", privacy_policy, name="privacy_policy"),
     path("terms_of_use", terms_of_use, name="terms_of_use"),
-    #  path("", lambda r: flutter_redirect(r, 'index.html')),
     *flutter_app_routes,
     path("activate_account/<str:verification_code>", activate_account, name="activate_account"),
     path("reset_password/<str:verification_code>", reset_password, name="reset_password"),
