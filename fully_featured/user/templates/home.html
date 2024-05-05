@@ -212,7 +212,7 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
             </div>
         </div>
         <div class="button-container">
-            <div class="button" onclick="window.location='https://app.petersaas.com/sign_up';">
+            <div class="button" onclick="window.location='{{BASE_URL}}/sign_up';">
                 <p>
                     {% if lang == "pt" %}
                         Iniciar teste gratuito de 30 dias
@@ -249,14 +249,14 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
         </div>
     </div>
     <div class="center-links">
-        <a href="https://app.petersaas.com/privacy_policy">
+        <a href="https://petersaas.com/privacy_policy">
         {% if lang == "pt" %}
             Políticas de privacidade
         {% else %}
             Privacy Policy
         {% endif %}
         </a>
-        <a href="https://app.petersaas.com/terms_of_use">
+        <a href="https://petersaas.com/terms_of_use">
         {% if lang == "pt" %}
             Termos de uso
         {% else %}
