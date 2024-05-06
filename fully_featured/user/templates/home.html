@@ -12,59 +12,83 @@
             margin: 0;
             padding: 0;
             background-color: #000;
+            overflow-x: hidden;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 3px auto;
             padding: 1px 20px;
-            {% comment %} background-color: #181414; // dark red{% endcomment %}
-            {% comment %} background-color: #141518; //dark-blue {% endcomment %}
-            {% comment %} background-color: #1d1f24; //dark-blue-brighter{% endcomment %}
-            {% comment %} background-color: #3e4147; {% endcomment %}
-            background-color: #2f3033;
+            background-color: #070F2B; // color1
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+        }
+        /* Media query for smaller screens */
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%; /* Set maximum width to 100% on smaller screens */
+                background-color: #070F2B; // color1
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
         }
         h1 {
             color: #abb2bf;
         }
         h2 {
             color: #abb2bf;
-            {% comment %} margin-bottom: 20px; {% endcomment %}
         }
         h3 {
             color: #abb2bf;
         }
         p {
             color: #abb2bf;
-            margin-bottom: 20px;
+            margin: 0px;
         }
         .features {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
         }
         .feature {
             flex: 1;
             padding: 3px;
             border-radius: 5px;
-            background-color: #42474f;
+            background-color: #1B1A55; //color2
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             margin: 0 10px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .feature {
+                flex: 1;
+                width: 100%;
+                padding: 3px;
+                border-radius: 5px;
+                background-color: #1B1A55; //color2
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                margin: 0 10px;
+            }
         }
         .feature h2 {
             color: #abb2bf;
         }
+
+        .feature p {
+            padding-bottom: 20px;
+        }
         .button-container {
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
         .button {
+            cursor: pointer;
             display: inline-block;
-            background-color: #5c6169;
-            {% comment %} background-color: #5e5e5e; {% endcomment %}
+            background-color: #535C91; // color3;
             padding: 5px 10px;
             border-radius: 5px;
             text-decoration: none;
@@ -72,7 +96,7 @@
             font-size: 18px;
         }
         .button p {
-            color: #181414
+            color: #d3d9e3; // color5
         }
         .button + .button {
             margin-left: 20px; /* Adjust the padding between buttons here */
@@ -86,41 +110,54 @@
             margin-bottom: 20px;
         }
         .contact-links {
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             padding: 10px 20px;
+        }
+        a { color: #9290C3; }
+        a:link { color: #9290C3; }
+        a:visited { color: #6d4b8d; }
+        a:hover { color: #fff; }
+        a:active {
+            color: #9290C3; text-decoration:none; font-weight:normal; 
+            !important;
         }
     </style>
 </head>
 <body>
     <div class="container" id="app">
-        <h1>Peter Saas</h1>
-        <p>
+        <img
+            src="{% static 'petersaas_fixed.png' %}"
+            alt="Company Logo"
+            width="240"
+        >
+
+        <h1 style="display:none;">Peter Saas</h1>
+
         {% if lang == "pt" %}
-Como empreendedor individual, estou comprometido em desenvolver soluções personalizadas que atendam às suas necessidades particulares. Se você é uma startup buscando construir sua identidade ou uma empresa consolidada em busca de otimizar suas operações, estou aqui para ajudar você a prosperar no ambiente digital.
-
-Ofereço sistemas para web e aplicativos móveis, sempre buscando incorporar as últimas inovações em inteligência artificial em meus produtos.
-
-Acredito na construção de parcerias sólidas e duradouras com meus clientes, oferecendo suporte e colaboração contínuos em todas as etapas do processo.
-
-Pronto para dar o primeiro passo rumo ao sucesso? Vamos conversar!
-        {% else %}
-As a solo entrepreneur, I am committed to developing customized solutions that meet your particular needs. Whether you are a startup looking to build your identity or an established company looking to optimize your operations, I am here to help you thrive in the digital environment.
-
-I offer systems for web and mobile applications, always seeking to incorporate the latest innovations in artificial intelligence into my products.
-
-I believe in building strong, lasting partnerships with my clients, offering ongoing support and collaboration at every stage of the process.
-
-Ready to take the first step towards success? Let's talk!
-        {% endif %}
-        </p>
         <h2>
-            {% if lang == "pt" %}
-                Entre em contato
-            {% else %}
-                Contact
-            {% endif %}
-        </h2>
+            Alcance seus objetivos com soluções sob medida para o seu negócio!
+        </h2></br>
+        <p>
+            Seja você uma startup em ascensão ou uma empresa experiente, meu foco é impulsionar </br>o seu crescimento através de sistemas web e aplicativos móveis personalizados.
+        </p></br>
+        <p>
+            Agende uma consulta gratuita e vamos juntos traçar o caminho para o seu sucesso!
+        </p></br>
+
+        {% else %}
+        <h2>
+            Reach your goals with solutions tailored to your business!
+        </h2></br>
+        <p>
+            Whether you are a rising startup or an experienced company, my focus is to drive</br>your growth through custom web systems and mobile applications.
+        </p></br>
+        <p>
+            Schedule a free consultation and let’s chart the path to your success together!
+        </p></br>
+        {% endif %}
+
         <div class="contact-links">
             <div class="button" onclick="window.location='https://wa.link/ouz6vl';">
                 <p>
@@ -134,13 +171,84 @@ Ready to take the first step towards success? Let's talk!
             </div>
         </div>
 
-        <h2>Mind Organizer</h2>
+        <h2>
+            {% if lang == "pt" %}
+                Vantagens
+            {% else %}
+                Benefits
+            {% endif %}
+        </h2>
+
+        <div class="features">
+            <div class="feature">
+                <h3>
+                    {% if lang == "pt" %}
+                        Soluções sob medida
+                    {% else %}
+                        Tailor-made solutions
+                    {% endif %}
+                </h3>
+                <p>
+                    {% if lang == "pt" %}
+                        Atendo às suas necessidades específicas, garantindo um produto único e eficaz.
+                    {% else %}
+                        I meet your specific needs, ensuring a unique and effective product.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="feature">
+                <h3>
+                    {% if lang == "pt" %}
+                        Integração de IA
+                    {% else %}
+                        AI Integration
+                    {% endif %}
+                </h3>
+                <p>
+                    {% if lang == "pt" %}
+                        Utilizo as últimas inovações tecnológicas para oferecer produtos inteligentes e eficientes.
+                    {% else %}
+                        I use the latest technological innovations to offer smart and efficient products.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="feature">
+                <h3>
+                    {% if lang == "pt" %}
+                        Parcerias duradouras
+                    {% else %}
+                        Lasting partnerships
+                    {% endif %}
+                </h3>
+                <p>
+                    {% if lang == "pt" %}
+                        Ofereço suporte e colaboração contínuos, construindo relacionamentos de longo prazo.
+                    {% else %}
+                        I offer ongoing support and collaboration, building long-term relationships.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+
+        <h2>
+            {% if lang == "pt" %}
+                Aplicativos desenvolvidos
+            {% else %}
+                Developed applications 
+            {% endif %}
+        </h2>
+
+
+        <h3>
+            <u>Mind Organizer</u>
+        </h3>
 
         <p>
         {% if lang == "pt" %}
-Transforme sua organização pessoal com o Mind-Organizer. Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário, tudo em uma plataforma simples e intuitiva.
+            Transforme sua organização pessoal com o Mind-Organizer. </br>Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário,</br> tudo em uma plataforma simples e intuitiva.
         {% else %}
-Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
+            Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
         {% endif %}
         </p>
 
@@ -243,6 +351,26 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                         {% comment %} (Estou trabalhando para publicá-lo no Google Play. Por enquanto, você pode baixá-lo e instalá-lo diretamente) {% endcomment %}
                         (Available soon)
                     {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <h2>
+            {% if lang == "pt" %}
+                Entre em contato
+            {% else %}
+                Contact
+            {% endif %}
+        </h2>
+        <div class="contact-links">
+            <div class="button" onclick="window.location='https://wa.link/ouz6vl';">
+                <p>
+                    Whatsapp
+                </p>
+            </div>
+            <div class="button" onclick="window.location='mailto:pedrohvmadureira@gmail.com';">
+                <p>
+                    pedrohvmadureira@gmail.com
                 </p>
             </div>
         </div>
