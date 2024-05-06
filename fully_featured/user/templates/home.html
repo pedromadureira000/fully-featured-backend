@@ -4,18 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <title>Peter Saas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #fff;
+            background-color: #000;
         }
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 3px auto;
-            padding: 20px;
+            padding: 1px 20px;
             {% comment %} background-color: #181414; // dark red{% endcomment %}
             {% comment %} background-color: #141518; //dark-blue {% endcomment %}
             {% comment %} background-color: #1d1f24; //dark-blue-brighter{% endcomment %}
@@ -27,7 +28,13 @@
         }
         h1 {
             color: #abb2bf;
-            margin-bottom: 20px;
+        }
+        h2 {
+            color: #abb2bf;
+            {% comment %} margin-bottom: 20px; {% endcomment %}
+        }
+        h3 {
+            color: #abb2bf;
         }
         p {
             color: #abb2bf;
@@ -90,49 +97,41 @@
         <h1>Peter Saas</h1>
         <p>
         {% if lang == "pt" %}
-🚀 Bem-vindo ao Peter Saas! 🚀
+Como empreendedor individual, estou comprometido em desenvolver soluções personalizadas que atendam às suas necessidades particulares. Se você é uma startup buscando construir sua identidade ou uma empresa consolidada em busca de otimizar suas operações, estou aqui para ajudar você a prosperar no ambiente digital.
 
-Você está pronto para transformar suas ideias em realidades digitais inovadoras? Olá, sou Peter Henry e tenho a missão de capacitar empresas como a sua com aplicativos da web e aplicativos móveis de última geração.
+Ofereço sistemas para web e aplicativos móveis, sempre buscando incorporar as últimas inovações em inteligência artificial em meus produtos.
 
-Como empreendedor individual, apaixonado por tecnologia e com talento para resolver problemas, dediquei-me a criar soluções sob medida que atendam às suas necessidades exclusivas. Quer você seja uma startup que busca deixar sua marca ou uma empresa estabelecida que busca agilizar suas operações, estou aqui para ajudá-lo a prosperar no cenário digital.
+Acredito na construção de parcerias sólidas e duradouras com meus clientes, oferecendo suporte e colaboração contínuos em todas as etapas do processo.
 
-Com um olhar aguçado para o design e um compromisso com a excelência, especializo-me no desenvolvimento de software fácil de usar, escalável e seguro que gera resultados. Desde plataformas web intuitivas até experiências móveis perfeitas, aproveito as ferramentas e tecnologias mais recentes para dar vida à sua visão.
-
-Mas meu papel não termina na entrega. Acredito na construção de parcerias duradouras com meus clientes, oferecendo suporte e colaboração contínuos em cada etapa do processo. Seu sucesso é o meu sucesso e, juntos, navegaremos no cenário tecnológico em constante evolução para garantir que você fique à frente da curva.
-
-Então, quer você esteja sonhando com um aplicativo revolucionário ou buscando otimizar sua presença online, vamos embarcar nessa jornada juntos. Entre em contato hoje mesmo e vamos transformar suas ideias em realidade!
-
-Pronto para dar o primeiro passo? Vamos conversar!
+Pronto para dar o primeiro passo rumo ao sucesso? Vamos conversar!
         {% else %}
-🚀 Welcome to Peter Saas! 🚀
+As a solo entrepreneur, I am committed to developing customized solutions that meet your particular needs. Whether you are a startup looking to build your identity or an established company looking to optimize your operations, I am here to help you thrive in the digital environment.
 
-Are you ready to transform your ideas into innovative digital realities? Hi, I'm Peter Henry, and I'm on a mission to empower businesses like yours with cutting-edge web applications and mobile apps.
+I offer systems for web and mobile applications, always seeking to incorporate the latest innovations in artificial intelligence into my products.
 
-As a solo-entrepreneur with a passion for technology and a knack for problem-solving, I've dedicated myself to crafting bespoke solutions that cater to your unique needs. Whether you're a startup looking to make your mark or an established enterprise seeking to streamline your operations, I'm here to help you thrive in the digital landscape.
+I believe in building strong, lasting partnerships with my clients, offering ongoing support and collaboration at every stage of the process.
 
-With a keen eye for design and a commitment to excellence, I specialize in developing user-friendly, scalable, and secure software that drives results. From intuitive web platforms to seamless mobile experiences, I leverage the latest tools and technologies to bring your vision to life.
-
-But my role doesn't end with delivery. I believe in building lasting partnerships with my clients, offering ongoing support and collaboration every step of the way. Your success is my success, and together, we'll navigate the ever-evolving tech landscape to ensure you stay ahead of the curve.
-
-So, whether you're dreaming of a game-changing app or seeking to optimize your online presence, let's embark on this journey together. Get in touch today, and let's turn your ideas into reality!
-
-Ready to take the first step? Let's chat!
+Ready to take the first step towards success? Let's talk!
         {% endif %}
         </p>
         <h2>
             {% if lang == "pt" %}
                 Entre em contato
             {% else %}
-                Contacting Us
+                Contact
             {% endif %}
         </h2>
         <div class="contact-links">
-            <a href="https://wa.link/ouz6vl">
-                Whatsapp
-            </a>
-            <a href="mailto:pedrohvmadureira@gmail.com">
-                pedrohvmadureira@gmail.com
-            </a>
+            <div class="button" onclick="window.location='https://wa.link/ouz6vl';">
+                <p>
+                    Whatsapp
+                </p>
+            </div>
+            <div class="button" onclick="window.location='mailto:pedrohvmadureira@gmail.com';">
+                <p>
+                    pedrohvmadureira@gmail.com
+                </p>
+            </div>
         </div>
 
         <h2>Mind Organizer</h2>
@@ -247,22 +246,23 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                 </p>
             </div>
         </div>
-    </div>
-    <div class="center-links">
-        <a href="https://petersaas.com/privacy_policy">
-        {% if lang == "pt" %}
-            Políticas de privacidade
-        {% else %}
-            Privacy Policy
-        {% endif %}
-        </a>
-        <a href="https://petersaas.com/terms_of_use">
-        {% if lang == "pt" %}
-            Termos de uso
-        {% else %}
-            Terms of use
-        {% endif %}
-        </a>
+
+        <div class="center-links">
+            <a href="https://petersaas.com/privacy_policy">
+            {% if lang == "pt" %}
+                Políticas de privacidade
+            {% else %}
+                Privacy Policy
+            {% endif %}
+            </a>
+            <a href="https://petersaas.com/terms_of_use">
+            {% if lang == "pt" %}
+                Termos de uso
+            {% else %}
+                Terms of use
+            {% endif %}
+            </a>
+        </div>
     </div>
 </body>
 </html>
