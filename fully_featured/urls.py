@@ -50,6 +50,6 @@ urlpatterns = [
 ]
 
 def get_app_route(r):
-    if DEBUG or r.get_host() == "app.petersaas.com":
+    if DEBUG or r.get_host() == "app.petersoftwarehouse.com":
         return flutter_redirect(r, 'index.html')
     return redirect("peter_saas_root")

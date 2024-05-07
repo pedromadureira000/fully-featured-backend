@@ -262,7 +262,7 @@ sudo nvim /etc/nginx/sites-available/fully-featured
 server {
         listen 80;
         # Above is the server IP
-        server_name petersaas.com app.petersaas.com;
+        server_name petersoftwarehouse.com app.petersoftwarehouse.com;
 
         location = /favicon.ico { access_log off; log_not_found off; }
 
@@ -531,7 +531,7 @@ sudo snap install --classic certbot
 ## Obtaining an SSL Certificate
 * run it (with nginx plugin)
 ``
-sudo certbot --nginx -d petersaas.com -d app.petersaas.com
+sudo certbot --nginx -d petersoftwarehouse.com -d app.petersoftwarehouse.com
 ``
 
 ## Verifying Certbot Auto-Renewal

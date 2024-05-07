@@ -257,7 +257,7 @@ def peter_saas_root(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    if DEBUG or request.get_host() == "petersaas.com":
+    if DEBUG or request.get_host() == "petersoftwarehouse.com":
             return render(
                 request,
                 "home.html",
@@ -273,7 +273,7 @@ def mind_organizer_landing_page(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    if DEBUG or request.get_host() == "petersaas.com":
+    if DEBUG or request.get_host() == "petersoftwarehouse.com":
         return render(
             request,
             "mind_organizer_landing_page.html",
@@ -289,7 +289,7 @@ def privacy_policy(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    if DEBUG or request.get_host() == "petersaas.com":
+    if DEBUG or request.get_host() == "petersoftwarehouse.com":
         return render(
             request,
             "privacy_policy.html",
@@ -306,7 +306,7 @@ def terms_of_use(request):
     http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
     if "pt" in http_accept_language:
         language = "pt"
-    if DEBUG or request.get_host() == "petersaas.com":
+    if DEBUG or request.get_host() == "petersoftwarehouse.com":
         return render(
             request,
             "terms_of_use.html",
