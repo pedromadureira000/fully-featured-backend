@@ -139,16 +139,30 @@
             font-weight: normal;
             font-size: 25px;
         }
+        .biger-box {
+            display: flex;
+            justify-content: center;
+        }
+        .text-box {
+            border: 2px solid white; /* White border */
+            padding: 10px; /* Padding inside the box */
+            margin: 20px; /* Margin around the box */
+            width: 300px;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="app">
         {% comment %} <img {% endcomment %}
-            {% comment %} src="{% static 'logo.jpg' %}" {% endcomment %}
+            {% comment %} src="{% static 'logo.png' %}" {% endcomment %}
             {% comment %} alt="Company Logo" {% endcomment %}
             {% comment %} width="170" {% endcomment %}
         {% comment %} > {% endcomment %}
-        <h1 class="title">Peter Software House</h1> 
+        <div class="biger-box">
+            <div class="text-box">
+                <h1 class="title">Peter Software House</h1>
+            </div>
+        </div>
 
         {% if lang == "pt" %}
         <h2 class="sub-title">
