@@ -15,10 +15,9 @@ CSRF_TRUSTED_ORIGINS=http://localhost:3000
 SENTRY_DSN=
 
 #---------SMTP mailgun
-EMAIL_BACKEND=anymail.backends.mailgun.EmailBackend
+EMAIL_BACKEND="anymail.backends.brevo.EmailBackend"
 DEFAULT_FROM_EMAIL=
 SERVER_EMAIL=
-MAILGUN_API_KEY=
-MAILGUN_SENDER_DOMAIN=
+BREVO_API_KEY=
 
-FROM_EMAIL="Mailgun Sandbox <postmaster@sandboxa3124ed5bfe242c69aec66978f252bf2.mailgun.org>"
+FROM_EMAIL="No Reply <no-reply@petersoftwarehouse.com>"

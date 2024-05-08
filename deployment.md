@@ -550,7 +550,7 @@ Next steps
 - Email > Email routing
 * create account on brevo to send emails from no-reply@domain.com 
 It could also be mailjet, mailgun, sendgrid or aws SES
-[Cloudflare Email Setup (Free Professional Custom Email Setup)](https://youtu.be/nNGcvz1Sc_8?si=r0v3u-_qe3aIwtxw)
+- follow this tutorial [Cloudflare Email Setup (Free Professional Custom Email Setup)](https://youtu.be/nNGcvz1Sc_8?si=r0v3u-_qe3aIwtxw)
 - validate domain
 - create smtp keys
 - add no-reply@domain.com att gmail account 'send mail as' option: smtp_key is the password to authentication and the username appears on brevo SMTP panel .
