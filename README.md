@@ -87,3 +87,18 @@ curl -X POST -d '
     }
     ' -H "Content-Type: application/json;" -H "Authorization: Token <token>" http://127.0.0.1:8000/todo_view
 ``
+
+Nice Commands
+================
+## make backup
+`
+docker exec -t <container_name_or_id> pg_dump -U <username> <database_name> > /path/to/backup_file.sql
+sudo docker exec -t fully_featured_db pg_dump -U admin_ph fully_featured > ~/backup_file.sql
+`
+
+## restore it
+* delete local database, and create again. (if want to reset it)
+`
+cat backup_file.sql | docker exec -i <container_name_or_id> psql -U <username> -d <database_name>
+cat backup_file.sql | docker exec -i fully_featured_db psql -U admin_ph -d fully_featured
+`
