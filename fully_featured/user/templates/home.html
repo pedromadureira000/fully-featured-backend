@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
-    <title>Peter Saas</title>
+    <title>Peter Software House</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,7 +19,7 @@
             max-width: 900px;
             margin: 3px auto;
             padding: 1px 20px;
-            background-color: #070F2B; // color1
+            background-color: #070F2B; /* color1 */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -28,7 +28,7 @@
         @media screen and (max-width: 600px) {
             .container {
                 width: 100%; /* Set maximum width to 100% on smaller screens */
-                background-color: #070F2B; // color1
+                background-color: #070F2B; /* color1 */
                 border-radius: 5px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 text-align: center;
@@ -57,7 +57,7 @@
             flex: 1;
             padding: 3px;
             border-radius: 5px;
-            background-color: #1B1A55; //color2
+            background-color: #1B1A55; /* color2 */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             margin: 0 10px;
         }
@@ -68,7 +68,7 @@
                 width: 100%;
                 padding: 3px;
                 border-radius: 5px;
-                background-color: #1B1A55; //color2
+                background-color: #1B1A55; /* color2 */
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
                 margin: 0 10px;
             }
@@ -89,7 +89,7 @@
         .button {
             cursor: pointer;
             display: inline-block;
-            background-color: #535C91; // color3;
+            background-color: #535C91; /* color3 */
             padding: 5px 10px;
             border-radius: 5px;
             text-decoration: none;
@@ -97,7 +97,7 @@
             font-size: 18px;
         }
         .button p {
-            color: #d3d9e3; // color5
+            color: #d3d9e3; /* color5 */
         }
         .button + .button {
             margin-left: 20px; /* Adjust the padding between buttons here */
@@ -149,15 +149,13 @@
             margin: 20px; /* Margin around the box */
             width: 300px;
         }
+        .video-container {
+            padding: 30px 0px;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="app">
-        {% comment %} <img {% endcomment %}
-            {% comment %} src="{% static 'logo.png' %}" {% endcomment %}
-            {% comment %} alt="Company Logo" {% endcomment %}
-            {% comment %} width="170" {% endcomment %}
-        {% comment %} > {% endcomment %}
         <div class="biger-box">
             <div class="text-box">
                 <h1 class="title">Peter Software House</h1>
@@ -259,6 +257,9 @@
             </div>
         </div>
 
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
 
         <h2>
             {% if lang == "pt" %}
