@@ -102,3 +102,7 @@ sudo docker exec -t fully_featured_db pg_dump -U admin_ph fully_featured > ~/bac
 cat backup_file.sql | docker exec -i <container_name_or_id> psql -U <username> -d <database_name>
 cat backup_file.sql | docker exec -i fully_featured_db psql -U admin_ph -d fully_featured
 `
+* restore it from server requires a sudo before docker cmd
+`
+cat backup_file.sql | sudo docker exec -i fully_featured_db  psql -U admin_ph -d fully_featured
+`

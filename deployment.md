@@ -23,9 +23,7 @@ sudo apt install python3-pip python3-dev libpq-dev
 
 # Install other stuff
 ``
-sudo apt install make
-sudo apt install nginx curl neovim
-sudo apt install unzip
+sudo apt install make nginx curl neovim unzip
 ``
 
 # Confirm GCC version:
@@ -33,10 +31,13 @@ sudo apt install unzip
 gcc --version
 ``
 
-# Install Python 3 (if needed) and venv(whatever version is the one the system is using)
+<!-- # Install Python 3 (if needed) and  -->
+<!-- `` -->
+<!-- sudo apt install python3.11 python3.11-venv -->
+<!-- `` -->
+# install venv pacakge(whatever version is the one the system is using)
 ``
-sudo apt install python3.11 python3.11-venv
-apt install python3.12-venv
+sudo apt install python3.12-venv
 ``
 
 # Install docker and postgres client
@@ -45,8 +46,6 @@ sudo apt install docker.io docker-compose postgresql-client-common postgresql-cl
 ``
 
 # Configure git
-* Fork the project add the ssh public key to your github account.
-_need to do it twice. Once for frontend and another for backend (since deploy key must be unique)_
 ``
 git config --global user.name "PedroS3"
 git config --global user.email "ph.websolucoes@gmail.com"
@@ -73,19 +72,8 @@ ssh -T git@github.com
 
 # Clone the project
 ``
-git clone git@github.com:pedromadureira000/fully-featured.git
 git clone git@github.com:pedromadureira000/fully-featured-backend.git
 ``
-
-# more git commands
-* git pull => 'here is no tracking information for the current branch.'
-`
-git remote -v
-git remote set-url origin git@github.com:pedromadureira000/fully-featured-backend.git
-git remote add origin git@github.com:pedromadureira000/fully-featured-backend.git
-git branch --set-upstream-to=origin/main main
-`
-
 
 # Other configs
 ``
@@ -121,7 +109,7 @@ You must run this in the same folder where the 'docker-compose.yml' file is.
 ``
 DOCKER_CONFIG=${DOCKER_CONFIG:-/usr/local/lib/docker}
 sudo mkdir -p $DOCKER_CONFIG/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
 ``
 
 * Apply executable permissions to the binary:
@@ -352,16 +340,13 @@ frontend make build
 cd fully-featured-backend/flutter_web_app/
 rm -rf *
 ``
-* send build
+* send build (make sure the folder flutter_web_app already exists)
 ``
 scp -i ~/.ssh/zap_ass.pem ~/Projects/fully-featured/flutter_web_build/web_build.zip ubuntu@54.87.198.44:/home/ubuntu/fully-featured-backend/flutter_web_app
 ``
 * unzip
 ``
-unzip web_build.zip
-mv home/ph/Projects/fully-featured/build/web/* .
-mv home/ph/Projects/fully-featured/build/web/.last_build_id .
-rm -rf home web_build.zip
+./unzip_web_build_on_server.sh
 ``
 
 
@@ -554,3 +539,7 @@ It could also be mailjet, mailgun, sendgrid or aws SES
 - validate domain
 - create smtp keys
 - add no-reply@domain.com att gmail account 'send mail as' option: smtp_key is the password to authentication and the username appears on brevo SMTP panel .
+
+Important observations 🚨⚠️📢❗
+================
+*  When you stop/start your instance, the IP address will change. If you reboot the instance, it will keep the same IP addresses.
