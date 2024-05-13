@@ -93,6 +93,11 @@ class JournalSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'text', 'created_at', 'group']
         read_only_fields = ['id', 'user_id', 'created_at']
 
+    def validate_text(self, value):
+        if len(value) >= 10_000:
+            raise serializers.ValidationError("The field 'text' cannot have more than 10000 characters.")
+        return value
+
     def update(self, instance, validated_data):
         if validated_data["group"] != instance.group_id:
             validated_data["created_at"] = datetime.now()
@@ -143,6 +148,16 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'title', 'text', 'group']
         read_only_fields = ['id', 'user_id']
 
+    def validate_title(self, value):
+        if len(value) >= 1000:
+            raise serializers.ValidationError("The field 'title' cannot have more than 10000 characters.")
+        return value
+
+    def validate_text(self, value):
+        if len(value) >= 10_000:
+            raise serializers.ValidationError("The field 'text' cannot have more than 10000 characters.")
+        return value
+
     def update(self, instance, validated_data):
         if validated_data["group"] != instance.group_id:
             validated_data["created_at"] = datetime.now()
@@ -192,6 +207,16 @@ class TermSerializer(serializers.ModelSerializer):
         model = Term
         fields = ['id', 'user_id', 'term', 'definition', 'group']
         read_only_fields = ['id', 'user_id']
+
+    def validate_term(self, value):
+        if len(value) >= 1000:
+            raise serializers.ValidationError("The field 'title' cannot have more than 10000 characters.")
+        return value
+
+    def validate_definition(self, value):
+        if len(value) >= 10_000:
+            raise serializers.ValidationError("The field 'definition' cannot have more than 10000 characters.")
+        return value
 
     def update(self, instance, validated_data):
         if validated_data["group"] != instance.group_id:
