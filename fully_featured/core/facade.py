@@ -5,24 +5,13 @@ from fully_featured.settings import BASE_URL, FROM_EMAIL
 from django.db.models import F
 
 
-def send_account_confirmation_email__(email, auth_token):
-    subject = "Please activate your account"
-    from_email = FROM_EMAIL
-    to = email
+def send_account_confirmation_email(email, auth_token, lang):
     activate_url =  f"{BASE_URL}/activate_account/{auth_token}"
-    html_content = f'<p><b>Please</b> <a href="{activate_url}">activate</a> your account</p>'
-    msg = EmailMessage(subject, html_content, from_email, [to])
-    msg.content_subtype = "html"  # Main content is now text/html
-    msg.send()
-
-    #  send_mail("It works!", f"Click to activate your account: {activate_url}",
-              # from_email, [email])
-
-def send_account_confirmation_email(email, auth_token):
-    activate_url =  f"{BASE_URL}/activate_account/{auth_token}"
+    subject = "Por favor, ative sua conta" if lang == "pt" else "Please, activate your account"
+    body = f"Clique para ativar sua conta: {activate_url}" if lang == "pt" else f"Click to activate your account: {activate_url}"
     msg = EmailMultiAlternatives(
-        subject="Please activate your account",
-        body=f"Click to activate your account: {activate_url}",
+        subject=subject,
+        body=body,
         from_email = FROM_EMAIL,
         to=[email],
     )
@@ -30,7 +19,7 @@ def send_account_confirmation_email(email, auth_token):
     #  html = """<img alt="Logo" src="cid:{logo_cid}">
               #  <p>Please <a href="https://example.com/activate">activate</a>
               #  your account</p>""".format(logo_cid=logo_cid)
-    html = f'<p>Please activate your account by clicking on this link {activate_url}</p>' 
+    html = f'<p>Ative sua conta clicando neste link {activate_url}</p>' if lang == "pt" else f'<p>Please activate your account by clicking on this link {activate_url}</p>' 
     # TODO fix the html link block. useh ssl and my own domain
     #  html = f'<p><b>Please</b> <a href="{activate_url}">activate</a>your account</p>'
     msg.attach_alternative(html, "text/html")

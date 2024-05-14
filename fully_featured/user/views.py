@@ -65,7 +65,11 @@ def sign_up(request):
         if serializer.is_valid():
             with transaction.atomic():
                 instance = serializer.save()
-                send_account_confirmation_email(instance.email, instance.auth_token.key)
+                language = "en"
+                http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
+                if "pt" in http_accept_language:
+                    language = "pt"
+                send_account_confirmation_email(instance.email, instance.auth_token.key, language)
             return Response({"success": "user created. Pls confirm email."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
@@ -113,10 +117,6 @@ def activate_account(request, verification_code):
             "failed_account_verification.html",
             context={'lang': language}
         )
-    #  try:
-        #  send_account_verified_with_success_email(user.email)
-    #  except Exception as er:
-        #  print(f"{er}")
     login_url = f"{BASE_URL}/login"
     return render(
         request,
@@ -136,7 +136,11 @@ def reset_password_email(request):
             user = UserModel.objects.get(email=email)
         except UserModel.DoesNotExist:
             return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        send_reset_user_password_email(user.email, user.auth_token.key)
+        language = "en"
+        http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
+        if "pt" in http_accept_language:
+            language = "pt"
+        send_reset_user_password_email(user.email, user.auth_token.key, language)
         return Response(status=status.HTTP_200_OK)
     except Exception as er:
         sentry_sdk.capture_exception(er)
@@ -228,7 +232,6 @@ def get_or_create_account_with_google(request):
         serializer = GoogleUserSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             instance = serializer.save()
-            #  send_account_confirmation_email(instance.email, instance.auth_token.key)
             return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
