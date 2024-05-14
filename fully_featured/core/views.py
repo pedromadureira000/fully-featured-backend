@@ -39,10 +39,11 @@ def test_view(request):
 def todo_get_view(request, group_id):
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
+        statusFilter = request.GET.get("status")
         model = ToDo
         serializer = ToDoSerializer
         sort_by = '-created_at'
-        kwargs = {"group_id": group_id}
+        kwargs = {"group_id": group_id, "status": statusFilter} if statusFilter else {"group_id": group_id}
         paginated_results = get_paginated_tasks_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
