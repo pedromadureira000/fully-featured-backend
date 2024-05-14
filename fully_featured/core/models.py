@@ -17,6 +17,12 @@ class ToDo(Base):
         (3, "Doing"),
         (4, "Done"),
     )
+    priority_choices = (
+        (1, "Urgent"),
+        (2, "High"),
+        (3, "Normal"),
+        (4, "Low"),
+    )
 
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todos")
     title = models.CharField("Title", max_length=135)
@@ -24,6 +30,7 @@ class ToDo(Base):
     completed = models.BooleanField(default=False)
     group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT, related_name="group_records")
     status = models.IntegerField(choices=status_choices, default=2)
+    priority = models.IntegerField(choices=priority_choices, default=3)
     due_date = models.DateTimeField("Due date", blank=True, null=True)
     done_date = models.DateTimeField("Done date", blank=True, null=True)
 

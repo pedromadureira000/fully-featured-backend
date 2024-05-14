@@ -57,13 +57,14 @@ def get_paginated_tasks_results(user, startingIndex, model, serializer, sort_by,
         #  (3, "Doing"),
         #  (4, "Done"),
     #  )
-    if "status" in kwargs:
-        result = serializer(tasks, many=True).data
-    else:
-        order = [3, 2, 1, 4]
-        order = {key: i for i, key in enumerate(order)}
-        ordered_tasks = sorted(tasks, key=lambda item: order.get(item.status, 0))
-        result = serializer(ordered_tasks, many=True).data
+    result = serializer(tasks, many=True).data
+    #  if "status" in kwargs:  XXX ORdering stuff
+        #  result = serializer(tasks, many=True).data
+    #  else:
+        #  order = [3, 2, 1, 4]
+        #  order = {key: i for i, key in enumerate(order)}
+        #  ordered_tasks = sorted(tasks, key=lambda item: order.get(item.status, 0))
+        #  result = serializer(ordered_tasks, many=True).data
 
     return {
         "result": result,

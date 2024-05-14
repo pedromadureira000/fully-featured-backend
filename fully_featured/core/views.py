@@ -40,10 +40,15 @@ def todo_get_view(request, group_id):
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
         statusFilter = request.GET.get("status")
+        priorityFilter = request.GET.get("priority")
         model = ToDo
         serializer = ToDoSerializer
         sort_by = '-created_at'
-        kwargs = {"group_id": group_id, "status": statusFilter} if statusFilter else {"group_id": group_id}
+        kwargs = {"group_id": group_id}
+        if statusFilter:
+            kwargs["status"] = statusFilter
+        if priorityFilter:
+            kwargs["priority"] = priorityFilter
         paginated_results = get_paginated_tasks_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
@@ -183,10 +188,13 @@ def todo_group_view(request):
 def journal_get_view(request, group_id):
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
+        tagFilter = request.GET.get("tag")
         model = Journal
         serializer = JournalSerializer
         sort_by = '-created_at'
         kwargs = {"group_id": group_id}
+        if tagFilter:
+            kwargs["tag"] = tagFilter
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
@@ -324,10 +332,13 @@ def journal_group_view(request):
 def note_get_view(request, group_id):
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
+        tagFilter = request.GET.get("tag")
         model = Note
         serializer = NoteSerializer
         sort_by = '-created_at'
         kwargs = {"group_id": group_id}
+        if tagFilter:
+            kwargs["tag"] = tagFilter
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],
@@ -465,10 +476,13 @@ def note_group_view(request):
 def glossary_get_view(request, group_id):
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
+        tagFilter = request.GET.get("tag")
         model = Term
         serializer = TermSerializer
         sort_by = '-created_at'
         kwargs = {"group_id": group_id}
+        if tagFilter:
+            kwargs["tag"] = tagFilter
         paginated_results = get_paginated_results(request.user, startingIndex, model, serializer, sort_by, **kwargs)
         return Response({
             "result": paginated_results["result"],

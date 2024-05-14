@@ -32,10 +32,11 @@ class ToDoSerializer(serializers.ModelSerializer):
     #  ordered_items = OrderedItemPOSTSerializer(many=True)
 
     status = serializers.ChoiceField(choices=[x[0] for x in ToDo.status_choices], required=False)
+    priority = serializers.ChoiceField(choices=[x[0] for x in ToDo.priority_choices], required=False)
 
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'due_date', 'created_at', 'done_date']
+        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'priority','due_date', 'created_at', 'done_date']
         read_only_fields = ['id', 'user_id', 'created_at', 'done_date']
 
     def update(self, instance, validated_data):
