@@ -59,6 +59,7 @@ class Note(Base):
     title = models.TextField("Title")
     text = models.TextField("Text")
     group = models.ForeignKey("NoteGroup", on_delete=models.PROTECT, related_name="group_records")
+    pinned = models.BooleanField(default=False)
 
 class NoteGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="note_groups")

@@ -146,7 +146,7 @@ class JournalGroupSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ['id', 'user_id', 'title', 'text', 'group']
+        fields = ['id', 'user_id', 'title', 'text', 'group', 'pinned']
         read_only_fields = ['id', 'user_id']
 
     def validate_title(self, value):

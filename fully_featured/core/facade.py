@@ -30,8 +30,10 @@ def get_paginated_results(user, startingIndex, model, serializer, sort_by, **kwa
     items_per_page = 20
     start = startingIndex
     end = startingIndex + items_per_page
-
-    queryset = model.objects.filter(user_id=user.id, **kwargs).order_by(sort_by)
+    if type(sort_by) == list:
+        queryset = model.objects.filter(user_id=user.id, **kwargs).order_by(*sort_by)
+    else:
+        queryset = model.objects.filter(user_id=user.id, **kwargs).order_by(sort_by)
 
     totalRecords = queryset.count()
     result = serializer(queryset[start:end], many=True).data

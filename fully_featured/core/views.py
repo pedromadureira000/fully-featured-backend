@@ -326,16 +326,16 @@ def journal_group_view(request):
                 print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(["GET"])
 @login_required
 @csrf_exempt
 def note_get_view(request, group_id):
-    if request.method == 'GET':
+    if request.method == "GET":
         startingIndex = request.GET.get("startingIndex")
         tagFilter = request.GET.get("tag")
         model = Note
         serializer = NoteSerializer
-        sort_by = '-created_at'
+        sort_by = ["-pinned", "-created_at"]
         kwargs = {"group_id": group_id}
         if tagFilter:
             kwargs["tag"] = tagFilter
