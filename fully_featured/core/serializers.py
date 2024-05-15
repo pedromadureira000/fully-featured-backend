@@ -1,4 +1,4 @@
-from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup
+from fully_featured.core.models import Journal, JournalGroup, Note, NoteGroup, Term, TermGroup, ToDo, ToDoGroup, status_choices, priority_choices
 from rest_framework import serializers
 from datetime import datetime
 from django.db.models import F
@@ -31,8 +31,8 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     #  ordered_items = OrderedItemPOSTSerializer(many=True)
 
-    status = serializers.ChoiceField(choices=[x[0] for x in ToDo.status_choices], required=False)
-    priority = serializers.ChoiceField(choices=[x[0] for x in ToDo.priority_choices], required=False)
+    status = serializers.ChoiceField(choices=[x[0] for x in status_choices], required=False)
+    priority = serializers.ChoiceField(choices=[x[0] for x in priority_choices], required=False)
 
     class Meta:
         model = ToDo
@@ -49,9 +49,12 @@ class ToDoSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 class TodoGroupSerializer(serializers.ModelSerializer):
+    #  filter_status = serializers.ChoiceField(choices=[x[0] for x in status_choices], required=False)
+    #  filter_priority = serializers.ChoiceField(choices=[x[0] for x in priority_choices], required=False)
+
     class Meta:
         model = ToDoGroup
-        fields = ['id', 'user_id', 'name', 'order']
+        fields = ['id', 'user_id', 'name', 'order', 'filter_status', 'filter_priority']
         read_only_fields = ['id', 'user_id']
 
     def validate_name(self, value):

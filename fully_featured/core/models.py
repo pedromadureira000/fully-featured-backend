@@ -2,6 +2,19 @@ from django.db import models
 from django.utils import timezone
 
 
+status_choices = (
+    (1, "Postponed"),
+    (2, "Pendent"),
+    (3, "Doing"),
+    (4, "Done"),
+)
+priority_choices = (
+    (1, "Urgent"),
+    (2, "High"),
+    (3, "Normal"),
+    (4, "Low"),
+)
+
 class Base(models.Model):
     created_at = models.DateTimeField("Created at", default=timezone.now)
     updated_at = models.DateTimeField("Updated at", auto_now=True)
@@ -11,19 +24,6 @@ class Base(models.Model):
 
 
 class ToDo(Base):
-    status_choices = (
-        (1, "Postponed"),
-        (2, "Pendent"),
-        (3, "Doing"),
-        (4, "Done"),
-    )
-    priority_choices = (
-        (1, "Urgent"),
-        (2, "High"),
-        (3, "Normal"),
-        (4, "Low"),
-    )
-
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todos")
     title = models.CharField("Title", max_length=135)
     description = models.CharField("Description", max_length=551)
@@ -43,6 +43,8 @@ class ToDoGroup(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todo_groups")
     name = models.CharField("name", max_length=30)
     order = models.IntegerField(blank=True, null=True)
+    filter_status = models.IntegerField(choices=status_choices, blank=True, null=True)
+    filter_priority = models.IntegerField(choices=priority_choices, blank=True, null=True)
 
 class Journal(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="journals")
