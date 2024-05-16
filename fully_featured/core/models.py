@@ -25,8 +25,8 @@ class Base(models.Model):
 
 class ToDo(Base):
     user = models.ForeignKey("user.UserModel", on_delete=models.CASCADE, related_name="todos")
-    title = models.CharField("Title", max_length=135)
-    description = models.CharField("Description", max_length=551)
+    title = models.TextField("Title")
+    description = models.TextField("Description")
     completed = models.BooleanField(default=False)
     group = models.ForeignKey("ToDoGroup", on_delete=models.PROTECT, related_name="group_records")
     status = models.IntegerField(choices=status_choices, default=2)

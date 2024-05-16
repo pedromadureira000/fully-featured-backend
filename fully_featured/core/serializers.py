@@ -39,6 +39,16 @@ class ToDoSerializer(serializers.ModelSerializer):
         fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'priority','due_date', 'created_at', 'done_date']
         read_only_fields = ['id', 'user_id', 'created_at', 'done_date']
 
+    def validate_title(self, value):
+        if len(value) >= 1000:
+            raise serializers.ValidationError("The field 'title' cannot have more than 1000 characters.")
+        return value
+
+    def validate_description(self, value):
+        if len(value) >= 10_000:
+            raise serializers.ValidationError("The field 'description' cannot have more than 10000 characters.")
+        return value
+
     def update(self, instance, validated_data):
         if validated_data["group"] != instance.group_id:
             validated_data["created_at"] = datetime.now()
@@ -154,7 +164,7 @@ class NoteSerializer(serializers.ModelSerializer):
 
     def validate_title(self, value):
         if len(value) >= 1000:
-            raise serializers.ValidationError("The field 'title' cannot have more than 10000 characters.")
+            raise serializers.ValidationError("The field 'title' cannot have more than 1000 characters.")
         return value
 
     def validate_text(self, value):
@@ -214,7 +224,7 @@ class TermSerializer(serializers.ModelSerializer):
 
     def validate_term(self, value):
         if len(value) >= 1000:
-            raise serializers.ValidationError("The field 'title' cannot have more than 10000 characters.")
+            raise serializers.ValidationError("The field 'title' cannot have more than 1000 characters.")
         return value
 
     def validate_definition(self, value):
