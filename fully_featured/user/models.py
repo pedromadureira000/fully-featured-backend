@@ -44,7 +44,7 @@ class UserManager(BaseUserManager):
 class UserModel(UserBase, AbstractBaseUser, PermissionsMixin):
     name = models.CharField("User's name", max_length=100)
     email = models.EmailField(max_length=254, unique=True)
-    whatsapp = models.CharField("Whatsapp", max_length=20)
+    whatsapp = models.CharField("Whatsapp", max_length=20, blank=True, null=True)
     is_staff = models.BooleanField(
         "staff status",
         default=False,
