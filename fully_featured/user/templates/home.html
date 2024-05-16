@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #000;
+            background-color: #070F2B;
             overflow-x: hidden;
         }
         .container {
@@ -151,6 +151,9 @@
         }
         .video-container {
             padding: 30px 0px;
+        }
+        .small-text {
+            font-size: 15px !important;
         }
     </style>
 </head>
@@ -361,7 +364,7 @@
                         Start a 30 Days Free Trial 
                     {% endif %}
                 </p>
-                <p>
+                <p class="small-text">
                     {% if lang == "pt" %}
                         (Não é necessário cartão de crédito)
                     {% else %}
@@ -369,21 +372,19 @@
                     {% endif %}
                 </p>
             </div>
-            <div class="button">
+            <div class="button" onclick="window.location='{{BASE_URL}}/download_apk';">
                 <p>
                     {% if lang == "pt" %}
-                        Baixe o App para Android
+                        Baixe o App para Android (Em formato APK)
                     {% else %}
-                        Download the app for Android
+                        Download the app for Android (In APK format)
                     {% endif %}
                 </p>
-                <p>
+                <p class="small-text">
                     {% if lang == "pt" %}
-                        {% comment %} (I'm working on publishing it on Google Play. For now, you can download and install it directly) {% endcomment %}
-                        (Disponível em breve)
+                        (Disponível em breve na Play Store)
                     {% else %}
-                        {% comment %} (Estou trabalhando para publicá-lo no Google Play. Por enquanto, você pode baixá-lo e instalá-lo diretamente) {% endcomment %}
-                        (Available soon)
+                        (Available soon on the Play Store)
                     {% endif %}
                 </p>
             </div>

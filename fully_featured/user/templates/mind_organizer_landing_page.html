@@ -10,54 +10,84 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #000;
+            background-color: #070F2B;
+            overflow-x: hidden;
         }
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 3px auto;
-            padding: 20px;
-            {% comment %} background-color: #181414; // dark red{% endcomment %}
-            {% comment %} background-color: #141518; //dark-blue {% endcomment %}
-            {% comment %} background-color: #1d1f24; //dark-blue-brighter{% endcomment %}
-            {% comment %} background-color: #3e4147; {% endcomment %}
-            background-color: #2f3033;
+            padding: 1px 20px;
+            background-color: #070F2B; /* color1 */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        /* Media query for smaller screens */
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%; /* Set maximum width to 100% on smaller screens */
+                background-color: #070F2B; /* color1 */
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+        }
         h1 {
             color: #abb2bf;
-            margin-bottom: 20px;
+        }
+        h2 {
+            color: #abb2bf;
+        }
+        h3 {
+            color: #abb2bf;
         }
         p {
             color: #abb2bf;
-            margin-bottom: 20px;
+            margin: 0px;
         }
         .features {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
         }
         .feature {
             flex: 1;
             padding: 3px;
             border-radius: 5px;
-            background-color: #42474f;
+            background-color: #1B1A55; /* color2 */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             margin: 0 10px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .feature {
+                flex: 1;
+                width: 100%;
+                padding: 3px;
+                border-radius: 5px;
+                background-color: #1B1A55; /* color2 */
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                margin: 0 10px;
+            }
         }
         .feature h2 {
             color: #abb2bf;
         }
+
+        .feature p {
+            padding-bottom: 20px;
+        }
         .button-container {
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
         .button {
+            cursor: pointer;
             display: inline-block;
-            background-color: #5c6169;
-            {% comment %} background-color: #5e5e5e; {% endcomment %}
+            background-color: #535C91; /* color3 */
             padding: 5px 10px;
             border-radius: 5px;
             text-decoration: none;
@@ -65,7 +95,7 @@
             font-size: 18px;
         }
         .button p {
-            color: #181414
+            color: #d3d9e3; /* color5 */
         }
         .button + .button {
             margin-left: 20px; /* Adjust the padding between buttons here */
@@ -78,43 +108,96 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+        .contact-links {
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px;
+        }
+        a { color: #9290C3; }
+        a:link { color: #9290C3; }
+        a:visited { color: #6d4b8d; }
+        a:hover { color: #fff; }
+        a:active {
+            color: #9290C3; text-decoration:none; font-weight:normal; 
+            !important;
+        }
+        .title {
+            font-family:'Lato', 'Arial', sans-serif;
+            font-weight: normal;
+            font-size: 42px;
+        }
+        .sub-title{
+            font-family:'Lato', 'Arial', sans-serif;
+            font-weight: normal;
+            font-size: 25px;
+        }
+        .biger-box {
+            display: flex;
+            justify-content: center;
+        }
+        .text-box {
+            border: 2px solid white; /* White border */
+            padding: 10px; /* Padding inside the box */
+            margin: 20px; /* Margin around the box */
+            width: 300px;
+        }
+        .video-container {
+            padding: 30px 0px;
+        }
+        .small-text {
+            font-size: 15px !important;
+        }
+
+        .login-button {
+            padding: 10px 20px; /* Add padding to the button */
+            background-color: #353540;
+            color: #fff; /* Example text color */
+            text-decoration: none; /* Remove underline */
+        }
         .left-link {
             display: flex;
             justify-content: flex-end; /* Align items to the right */
             padding: 10px 20px;
         }
-        .login-button {
-            padding: 10px 20px; /* Add padding to the button */
-            background-color: #5c6169;
-            color: #fff; /* Example text color */
-            text-decoration: none; /* Remove underline */
-        }
     </style>
 </head>
 <body>
     <div class="left-link">
-        <a href="{{BASE_URL}}/login" class="login-button">
-            Login
-        </a>
+        <div class="button" onclick="window.location='{{BASE_URL}}/login';">
+            <p>
+                Login
+            </p>
+        </div>
     </div>
     <div class="container" id="app">
-        <h1>Mind-Organizer</h1>
+        {% comment %} <h1 onclick="window.location='https://petersoftwarehouse.com/mind-organizer';"> {% endcomment %}
+            {% comment %} <u>Mind Organizer</u> {% endcomment %}
+        {% comment %} </h1> {% endcomment %}
+
+        <div class="biger-box">
+            <div class="text-box">
+                <h1 class="title">Mind Organizer</h1>
+            </div>
+        </div>
+
         <p>
         {% if lang == "pt" %}
-Transforme sua organização pessoal com o Mind-Organizer. Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário, tudo em uma plataforma simples e intuitiva.
+            Transforme sua organização pessoal com o Mind-Organizer. </br>Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário,</br> tudo em uma plataforma simples e intuitiva.
         {% else %}
-Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
+            Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
         {% endif %}
         </p>
+
         <div class="features">
             <div class="feature">
-                <h2>
+                <h3>
                     {% if lang == "pt" %}
                         Gerenciar tarefas
                     {% else %}
                         Manage Tasks
                     {% endif %}
-                </h2>
+                </h3>
                 <p>
                     {% if lang == "pt" %}
                         Simplifique sua vida gerenciando tarefas sem esforço.
@@ -124,13 +207,13 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                 </p>
             </div>
             <div class="feature">
-                <h2>
+                <h3>
                     {% if lang == "pt" %}
                         Faça anotações
                     {% else %}
                         Take Notes
                     {% endif %}
-                </h2>
+                </h3>
                 <p>
                     {% if lang == "pt" %}
                         Faça anotações para manter seus pensamentos organizados.
@@ -140,13 +223,13 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                 </p>
             </div>
             <div class="feature">
-                <h2>
+                <h3>
                     {% if lang == "pt" %}
                         Pratique Journaling
                     {% else %}
                         Practice Journaling
                     {% endif %}
-                </h2>
+                </h3>
                 <p>
                     {% if lang == "pt" %}
                         Registre seus pensamentos para obter clareza mental.
@@ -156,13 +239,13 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                 </p>
             </div>
             <div class="feature">
-                <h2>
+                <h3>
                     {% if lang == "pt" %}
                         Construa glossários
                     {% else %}
                         Build Glossaries
                     {% endif %}
-                </h2>
+                </h3>
                 <p>
                     {% if lang == "pt" %}
                         Expanda seu vocabulário para aumentar a produtividade.
@@ -181,7 +264,7 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                         Start a 30 Days Free Trial 
                     {% endif %}
                 </p>
-                <p>
+                <p class="small-text">
                     {% if lang == "pt" %}
                         (Não é necessário cartão de crédito)
                     {% else %}
@@ -189,22 +272,48 @@ Transform your personal organization with Mind-Organizer. Manage tasks, record n
                     {% endif %}
                 </p>
             </div>
-            <div class="button">
+            <div class="button" onclick="window.location='{{BASE_URL}}/download_apk';">
                 <p>
                     {% if lang == "pt" %}
-                        Baixe o App para Android
+                        Baixe o App para Android (Em formato APK)
                     {% else %}
-                        Download the app for Android
+                        Download the app for Android (In APK format)
                     {% endif %}
                 </p>
-                <p>
+                <p class="small-text">
                     {% if lang == "pt" %}
-                        {% comment %} (I'm working on publishing it on Google Play. For now, you can download and install it directly) {% endcomment %}
-                        (Disponível em breve)
+                        (Disponível em breve na Play Store)
                     {% else %}
-                        {% comment %} (Estou trabalhando para publicá-lo no Google Play. Por enquanto, você pode baixá-lo e instalá-lo diretamente) {% endcomment %}
-                        (Available soon)
+                        (Available soon on the Play Store)
                     {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="video-container">
+            {% if lang == "pt" %}
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            {% else %}
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            {% endif %}
+        </div>
+
+        <h2>
+            {% if lang == "pt" %}
+                Entre em contato
+            {% else %}
+                Contact
+            {% endif %}
+        </h2>
+        <div class="contact-links">
+            <div class="button" onclick="window.location='https://wa.link/ouz6vl';">
+                <p>
+                    Whatsapp
+                </p>
+            </div>
+            <div class="button" onclick="window.location='mailto:contact@petersoftwarehouse.com';">
+                <p>
+                    contact@petersoftwarehouse.com
                 </p>
             </div>
         </div>

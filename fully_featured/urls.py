@@ -2,6 +2,7 @@ from django.urls import path, include
 from django.contrib import admin
 from django.views.static import serve
 import os
+from fully_featured.core.views import download_apk
 from fully_featured.user.views import (
     activate_account,
     mind_organizer_landing_page,
@@ -46,6 +47,7 @@ urlpatterns = [
     path("api/", include("fully_featured.core.urls")),
     path("api/user/", include("fully_featured.user.urls")),
     path("admin/", admin.site.urls),
+    path("download_apk", download_apk, name="download_apk"),
     path("<path:resource>", flutter_redirect),
 ]
 
