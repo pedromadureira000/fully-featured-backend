@@ -12,7 +12,7 @@ from django.shortcuts import render
 from fully_featured.settings import BASE_URL
 from django.db import transaction
 import sentry_sdk
-from fully_featured.settings import DEBUG
+from fully_featured.settings import DEBUG, STRIPE_PAYMENT_LINK
 from django.shortcuts import redirect
 
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, ProfileUpdateSerializer, UserSerializer
@@ -264,7 +264,9 @@ def peter_saas_root(request):
             return render(
                 request,
                 "home.html",
-                context={'lang': language, 'BASE_URL': BASE_URL}
+                context={
+                    'lang': language, 'BASE_URL': BASE_URL, 'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK
+                }
             )
     return redirect("app_menu")
 
@@ -280,7 +282,9 @@ def mind_organizer_landing_page(request):
         return render(
             request,
             "mind_organizer_landing_page.html",
-            context={'lang': language, 'BASE_URL': BASE_URL}
+            context={
+                'lang': language, 'BASE_URL': BASE_URL, 'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK
+            }
         )
     return redirect("app_menu")
 

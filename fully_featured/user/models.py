@@ -7,6 +7,13 @@ from django.contrib.auth.models import (
 )
 from rest_framework.authtoken.models import Token
 
+subscription_status = (
+    (1, "trial"),
+    (2, "trial_ended"),
+    (3, "subscription_paid"),
+    (4, "subscription_unpaid"),
+    (5, "subscription_cancelled"),
+)
 
 class UserBase(models.Model):
     created_at = models.DateTimeField("Criado em", default=timezone.now)
@@ -55,6 +62,11 @@ class UserModel(UserBase, AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
     )
+    subscription_status = models.IntegerField(choices=subscription_status, default=1)
+    customer_stripe_id = models.CharField(max_length=30)
+    subscription_started_at = models.DateTimeField(blank=True, null=True)
+    subscription_canceled_at = models.DateTimeField(blank=True, null=True)
+    lang_for_communication = models.CharField(max_length=5, default="en")
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

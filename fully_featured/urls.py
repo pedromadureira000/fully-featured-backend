@@ -46,6 +46,7 @@ urlpatterns = [
     path("reset_password/<str:verification_code>", reset_password, name="reset_password"),
     path("api/", include("fully_featured.core.urls")),
     path("api/user/", include("fully_featured.user.urls")),
+    path("api/payment/", include("fully_featured.payment.urls")),
     path("admin/", admin.site.urls),
     path("download_apk", download_apk, name="download_apk"),
     path("<path:resource>", flutter_redirect),

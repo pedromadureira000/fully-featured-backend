@@ -11,13 +11,15 @@ CELERY_BROKER_URL=redis://127.0.0.1:6379
 CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 CSRF_TRUSTED_ORIGINS=http://localhost:3000
 
-# Sentry
 SENTRY_DSN=
 
-#---------SMTP mailgun
+STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_PAYMENT_LINK=
+STRIPE_ENDPOINT_SECRET=
+
 EMAIL_BACKEND="anymail.backends.brevo.EmailBackend"
 DEFAULT_FROM_EMAIL=
 SERVER_EMAIL=
 BREVO_API_KEY=
-
 FROM_EMAIL="No Reply <no-reply@petersoftwarehouse.com>"

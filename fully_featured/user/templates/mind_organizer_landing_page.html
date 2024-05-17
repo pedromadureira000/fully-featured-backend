@@ -92,7 +92,6 @@
             border-radius: 5px;
             text-decoration: none;
             margin: 0 5px;
-            font-size: 18px;
         }
         .button p {
             color: #d3d9e3; /* color5 */
@@ -272,12 +271,31 @@
                     {% endif %}
                 </p>
             </div>
+            <div class="button" onclick="window.location='{{STRIPE_PAYMENT_LINK}}';">
+                <p>
+                    {% if lang == "pt" %}
+                        Iniciar assinatura
+                    {% else %}
+                        Start subscription
+                    {% endif %}
+                </p>
+                <p class="small-text">
+                    {% if lang == "pt" %}
+                        ($4,50 dolares por mês)
+                    {% else %}
+                        ($4.50 per month)
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="button-container">
             <div class="button" onclick="window.location='{{BASE_URL}}/download_apk';">
                 <p>
                     {% if lang == "pt" %}
                         Baixe o App para Android (Em formato APK)
                     {% else %}
-                        Download the app for Android (In APK format)
+                        Download the app for Android in APK format
                     {% endif %}
                 </p>
                 <p class="small-text">

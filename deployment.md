@@ -539,6 +539,7 @@ It could also be mailjet, mailgun, sendgrid or aws SES
 - validate domain
 - create smtp keys
 - add no-reply@domain.com att gmail account 'send mail as' option: smtp_key is the password to authentication and the username appears on brevo SMTP panel .
+* Setup stripe (https://testdriven.io/blog/django-stripe-tutorial/)
 
 Important observations 🚨⚠️📢❗
 ================

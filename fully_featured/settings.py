@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "fully_featured.core.apps.CoreConfig",
     "fully_featured.user.apps.UserConfig",
+    "fully_featured.payment.apps.PaymentConfig",
     "anymail",
 ]
 
@@ -186,6 +187,11 @@ if SENTRY_DSN:
         send_default_pii=True,
     )
 
+# Stripe
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_PAYMENT_LINK = config("STRIPE_PAYMENT_LINK")
+STRIPE_ENDPOINT_SECRET = config("STRIPE_ENDPOINT_SECRET")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
