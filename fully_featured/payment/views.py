@@ -85,7 +85,7 @@ def stripe_webhook(request):
                 user.subscription_canceled_at = None
                 user.subscription_started_at = datetime.now()
                 user.save()
-                send_subscription_renewd_email(user, user.lang_for_communication)
+                send_subscription_success_email(user, user.lang_for_communication)
         except UserModel.DoesNotExist as er:
             if subscription_was_cancelled:
                 with sentry_sdk.push_scope() as scope:

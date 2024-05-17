@@ -63,7 +63,7 @@ class UserModel(UserBase, AbstractBaseUser, PermissionsMixin):
         help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
     )
     subscription_status = models.IntegerField(choices=subscription_status, default=1)
-    customer_stripe_id = models.CharField(max_length=30)
+    customer_stripe_id = models.CharField(max_length=30, blank=True, null=True)
     subscription_started_at = models.DateTimeField(blank=True, null=True)
     subscription_canceled_at = models.DateTimeField(blank=True, null=True)
     lang_for_communication = models.CharField(max_length=5, default="en")
