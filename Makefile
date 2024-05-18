@@ -10,4 +10,7 @@ shell:
 uuid:
 	@python -c 'import uuid; print(uuid.uuid4())'
 
+check_trial_ended:
+	@python manage.py check_trial_ended
+
 .PHONY: postgres redis

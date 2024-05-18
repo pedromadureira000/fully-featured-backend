@@ -28,6 +28,11 @@ python manage.py admin_generator app_name
 celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_email
 ```
 
+## Command to check if trial ended (meant to run once a day)
+```
+python manage.py check_trial_ended
+```
+
 ## Run server dev mode
 ```
 ip addr show
