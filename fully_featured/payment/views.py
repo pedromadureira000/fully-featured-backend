@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from fully_featured.payment.facade import send_account_created_email_with_change_password_link, send_subscription_canceled_email, send_subscription_success_email
+from fully_featured.payment.facade import send_account_created_email_with_change_password_link, send_payment_failed_email, send_subscription_canceled_email, send_subscription_success_email
 from fully_featured.settings import STRIPE_SECRET_KEY, STRIPE_ENDPOINT_SECRET
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
@@ -115,8 +115,29 @@ def stripe_webhook(request):
                     "details": "Could not found customer on stripe event 'customer.subscription.deleted'"
                 })
                 sentry_sdk.capture_exception(er)
-    return HttpResponse(status=200)
 
-    #  if event['type'] == 'payment_intent.payment_failed':
-        #  print("Payment failed.")
+    if event['type'] == 'invoice.payment_failed':
+        customer_email = event['data']['object']['customer_email'],
+        try:
+            user = UserModel.objects.get(email=customer_email)
+            if user.subscription_status != 4:
+                user.subscription_status = 4
+                user.subscription_failed_at = datetime.now()
+                user.save()
+                send_payment_failed_email(user, user.lang_for_communication)
+        except UserModel.DoesNotExist:
+            pass
+    # TODO THis might be useless. it `invoice.payment_failed` already runs
+    if event['type'] == 'payment_intent.payment_failed':
+        customer_stripe_id = event['data']['object'].get("customer"),
+        try:
+            user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
+            if user.subscription_status != 4:
+                user.subscription_status = 4
+                user.subscription_failed_at = datetime.now()
+                user.save()
+                send_payment_failed_email(user, user.lang_for_communication)
+        except UserModel.DoesNotExist:
+            pass
+    return HttpResponse(status=200)
     #  if event['type'] == 'customer.updated': # updated user

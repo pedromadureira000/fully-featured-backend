@@ -66,6 +66,7 @@ class UserModel(UserBase, AbstractBaseUser, PermissionsMixin):
     customer_stripe_id = models.CharField(max_length=30, blank=True, null=True)
     subscription_started_at = models.DateTimeField(blank=True, null=True)
     subscription_canceled_at = models.DateTimeField(blank=True, null=True)
+    subscription_failed_at = models.DateTimeField(blank=True, null=True)
     lang_for_communication = models.CharField(max_length=5, default="en")
 
     USERNAME_FIELD = "email"
