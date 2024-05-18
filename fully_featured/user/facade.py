@@ -16,3 +16,11 @@ def send_reset_user_password_email(email, auth_token, lang):
     html = f'<p>Redefina sua senha clicando nesse link {url}</p>' if lang == "pt" else f'<p>Reset you password by clicking on this link {url}</p>'
     msg.attach_alternative(html, "text/html")
     msg.send()
+
+def user_is_blocked(user):
+    if user.subscription_status == 2:
+        return "trial_ended"
+    elif user.subscription_status == 4:
+        return "subscription_unpaid"
+    elif user.subscription_status == 5:
+        return "subscription_cancelled"

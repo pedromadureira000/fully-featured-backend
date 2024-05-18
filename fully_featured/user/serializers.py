@@ -41,8 +41,8 @@ class AuthTokenSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ['id', 'name', 'email', 'whatsapp', 'password']
-        read_only_fields = ['id']
+        fields = ['id', 'name', 'email', 'whatsapp', 'password', 'subscription_status', 'subscription_started_at']
+        read_only_fields = ['id', 'subscription_status', 'subscription_started_at']
         extra_kwargs = {
             'password': {'write_only': True},
         }

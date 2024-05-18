@@ -2,7 +2,6 @@ from django.urls import path, include
 from django.contrib import admin
 from django.views.static import serve
 import os
-from fully_featured.core.views import download_apk
 from fully_featured.user.views import (
     activate_account,
     mind_organizer_landing_page,
@@ -10,6 +9,7 @@ from fully_featured.user.views import (
     reset_password,
     peter_saas_root,
     terms_of_use,
+    download_apk,
 )
 from fully_featured.settings import DEBUG
 from django.shortcuts import redirect

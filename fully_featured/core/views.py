@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.deletion import ProtectedError
 import sentry_sdk
 from fully_featured.settings import DEBUG
-from django.http import HttpResponse
-import os
+
+from fully_featured.user.facade import user_is_blocked
 
 from .serializers import JournalGroupSerializer, JournalSerializer, NoteGroupSerializer, NoteSerializer, TermGroupSerializer, TermSerializer, ToDoSerializer, TestSerializer, TodoGroupSerializer
 
@@ -39,6 +39,9 @@ def test_view(request):
 @login_required
 @csrf_exempt
 def todo_get_view(request, group_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
         statusFilter = request.GET.get("status")
@@ -61,6 +64,9 @@ def todo_get_view(request, group_id):
 @login_required
 @csrf_exempt
 def todo_get_single_view(request, record_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     try:
         record = ToDo.objects.get(user_id=request.user.id, id=record_id)
     except ToDo.DoesNotExist:
@@ -72,6 +78,9 @@ def todo_get_single_view(request, record_id):
 @login_required
 @csrf_exempt
 def todo_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         try:
             serializer = ToDoSerializer(data=request.data, context={"request": request})
@@ -126,6 +135,9 @@ def todo_view(request):
 @login_required
 @csrf_exempt
 def todo_group_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         groups = ToDoGroup.objects.filter(user_id=request.user.id).order_by('order')
         serializer = TodoGroupSerializer(groups, many=True)
@@ -188,6 +200,9 @@ def todo_group_view(request):
 @login_required
 @csrf_exempt
 def journal_get_view(request, group_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
         tagFilter = request.GET.get("tag")
@@ -207,6 +222,9 @@ def journal_get_view(request, group_id):
 @login_required
 @csrf_exempt
 def journal_get_single_view(request, record_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     try:
         record = Journal.objects.get(user_id=request.user.id, id=record_id)
     except Journal.DoesNotExist:
@@ -218,6 +236,9 @@ def journal_get_single_view(request, record_id):
 @login_required
 @csrf_exempt
 def journal_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         try:
             serializer = JournalSerializer(data=request.data, context={"request": request})
@@ -271,6 +292,9 @@ def journal_view(request):
 @login_required
 @csrf_exempt
 def journal_group_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         groups = JournalGroup.objects.filter(user_id=request.user.id).order_by('order')
         serializer = JournalGroupSerializer(groups, many=True)
@@ -332,6 +356,9 @@ def journal_group_view(request):
 @login_required
 @csrf_exempt
 def note_get_view(request, group_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == "GET":
         startingIndex = request.GET.get("startingIndex")
         tagFilter = request.GET.get("tag")
@@ -351,6 +378,9 @@ def note_get_view(request, group_id):
 @login_required
 @csrf_exempt
 def note_get_single_view(request, record_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     try:
         record = Note.objects.get(user_id=request.user.id, id=record_id)
     except Note.DoesNotExist:
@@ -362,6 +392,9 @@ def note_get_single_view(request, record_id):
 @login_required
 @csrf_exempt
 def note_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         try:
             serializer = NoteSerializer(data=request.data, context={"request": request})
@@ -415,6 +448,9 @@ def note_view(request):
 @login_required
 @csrf_exempt
 def note_group_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         groups = NoteGroup.objects.filter(user_id=request.user.id).order_by('order')
         serializer = NoteGroupSerializer(groups, many=True)
@@ -476,6 +512,9 @@ def note_group_view(request):
 @login_required
 @csrf_exempt
 def glossary_get_view(request, group_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
         tagFilter = request.GET.get("tag")
@@ -495,6 +534,9 @@ def glossary_get_view(request, group_id):
 @login_required
 @csrf_exempt
 def glossary_get_single_view(request, record_id):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     try:
         record = Term.objects.get(user_id=request.user.id, id=record_id)
     except Term.DoesNotExist:
@@ -506,6 +548,9 @@ def glossary_get_single_view(request, record_id):
 @login_required
 @csrf_exempt
 def glossary_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'POST':
         try:
             serializer = TermSerializer(data=request.data, context={"request": request})
@@ -559,6 +604,9 @@ def glossary_view(request):
 @login_required
 @csrf_exempt
 def glossary_group_view(request):
+    blocked_reason = user_is_blocked(request.user)
+    if blocked_reason:
+        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         groups = TermGroup.objects.filter(user_id=request.user.id).order_by('order')
         serializer = TermGroupSerializer(groups, many=True)
@@ -615,24 +663,3 @@ def glossary_group_view(request):
             if DEBUG:
                 print(f"{er}")
             return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-@csrf_exempt
-def download_apk(request):
-    PROJECT_ROOT = os.path.abspath(os.path.dirname(__name__))
-    file_path = os.path.join(PROJECT_ROOT, 'downloads/', 'app-release.apk')  # Adjust based on model or media storage
-
-    if not os.path.exists(file_path):
-        return Response(data={"error": "File was not found."},
-                        status=status.HTTP_404_NOT_FOUND)
-    try: 
-        with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type='application/octet-stream')
-            response['Content-Disposition'] = 'attachment; filename="app-release.apk"'
-            return response
-    except Exception as er: 
-        sentry_sdk.capture_exception(er)
-        if DEBUG:
-            print(f"{er}")
-        return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)

@@ -14,6 +14,8 @@ from django.db import transaction
 import sentry_sdk
 from fully_featured.settings import DEBUG, STRIPE_PAYMENT_LINK
 from django.shortcuts import redirect
+from django.http import HttpResponse
+import os
 
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, ProfileUpdateSerializer, UserSerializer
 
@@ -320,3 +322,25 @@ def terms_of_use(request):
             context={'lang': language}
         )
     return redirect("app_menu")
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+@csrf_exempt
+def download_apk(request):
+    PROJECT_ROOT = os.path.abspath(os.path.dirname(__name__))
+    file_path = os.path.join(PROJECT_ROOT, 'downloads/', 'app-release.apk')  # Adjust based on model or media storage
+
+    if not os.path.exists(file_path):
+        return Response(data={"error": "File was not found."},
+                        status=status.HTTP_404_NOT_FOUND)
+    try:
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename="app-release.apk"'
+            return response
+    except Exception as er:
+        sentry_sdk.capture_exception(er)
+        if DEBUG:
+            print(f"{er}")
+        return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
