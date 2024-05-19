@@ -92,8 +92,15 @@ def stripe_webhook(request):
                 send_subscription_success_email(user, user.lang_for_communication)
                 return Response({"success": "subscription_was_renewed"})
         except UserModel.DoesNotExist as er:
-            return Response({"success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?"}, status=202)
-
+            # TODO understand this cases
+            with sentry_sdk.push_scope() as scope:
+                scope.set_context("additional_info", {
+                    "custom_message": "Could not found customer",
+                    "customer_stripe_id": customer_stripe_id,
+                    "details": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?"
+                })
+                sentry_sdk.capture_exception(er)
+            return Response({"success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?"})
     if event['type'] == 'customer.subscription.deleted':
         customer_stripe_id = event['data']['object']['customer']
         canceled_at = event['data']['object']['canceled_at']
@@ -111,10 +118,10 @@ def stripe_webhook(request):
                 scope.set_context("additional_info", {
                     "custom_message": "Could not found customer",
                     "customer_stripe_id": customer_stripe_id,
-                    "details": "Could not found customer on stripe event 'customer.subscription.deleted'"
+                    "details": "subscription_was_cancelled but user was not found. This should not happen"
                 })
                 sentry_sdk.capture_exception(er)
-            return Response({"error": "subscription_was_cancelled but user was not found. This should not happen"}, status=500)
+            return Response({"error": "subscription_was_cancelled but user was not found. This should not happen"})
 
     if event['type'] == 'invoice.payment_failed':
         customer_email = event['data']['object']['customer_email'],
@@ -134,7 +141,7 @@ def stripe_webhook(request):
                     "details": "Could not found customer on stripe event 'invoice.payment_failed'"
                 })
                 sentry_sdk.capture_exception(er)
-            return Response({"success": "invoice.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try"}, status=400)
+            return Response({"success": "invoice.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try"})
     # TODO THis might be useless. it `invoice.payment_failed` already runs
     if event['type'] == 'payment_intent.payment_failed':
         customer_stripe_id = event['data']['object'].get("customer")
@@ -154,6 +161,6 @@ def stripe_webhook(request):
                     "details": "Could not found customer on stripe event 'payment_intent.payment_failed'"
                 })
                 sentry_sdk.capture_exception(er)
-            return Response({"success": "payment_intent.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try."}, status=400)
+            return Response({"success": "payment_intent.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try."})
     return HttpResponse(status=200)
     #  if event['type'] == 'customer.updated': # updated user
