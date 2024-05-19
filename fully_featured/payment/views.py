@@ -7,6 +7,7 @@ from rest_framework import permissions
 import stripe
 from datetime import datetime
 import sentry_sdk
+from rest_framework.response import Response
 
 from fully_featured.user.models import UserModel
 
@@ -28,10 +29,10 @@ def stripe_webhook(request):
         )
     except ValueError as e:
         # Invalid payload
-        return HttpResponse(status=400)
+        return Response({"ValueError": f"{e}"}, status=400)
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
-        return HttpResponse(status=400)
+        return Response({"stripe.error.SignatureVerificationError": f"{e}"}, status=400)
 
     if event['type'] == 'invoice.paid':
         customer_stripe_id = event['data']['object']['customer'],
