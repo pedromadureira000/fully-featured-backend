@@ -3,7 +3,7 @@ from fully_featured.payment.facade import send_account_created_email_with_change
 from fully_featured.settings import STRIPE_SECRET_KEY, STRIPE_ENDPOINT_SECRET
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import status, permissions
+from rest_framework import permissions
 import stripe
 from datetime import datetime
 import sentry_sdk
@@ -71,10 +71,10 @@ def stripe_webhook(request):
         customer_stripe_id = event['data']['object']['customer'],
         cancellation_details = event['data']['object']['cancellation_details'], # reason
         canceled_at = event['data']['object']['canceled_at'],
-        subscription_was_cancelled = canceled_at
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
-            subscription_was_renewed = not canceled_at and user.subscription_status == 5
+            subscription_was_renewed = not canceled_at and user.subscription_status == 5 # TODO not sure about this heuristic
+            subscription_was_cancelled = canceled_at and user.subscription_status != 5
             if subscription_was_cancelled: # heuristics
                 user.subscription_status = 5
                 user.subscription_canceled_at = datetime.now()
@@ -87,14 +87,15 @@ def stripe_webhook(request):
                 user.save()
                 send_subscription_success_email(user, user.lang_for_communication)
         except UserModel.DoesNotExist as er:
-            if subscription_was_cancelled:
-                with sentry_sdk.push_scope() as scope:
-                    scope.set_context("additional_info", {
-                        "custom_message": "Could not found customer",
-                        "customer_stripe_id": customer_stripe_id,
-                        "details": "Could not found customer on stripe event 'customer.subscription.updated'. This was thrown becouse 'subscription_was_cancelled' was true"
-                    })
-                    sentry_sdk.capture_exception(er)
+            pass
+            #  if subscription_was_cancelled:
+                #  with sentry_sdk.push_scope() as scope:
+                    #  scope.set_context("additional_info", {
+                        #  "custom_message": "Could not found customer",
+                        #  "customer_stripe_id": customer_stripe_id,
+                        #  "details": "Could not found customer on stripe event 'customer.subscription.updated'. This was thrown becouse 'subscription_was_cancelled' was true"
+                    #  })
+                    #  sentry_sdk.capture_exception(er)
 
     if event['type'] == 'customer.subscription.deleted':
         customer_stripe_id = event['data']['object']['customer'],
