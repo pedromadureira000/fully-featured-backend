@@ -89,7 +89,7 @@ def stripe_webhook(request):
                     "success": "subscription_was_cancelled. But status is still active becouse it has to reach the end of billed month.",
                     "previous_attributes": previous_attributes
                 })
-            elif subscription_was_renewed:  # heuristics
+            elif subscription_was_renewed:  # working heuristics
                 user.subscription_status = 3
                 user.subscription_canceled_at = None
                 user.subscription_started_at = datetime.now()
@@ -140,12 +140,12 @@ def stripe_webhook(request):
         customer_email = event['data']['object']['customer_email']
         try:
             user = UserModel.objects.get(email=customer_email)
-            if user.subscription_status != 4:
+            if user.subscription_status not in [4, 5]  :
                 user.subscription_status = 4
                 user.subscription_failed_at = datetime.now()
                 user.save()
-                send_payment_failed_email(user, user.lang_for_communication)
-                return Response({"success": "invoice.payment_failed"})
+            send_payment_failed_email(user, user.lang_for_communication)
+            return Response({"success": "invoice.payment_failed"})
         except UserModel.DoesNotExist as er:
             with sentry_sdk.push_scope() as scope:
                 scope.set_context("additional_info", {
@@ -160,12 +160,12 @@ def stripe_webhook(request):
         customer_stripe_id = event['data']['object'].get("customer")
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
-            if user.subscription_status != 4:
+            if user.subscription_status not in [4, 5]:
                 user.subscription_status = 4
                 user.subscription_failed_at = datetime.now()
                 user.save()
-                send_payment_failed_email(user, user.lang_for_communication)
-                return Response({"success": "payment_intent.payment_failed"})
+            send_payment_failed_email(user, user.lang_for_communication)
+            return Response({"success": "payment_intent.payment_failed"})
         except UserModel.DoesNotExist as er:
             with sentry_sdk.push_scope() as scope:
                 scope.set_context("additional_info", {
