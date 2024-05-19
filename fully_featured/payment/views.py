@@ -84,12 +84,9 @@ def stripe_webhook(request):
             subscription_was_renewed = not canceled_at and user.subscription_status == 5 # TODO not sure about this heuristic
             subscription_was_cancelled = canceled_at and user.subscription_status != 5
             if subscription_was_cancelled: # heuristics
-                user.subscription_status = 5
-                user.subscription_canceled_at = datetime.now()
-                user.save()
-                send_subscription_canceled_email(user, user.lang_for_communication)
+                # TODO do something when user cancell it?
                 return Response({
-                    "success": "subscription_was_cancelled",
+                    "success": "subscription_was_cancelled. But status is still active becouse it has to reach the end of billed month.",
                     "previous_attributes": previous_attributes
                 })
             elif subscription_was_renewed:  # heuristics
@@ -124,13 +121,11 @@ def stripe_webhook(request):
         canceled_at = event['data']['object']['canceled_at']
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
-            subscription_was_cancelled = user.subscription_status != 5 and canceled_at
-            if subscription_was_cancelled: # heuristics
-                user.subscription_status = 5
-                user.subscription_canceled_at = datetime.now()
-                user.save()
-                send_subscription_canceled_email(user, user.lang_for_communication)
-                return Response({"success": "subscription_was_cancelled on customer.subscription.deleted"})
+            user.subscription_status = 5
+            user.subscription_canceled_at = datetime.now()
+            user.save()
+            send_subscription_canceled_email(user, user.lang_for_communication)
+            return Response({"success": "subscription_was_cancelled on customer.subscription.deleted"})
         except UserModel.DoesNotExist as er:
             with sentry_sdk.push_scope() as scope:
                 scope.set_context("additional_info", {
