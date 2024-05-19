@@ -35,12 +35,12 @@ def stripe_webhook(request):
         return Response({"stripe.error.SignatureVerificationError": f"{e}"}, status=400)
 
     if event['type'] == 'invoice.paid':
-        customer_stripe_id = event['data']['object']['customer'],
-        billing_reason = event['data']['object']['billing_reason'],
-        customer_email = event['data']['object']['customer_email'],
-        customer_name = event['data']['object']['customer_name'],
-        customer_phone = event['data']['object']['customer_phone'],
-        customer_country = event['data']['object']['customer_address']['country'],
+        customer_stripe_id = event['data']['object']['customer']
+        billing_reason = event['data']['object']['billing_reason']
+        customer_email = event['data']['object']['customer_email']
+        customer_name = event['data']['object']['customer_name']
+        customer_phone = event['data']['object']['customer_phone']
+        customer_country = event['data']['object']['customer_address']['country']
         lang = "pt" if customer_country == "BR" else "en"
         try:
             user = UserModel.objects.get(email=customer_email)
@@ -69,9 +69,9 @@ def stripe_webhook(request):
             send_account_created_email_with_change_password_link(user, lang)
 
     if event['type'] == 'customer.subscription.updated':
-        customer_stripe_id = event['data']['object']['customer'],
-        cancellation_details = event['data']['object']['cancellation_details'], # reason
-        canceled_at = event['data']['object']['canceled_at'],
+        customer_stripe_id = event['data']['object']['customer']
+        cancellation_details = event['data']['object']['cancellation_details'] # reason
+        canceled_at = event['data']['object']['canceled_at']
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
             subscription_was_renewed = not canceled_at and user.subscription_status == 5 # TODO not sure about this heuristic
@@ -99,8 +99,8 @@ def stripe_webhook(request):
                     #  sentry_sdk.capture_exception(er)
 
     if event['type'] == 'customer.subscription.deleted':
-        customer_stripe_id = event['data']['object']['customer'],
-        canceled_at = event['data']['object']['canceled_at'],
+        customer_stripe_id = event['data']['object']['customer']
+        canceled_at = event['data']['object']['canceled_at']
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
             subscription_was_cancelled = user.subscription_status != 5 and canceled_at
@@ -131,7 +131,7 @@ def stripe_webhook(request):
             pass
     # TODO THis might be useless. it `invoice.payment_failed` already runs
     if event['type'] == 'payment_intent.payment_failed':
-        customer_stripe_id = event['data']['object'].get("customer"),
+        customer_stripe_id = event['data']['object'].get("customer")
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
             if user.subscription_status != 4:
