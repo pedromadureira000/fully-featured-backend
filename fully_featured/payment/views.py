@@ -51,8 +51,9 @@ def stripe_webhook(request):
                 user.lang_for_communication=lang
                 user.save()
                 send_subscription_success_email(user, lang)
+                return Response({"success": "Already existant account subscribed."})
             else:
-                pass # Do nothing. It's just another payment
+                return Response({"success": "Just another payment"})
         except UserModel.DoesNotExist:
             password = "aljdfkajsfafiajsdlfuweuflaj"
             username_field = customer_email
@@ -67,6 +68,7 @@ def stripe_webhook(request):
                 lang_for_communication=lang,
             )
             send_account_created_email_with_change_password_link(user, lang)
+            return Response({"success": "customer subscribed, account was created, and email with change password link was sent"})
 
     if event['type'] == 'customer.subscription.updated':
         customer_stripe_id = event['data']['object']['customer']
@@ -81,22 +83,16 @@ def stripe_webhook(request):
                 user.subscription_canceled_at = datetime.now()
                 user.save()
                 send_subscription_canceled_email(user, user.lang_for_communication)
+                return Response({"success": "subscription_was_cancelled"})
             elif subscription_was_renewed:  # heuristics
                 user.subscription_status = 3
                 user.subscription_canceled_at = None
                 user.subscription_started_at = datetime.now()
                 user.save()
                 send_subscription_success_email(user, user.lang_for_communication)
+                return Response({"success": "subscription_was_renewed"})
         except UserModel.DoesNotExist as er:
-            pass
-            #  if subscription_was_cancelled:
-                #  with sentry_sdk.push_scope() as scope:
-                    #  scope.set_context("additional_info", {
-                        #  "custom_message": "Could not found customer",
-                        #  "customer_stripe_id": customer_stripe_id,
-                        #  "details": "Could not found customer on stripe event 'customer.subscription.updated'. This was thrown becouse 'subscription_was_cancelled' was true"
-                    #  })
-                    #  sentry_sdk.capture_exception(er)
+            return Response({"success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?"}, status=202)
 
     if event['type'] == 'customer.subscription.deleted':
         customer_stripe_id = event['data']['object']['customer']
@@ -109,6 +105,7 @@ def stripe_webhook(request):
                 user.subscription_canceled_at = datetime.now()
                 user.save()
                 send_subscription_canceled_email(user, user.lang_for_communication)
+                return Response({"success": "subscription_was_cancelled on customer.subscription.deleted"})
         except UserModel.DoesNotExist as er:
             with sentry_sdk.push_scope() as scope:
                 scope.set_context("additional_info", {
@@ -117,6 +114,7 @@ def stripe_webhook(request):
                     "details": "Could not found customer on stripe event 'customer.subscription.deleted'"
                 })
                 sentry_sdk.capture_exception(er)
+            return Response({"error": "subscription_was_cancelled but user was not found. This should not happen"}, status=500)
 
     if event['type'] == 'invoice.payment_failed':
         customer_email = event['data']['object']['customer_email'],
@@ -127,8 +125,16 @@ def stripe_webhook(request):
                 user.subscription_failed_at = datetime.now()
                 user.save()
                 send_payment_failed_email(user, user.lang_for_communication)
-        except UserModel.DoesNotExist:
-            pass
+                return Response({"success": "invoice.payment_failed"})
+        except UserModel.DoesNotExist as er:
+            with sentry_sdk.push_scope() as scope:
+                scope.set_context("additional_info", {
+                    "custom_message": "Could not found customer",
+                    "customer_email": customer_email,
+                    "details": "Could not found customer on stripe event 'invoice.payment_failed'"
+                })
+                sentry_sdk.capture_exception(er)
+            return Response({"success": "invoice.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try"}, status=400)
     # TODO THis might be useless. it `invoice.payment_failed` already runs
     if event['type'] == 'payment_intent.payment_failed':
         customer_stripe_id = event['data']['object'].get("customer")
@@ -139,7 +145,15 @@ def stripe_webhook(request):
                 user.subscription_failed_at = datetime.now()
                 user.save()
                 send_payment_failed_email(user, user.lang_for_communication)
-        except UserModel.DoesNotExist:
-            pass
+                return Response({"success": "payment_intent.payment_failed"})
+        except UserModel.DoesNotExist as er:
+            with sentry_sdk.push_scope() as scope:
+                scope.set_context("additional_info", {
+                    "custom_message": "Could not found customer",
+                    "customer_stripe_id": customer_stripe_id,
+                    "details": "Could not found customer on stripe event 'payment_intent.payment_failed'"
+                })
+                sentry_sdk.capture_exception(er)
+            return Response({"success": "payment_intent.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try."}, status=400)
     return HttpResponse(status=200)
     #  if event['type'] == 'customer.updated': # updated user
