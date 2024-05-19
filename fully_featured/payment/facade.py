@@ -18,6 +18,22 @@ def send_subscription_success_email(user, lang):
     msg.attach_alternative(body, "text/html")
     msg.send()
 
+def send_account_created_email_with_change_password_link(user, lang):
+    email = user.email
+    auth_token = user.auth_token.key
+    subject = "Bem-vindo ao Mind-Organizer! Sua assinatura está confirmada 🎉" if lang == "pt" else "Welcome to Mind-Organizer! Your Subscription is Confirmed 🎉"
+    body = _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass=True)
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=body,
+        from_email=FROM_EMAIL,
+        to=[email],
+    )
+
+    msg.attach_alternative(body, "text/html")
+    msg.send()
+
 def _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass):
     reset_password_url =  f"{BASE_URL}/reset_password/{auth_token}"
     if reset_pass:
@@ -55,23 +71,6 @@ def _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass
         Founder, Mind-Organizer</p>
         """
     return html
-
-def send_account_created_email_with_change_password_link(user, lang):
-    email = user.email
-    auth_token = user.auth_token.key
-    subject = _get_subscription_success_email_subject(lang)
-    body = _get_subscription_success_email_body(user, lang, auth_token, reset_pass=True)
-
-    msg = EmailMultiAlternatives(
-        subject=subject,
-        body=body,
-        from_email=FROM_EMAIL,
-        to=[email],
-    )
-
-    html = _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass=True)
-    msg.attach_alternative(html, "text/html")
-    msg.send()
 
 def send_subscription_canceled_email(user, lang):
     email = user.email
