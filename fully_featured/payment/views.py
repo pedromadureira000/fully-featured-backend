@@ -84,7 +84,7 @@ def stripe_webhook(request):
             subscription_was_renewed = not canceled_at and user.subscription_status == 5 # TODO not sure about this heuristic
             subscription_was_cancelled = canceled_at and user.subscription_status != 5
             if subscription_was_cancelled: # heuristics
-                # TODO do something when user cancell it?
+                # TODO do something when user cancell it? Like send an email trying to make him change his mind
                 return Response({
                     "success": "subscription_was_cancelled. But status is still active becouse it has to reach the end of billed month.",
                     "previous_attributes": previous_attributes
@@ -140,10 +140,10 @@ def stripe_webhook(request):
         customer_email = event['data']['object']['customer_email']
         try:
             user = UserModel.objects.get(email=customer_email)
-            if user.subscription_status not in [4, 5]  :
-                user.subscription_status = 4
-                user.subscription_failed_at = datetime.now()
-                user.save()
+            #  if user.subscription_status not in [4, 5]  :
+                #  user.subscription_status = 4
+                #  user.subscription_failed_at = datetime.now()
+                #  user.save()
             send_payment_failed_email(user, user.lang_for_communication)
             return Response({"success": "invoice.payment_failed"})
         except UserModel.DoesNotExist as er:
@@ -160,10 +160,10 @@ def stripe_webhook(request):
         customer_stripe_id = event['data']['object'].get("customer")
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
-            if user.subscription_status not in [4, 5]:
-                user.subscription_status = 4
-                user.subscription_failed_at = datetime.now()
-                user.save()
+            #  if user.subscription_status not in [4, 5]:
+                #  user.subscription_status = 4
+                #  user.subscription_failed_at = datetime.now()
+                #  user.save()
             send_payment_failed_email(user, user.lang_for_communication)
             return Response({"success": "payment_intent.payment_failed"})
         except UserModel.DoesNotExist as er:
