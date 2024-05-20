@@ -73,7 +73,7 @@ def stripe_webhook(request):
     if event['type'] == 'customer.subscription.updated':
         customer_stripe_id = event['data']['object']['customer']
         #  cancellation_details = event['data']['object']['cancellation_details'] # it's always dict
-        #  status = event['data']['object']['status'] # "past_due" if payment failed. but will be retryed
+        status = event['data']['object']['status'] # "past_due" if payment failed. but will be retryed
         previous_attributes = event['data']['object']['previous_attributes']
                             #  "previous_attributes": {
                               #  "status": "active"
@@ -87,7 +87,8 @@ def stripe_webhook(request):
                 # TODO do something when user cancell it? Like send an email trying to make him change his mind
                 return Response({
                     "success": "subscription_was_cancelled. But status is still active becouse it has to reach the end of billed month.",
-                    "previous_attributes": previous_attributes
+                    "previous_attributes": previous_attributes,
+                    "status": status,
                 })
             elif subscription_was_renewed:  # working heuristics
                 user.subscription_status = 3
@@ -97,11 +98,13 @@ def stripe_webhook(request):
                 send_subscription_success_email(user, user.lang_for_communication)
                 return Response({
                     "success": "subscription_was_renewed",
-                    "previous_attributes": previous_attributes
+                    "previous_attributes": previous_attributes,
+                    "status": status,
                 })
             return Response({
                 "success": "customer.subscription.updated -- but did not changed subscription on backend",
-                "previous_attributes": previous_attributes
+                "previous_attributes": previous_attributes,
+                "status": status,
             })
         except UserModel.DoesNotExist as er:
             # TODO understand this cases
@@ -114,7 +117,8 @@ def stripe_webhook(request):
                 sentry_sdk.capture_exception(er)
             return Response({
                 "success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?",
-                "previous_attributes": previous_attributes
+                "previous_attributes": previous_attributes,
+                "status": status,
             })
     if event['type'] == 'customer.subscription.deleted':
         customer_stripe_id = event['data']['object']['customer']
