@@ -130,6 +130,7 @@ def send_subscription_canceled_email_due_to_unpaid_bill(user, lang):
     email = user.email
     user_name = user.name
     subject = "Cancelamento da Inscrição por Falta de Pagamento" if lang == "pt" else "Subscription Canceled Due to Unpaid Bill"
+    stripe_payment_link = STRIPE_PAYMENT_LINK
     
     if lang == "pt":
         body = f"""
@@ -144,6 +145,8 @@ def send_subscription_canceled_email_due_to_unpaid_bill(user, lang):
             <p>Olá {user_name},</p>
             <p>Notamos que houve um problema com o pagamento de sua assinatura da <strong>Mind-Organizer</strong>, e sua inscrição foi cancelada. Se houver algo que possamos fazer para ajudar com a questão do pagamento, por favor, nos avise.</p>
             <p>Se resolver a questão do pagamento e desejar reativar sua inscrição, estamos sempre aqui para recebê-lo de volta.</p>
+            <p>Para tentar novamente o pagamento, clique no link abaixo:</p>
+            <p><a href="{stripe_payment_link}" style="color: #1a73e8;">Tentar novamente o pagamento</a></p>
             <p>Contacte-nos em <a href="mailto:contact@petersoftwarehouse.com">contact@petersoftwarehouse.com</a> ou pelo WhatsApp em <a href="https://wa.link/ouz6vl">https://wa.link/ouz6vl</a></p>
             <p>Atenciosamente,</p>
             <p>Pedro Madureira<br>
@@ -164,6 +167,8 @@ def send_subscription_canceled_email_due_to_unpaid_bill(user, lang):
             <p>Hi {user_name},</p>
             <p>We've noticed there was an issue with your payment for the <strong>Mind-Organizer</strong> subscription, and your subscription has been canceled. If there's anything we can do to help with the payment issue, please let us know.</p>
             <p>If you resolve the payment issue and wish to reactivate your subscription, we'll always be here to welcome you back.</p>
+            <p>To retry your payment, click the link below:</p>
+            <p><a href="{stripe_payment_link}" style="color: #1a73e8;">Retry Payment</a></p>
             <p>Contact us at <a href="mailto:contact@petersoftwarehouse.com">contact@petersoftwarehouse.com</a> or on WhatsApp at <a href="https://wa.link/ouz6vl">https://wa.link/ouz6vl</a></p>
             <p>Best regards,</p>
             <p>Peter Henry<br>
