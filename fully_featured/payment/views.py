@@ -138,42 +138,24 @@ def stripe_webhook(request):
 
     if event['type'] == 'invoice.payment_failed':
         customer_email = event['data']['object']['customer_email']
-        try:
-            user = UserModel.objects.get(email=customer_email)
+        billing_reason = event['data']['object']['billing_reason']
             #  if user.subscription_status not in [4, 5]  :
                 #  user.subscription_status = 4
                 #  user.subscription_failed_at = datetime.now()
                 #  user.save()
-            send_payment_failed_email(user, user.lang_for_communication)
-            return Response({"success": "invoice.payment_failed"})
-        except UserModel.DoesNotExist as er:
-            with sentry_sdk.push_scope() as scope:
-                scope.set_context("additional_info", {
-                    "custom_message": "Could not found customer",
-                    "customer_email": customer_email,
-                    "details": "Could not found customer on stripe event 'invoice.payment_failed'"
-                })
-                sentry_sdk.capture_exception(er)
-            return Response({"success": "invoice.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try"})
-    # TODO THis might be useless. it `invoice.payment_failed` already runs
-    if event['type'] == 'payment_intent.payment_failed':
-        customer_stripe_id = event['data']['object'].get("customer")
-        try:
-            user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
-            #  if user.subscription_status not in [4, 5]:
-                #  user.subscription_status = 4
-                #  user.subscription_failed_at = datetime.now()
-                #  user.save()
-            send_payment_failed_email(user, user.lang_for_communication)
-            return Response({"success": "payment_intent.payment_failed"})
-        except UserModel.DoesNotExist as er:
-            with sentry_sdk.push_scope() as scope:
-                scope.set_context("additional_info", {
-                    "custom_message": "Could not found customer",
-                    "customer_stripe_id": customer_stripe_id,
-                    "details": "Could not found customer on stripe event 'payment_intent.payment_failed'"
-                })
-                sentry_sdk.capture_exception(er)
-            return Response({"success": "payment_intent.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try."})
+        if billing_reason != "subscription_create":
+            try:
+                user = UserModel.objects.get(email=customer_email)
+                send_payment_failed_email(user, user.lang_for_communication)
+                return Response({"success": "invoice.payment_failed"})
+            except UserModel.DoesNotExist as er:
+                with sentry_sdk.push_scope() as scope:
+                    scope.set_context("additional_info", {
+                        "custom_message": "Could not found customer",
+                        "customer_email": customer_email,
+                        "details": "Could not found customer on stripe event 'invoice.payment_failed'"
+                    })
+                    sentry_sdk.capture_exception(er)
+                return Response({"success": "invoice.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try"})
+        return Response({"success": f"invoice.payment_failed; billing_reason: {billing_reason}"})
     return HttpResponse(status=200)
-    #  if event['type'] == 'customer.updated': # updated user
