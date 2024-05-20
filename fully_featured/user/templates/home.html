@@ -34,6 +34,12 @@
                 text-align: center;
             }
         }
+        .video {
+            {% comment %} width: 560px; {% endcomment %}
+            {% comment %} height: 315px; {% endcomment %}
+            aspect-ratio: 16 / 9;
+            width: 80%;
+        }
         h1 {
             color: #abb2bf;
         }
@@ -261,9 +267,25 @@
 
         <div class="video-container">
             {% if lang == "pt" %}
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe 
+                    class="video"
+                    src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen
+                ></iframe>
             {% else %}
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe 
+                    class="video"
+                    src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen
+                ></iframe>
             {% endif %}
         </div>
 
