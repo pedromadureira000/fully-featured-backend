@@ -149,13 +149,6 @@ def stripe_webhook(request):
                 send_payment_failed_email(user, user.lang_for_communication)
                 return Response({"success": "invoice.payment_failed"})
             except UserModel.DoesNotExist as er:
-                with sentry_sdk.push_scope() as scope:
-                    scope.set_context("additional_info", {
-                        "custom_message": "Could not found customer",
-                        "customer_email": customer_email,
-                        "details": "Could not found customer on stripe event 'invoice.payment_failed'"
-                    })
-                    sentry_sdk.capture_exception(er)
-                return Response({"success": "invoice.payment_failed but user was not found. Maybe this is not a bug, becouse user without account might not manage to make subscription in his first try"})
+                return Response({"success": "invoice.payment_failed but user was not found. Probably becouse user without account did not manage to make subscription succesfully"})
         return Response({"success": f"invoice.payment_failed; billing_reason: {billing_reason}"})
     return HttpResponse(status=200)
