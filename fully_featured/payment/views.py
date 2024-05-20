@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from fully_featured.payment.facade import send_account_created_email_with_change_password_link, send_payment_failed_email, send_subscription_canceled_email, send_subscription_success_email
+from fully_featured.payment.facade import send_account_created_email_with_change_password_link, send_payment_failed_email, send_subscription_canceled_email, send_subscription_canceled_email_due_to_unpaid_bill, send_subscription_success_email
 from fully_featured.settings import STRIPE_SECRET_KEY, STRIPE_ENDPOINT_SECRET
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
@@ -81,13 +81,16 @@ def stripe_webhook(request):
         canceled_at = event['data']['object']['canceled_at']
         try:
             user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
-            subscription_was_renewed = not canceled_at and user.subscription_status == 5 # TODO not sure about this heuristic
-            subscription_was_cancelled = canceled_at and user.subscription_status != 5
+            subscription_was_renewed = not canceled_at and user.subscription_status in [4, 5] and status == "active"
+            subscription_was_cancelled = canceled_at and user.subscription_status not in [4, 5]
             if subscription_was_cancelled: # heuristics
-                # TODO do something when user cancell it? Like send an email trying to make him change his mind
+                # TODO do something when user just cancel it? Like send an email trying to make him change his mind?
+                # OBS: I don't change subscription_status in this moment becouse `customer.subscription.deleted` 
+                # will be called when the billed period finish
                 return Response({
                     "success": "subscription_was_cancelled. But status is still active becouse it has to reach the end of billed month.",
                     "previous_attributes": previous_attributes,
+                    "canceled_at": canceled_at,
                     "status": status,
                 })
             elif subscription_was_renewed:  # working heuristics
@@ -99,11 +102,13 @@ def stripe_webhook(request):
                 return Response({
                     "success": "subscription_was_renewed",
                     "previous_attributes": previous_attributes,
+                    "canceled_at": canceled_at,
                     "status": status,
                 })
             return Response({
                 "success": "customer.subscription.updated -- but did not changed subscription on backend",
                 "previous_attributes": previous_attributes,
+                "canceled_at": canceled_at,
                 "status": status,
             })
         except UserModel.DoesNotExist as er:
@@ -118,27 +123,38 @@ def stripe_webhook(request):
             return Response({
                 "success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?",
                 "previous_attributes": previous_attributes,
+                "canceled_at": canceled_at,
                 "status": status,
             })
     if event['type'] == 'customer.subscription.deleted':
         customer_stripe_id = event['data']['object']['customer']
         canceled_at = event['data']['object']['canceled_at']
-        try:
-            user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
+        cancel_at = event['data']['object']['cancel_at']
+        cancel_at_period_end = event['data']['object']['cancel_at_period_end']
+        canceled_due_to_unpaid_bill = cancel_at and cancel_at_period_end
+        user = UserModel.objects.get(customer_stripe_id=customer_stripe_id)
+        if canceled_due_to_unpaid_bill:
+            user.subscription_status = 4
+            user.subscription_canceled_at = datetime.now()
+            user.save()
+            send_subscription_canceled_email_due_to_unpaid_bill(user, user.lang_for_communication)
+            return Response({
+                "success": "subscription_was_cancelled on customer.subscription.deleted, becouse of unpaid bill",
+                "canceled_at": canceled_at,
+                "cancel_at": cancel_at,
+                "cancel_at_period_end": cancel_at_period_end,
+            })
+        else: 
             user.subscription_status = 5
             user.subscription_canceled_at = datetime.now()
             user.save()
             send_subscription_canceled_email(user, user.lang_for_communication)
-            return Response({"success": "subscription_was_cancelled on customer.subscription.deleted"})
-        except UserModel.DoesNotExist as er:
-            with sentry_sdk.push_scope() as scope:
-                scope.set_context("additional_info", {
-                    "custom_message": "Could not found customer",
-                    "customer_stripe_id": customer_stripe_id,
-                    "details": "subscription_was_cancelled but user was not found. This should not happen"
-                })
-                sentry_sdk.capture_exception(er)
-            return Response({"error": "subscription_was_cancelled but user was not found. This should not happen"})
+            return Response({
+                "success": "subscription_was_cancelled on customer.subscription.deleted",
+                "canceled_at": canceled_at,
+                "cancel_at": cancel_at,
+                "cancel_at_period_end": cancel_at_period_end,
+            })
 
     if event['type'] == 'invoice.payment_failed':
         customer_email = event['data']['object']['customer_email']

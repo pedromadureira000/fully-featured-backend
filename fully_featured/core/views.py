@@ -41,7 +41,7 @@ def test_view(request):
 def todo_get_view(request, group_id):
     blocked_reason = user_is_blocked(request.user)
     if blocked_reason:
-        return Response({'error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
+        return Response({'user_blocked_error': blocked_reason}, status=status.HTTP_403_FORBIDDEN)
     if request.method == 'GET':
         startingIndex = request.GET.get("startingIndex")
         statusFilter = request.GET.get("status")

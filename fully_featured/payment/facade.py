@@ -90,6 +90,7 @@ def send_subscription_canceled_email(user, lang):
             <p>Olá {user_name},</p>
             <p>Lamentamos saber que você cancelou sua inscrição na <strong>Mind-Organizer</strong>. Se houver algo que possamos fazer para melhorar sua experiência, por favor, nos avise.</p>
             <p>Se você mudar de ideia, estamos sempre aqui para recebê-lo de volta.</p>
+            <p>Contacte-nos em <a href="mailto:contact@petersoftwarehouse.com">contact@petersoftwarehouse.com</a> ou pelo WhatsApp em <a href="https://wa.link /ouz6vl">https://wa.link/ouz6vl</a></p>
             <p>Atenciosamente,</p>
             <p>Pedro Madureira<br>
             Fundador, Mind-Organizer</p>
@@ -109,6 +110,61 @@ def send_subscription_canceled_email(user, lang):
             <p>Hi {user_name},</p>
             <p>We're sorry to see you go. Your subscription to <strong>Mind-Organizer</strong> has been canceled. If there's anything we can do to improve your experience, please let us know.</p>
             <p>If you change your mind, we'll always be here to welcome you back.</p>
+            <p>Contact us at <a href="mailto:contact@petersoftwarehouse.com">contact@petersoftwarehouse.com</a> or on WhatsApp at <a href="https://wa.link /ouz6vl"> https://wa.link/ouz6vl</a></p>
+            <p>Best regards,</p>
+            <p>Peter Henry<br>
+            Founder, Mind-Organizer</p>
+        </body>
+        </html>
+        """
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=body,
+        from_email=FROM_EMAIL,
+        to=[email],
+    )
+    msg.attach_alternative(body, "text/html")
+    msg.send()
+
+def send_subscription_canceled_email_due_to_unpaid_bill(user, lang):
+    email = user.email
+    user_name = user.name
+    subject = "Cancelamento da Inscrição por Falta de Pagamento" if lang == "pt" else "Subscription Canceled Due to Unpaid Bill"
+    
+    if lang == "pt":
+        body = f"""
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{subject}</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <p>Olá {user_name},</p>
+            <p>Notamos que houve um problema com o pagamento de sua assinatura da <strong>Mind-Organizer</strong>, e sua inscrição foi cancelada. Se houver algo que possamos fazer para ajudar com a questão do pagamento, por favor, nos avise.</p>
+            <p>Se resolver a questão do pagamento e desejar reativar sua inscrição, estamos sempre aqui para recebê-lo de volta.</p>
+            <p>Contacte-nos em <a href="mailto:contact@petersoftwarehouse.com">contact@petersoftwarehouse.com</a> ou pelo WhatsApp em <a href="https://wa.link/ouz6vl">https://wa.link/ouz6vl</a></p>
+            <p>Atenciosamente,</p>
+            <p>Pedro Madureira<br>
+            Fundador, Mind-Organizer</p>
+        </body>
+        </html>
+        """
+    else:
+        body = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{subject}</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <p>Hi {user_name},</p>
+            <p>We've noticed there was an issue with your payment for the <strong>Mind-Organizer</strong> subscription, and your subscription has been canceled. If there's anything we can do to help with the payment issue, please let us know.</p>
+            <p>If you resolve the payment issue and wish to reactivate your subscription, we'll always be here to welcome you back.</p>
+            <p>Contact us at <a href="mailto:contact@petersoftwarehouse.com">contact@petersoftwarehouse.com</a> or on WhatsApp at <a href="https://wa.link/ouz6vl">https://wa.link/ouz6vl</a></p>
             <p>Best regards,</p>
             <p>Peter Henry<br>
             Founder, Mind-Organizer</p>
