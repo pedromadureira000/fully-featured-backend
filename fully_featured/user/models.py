@@ -12,7 +12,7 @@ subscription_status = (
     (2, "trial_ended"),
     (3, "subscription_paid"),
     (4, "subscription_unpaid"),
-    (5, "subscription_cancelled"),
+    (5, "subscription_canceled"),
 )
 
 class UserBase(models.Model):

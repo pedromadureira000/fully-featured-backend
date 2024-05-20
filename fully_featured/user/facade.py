@@ -23,4 +23,4 @@ def user_is_blocked(user):
     elif user.subscription_status == 4:
         return "subscription_unpaid"
     elif user.subscription_status == 5:
-        return "subscription_cancelled"
+        return "subscription_canceled"
