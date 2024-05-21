@@ -74,7 +74,7 @@ def stripe_webhook(request):
         customer_stripe_id = event['data']['object']['customer']
         #  cancellation_details = event['data']['object']['cancellation_details'] # it's always dict
         status = event['data']['object']['status'] # "past_due" if payment failed. but will be retryed
-        previous_attributes = event['data']['object']['previous_attributes']
+        previous_attributes = event['data']['previous_attributes']
                             #  "previous_attributes": {
                               #  "status": "active"
                             #  }
