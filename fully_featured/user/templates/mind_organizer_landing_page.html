@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
     <title>Mind-Organizer</title>
     <style>
         body {
@@ -22,28 +24,26 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        .video {
+            aspect-ratio: 16 / 9;
+            width: 70%;
+        }
         /* Media query for smaller screens */
         @media screen and (max-width: 600px) {
             .container {
                 width: 100%; /* Set maximum width to 100% on smaller screens */
-                background-color: #070F2B; /* color1 */
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                text-align: center;
+                padding: 10px; /* Add padding for better spacing */
+            }
+            .video {
+                aspect-ratio: 16 / 9;
+                width: 100%;
             }
         }
-        h1 {
-            color: #abb2bf;
-        }
-        h2 {
-            color: #abb2bf;
-        }
-        h3 {
+        h1, h2, h3, p {
             color: #abb2bf;
         }
         p {
-            color: #abb2bf;
-            margin: 0px;
+            margin-bottom: 1em; /* Add margin for better spacing */
         }
         .features {
             display: flex;
@@ -53,30 +53,25 @@
         }
         .feature {
             flex: 1;
-            padding: 3px;
+            padding: 10px;
             border-radius: 5px;
             background-color: #1B1A55; /* color2 */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            margin: 0 10px;
+            margin: 10px 5px; /* Adjust margin for better spacing */
         }
 
         @media screen and (max-width: 600px) {
             .feature {
-                flex: 1;
-                width: 100%;
-                padding: 3px;
+                flex: 1 1 30%; /* Allow flexibility and minimum width */
+                padding: 10px;
                 border-radius: 5px;
                 background-color: #1B1A55; /* color2 */
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                margin: 0 10px;
+                margin: 10px 5px; /* Adjust margin for better spacing */
             }
         }
-        .feature h2 {
-            color: #abb2bf;
-        }
-
         .feature p {
-            padding-bottom: 20px;
+            margin: 0px;
         }
         .button-container {
             flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
@@ -88,38 +83,46 @@
             cursor: pointer;
             display: inline-block;
             background-color: #535C91; /* color3 */
-            padding: 5px 10px;
+            padding: 10px 20px; /* Adjust padding for better spacing */
             border-radius: 5px;
             text-decoration: none;
-            margin: 0 5px;
+            margin: 10px 5px; /* Adjust margin for better spacing */
         }
         .button p {
             color: #d3d9e3; /* color5 */
-        }
-        .button + .button {
-            margin-left: 20px; /* Adjust the padding between buttons here */
+            margin: 0; /* Remove default margin */
         }
         .center-links {
             display: grid;
             grid-template-columns: repeat(2, auto);
             justify-content: center;
-            gap: 20px; /* Adjust the space between links as needed */
-            margin-top: 20px;
-            margin-bottom: 20px;
+            gap: 10px; /* Adjust the space between links as needed */
+            margin: 20px 0; /* Add margin for better spacing */
+        }
+        .center-links a {
+            color: #9290C3;
+            text-decoration: none;
+        }
+        .center-links a:hover {
+            color: #fff;
         }
         .contact-links {
-            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             display: flex;
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             justify-content: center;
             padding: 10px 20px;
         }
-        a { color: #9290C3; }
-        a:link { color: #9290C3; }
-        a:visited { color: #6d4b8d; }
-        a:hover { color: #fff; }
-        a:active {
-            color: #9290C3; text-decoration:none; font-weight:normal; 
-            !important;
+        a {
+            color: #9290C3;
+        }
+        a:hover {
+            color: #fff;
+        }
+        .product-link {
+            color: #9290C3; 
+            cursor: pointer;
+            text-decoration: underline;
+            margin-bottom: 24px;
         }
         .title {
             font-family:'Lato', 'Arial', sans-serif;
@@ -142,7 +145,7 @@
             width: 300px;
         }
         .video-container {
-            padding: 30px 0px;
+            padding: 30px 0;
         }
         .small-text {
             font-size: 15px !important;
@@ -170,10 +173,6 @@
         </div>
     </div>
     <div class="container" id="app">
-        {% comment %} <h1 onclick="window.location='https://petersoftwarehouse.com/mind-organizer';"> {% endcomment %}
-            {% comment %} <u>Mind Organizer</u> {% endcomment %}
-        {% comment %} </h1> {% endcomment %}
-
         <div class="biger-box">
             <div class="text-box">
                 <h1 class="title">Mind Organizer</h1>
@@ -310,9 +309,25 @@
 
         <div class="video-container">
             {% if lang == "pt" %}
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe 
+                    class="video"
+                    src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen
+                ></iframe>
             {% else %}
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe 
+                    class="video"
+                    src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen
+                ></iframe>
             {% endif %}
         </div>
 
@@ -323,6 +338,7 @@
                 Contact
             {% endif %}
         </h2>
+
         <div class="contact-links">
             <div class="button" onclick="window.location='https://wa.link/ouz6vl';">
                 <p>

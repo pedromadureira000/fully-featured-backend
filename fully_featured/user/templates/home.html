@@ -24,34 +24,27 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        .video {
+            aspect-ratio: 16 / 9;
+            width: 70%;
+        }
         /* Media query for smaller screens */
         @media screen and (max-width: 600px) {
             .container {
                 width: 100%; /* Set maximum width to 100% on smaller screens */
-                background-color: #070F2B; /* color1 */
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                text-align: center;
+                padding: 10px; /* Add padding for better spacing */
+            }
+            .video {
+                aspect-ratio: 16 / 9;
+                width: 100%;
             }
         }
-        .video {
-            {% comment %} width: 560px; {% endcomment %}
-            {% comment %} height: 315px; {% endcomment %}
-            aspect-ratio: 16 / 9;
-            width: 80%;
-        }
-        h1 {
+        h1, h2, h3, p {
             color: #abb2bf;
-        }
-        h2 {
-            color: #abb2bf;
-        }
-        h3 {
-            color: #abb2bf;
+            margin-bottom: 28px;
         }
         p {
-            color: #abb2bf;
-            margin: 0px;
+            margin-bottom: 1em; /* Add margin for better spacing */
         }
         .features {
             display: flex;
@@ -61,30 +54,25 @@
         }
         .feature {
             flex: 1;
-            padding: 3px;
+            padding: 10px;
             border-radius: 5px;
             background-color: #1B1A55; /* color2 */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            margin: 0 10px;
+            margin: 10px 5px; /* Adjust margin for better spacing */
         }
 
         @media screen and (max-width: 600px) {
             .feature {
-                flex: 1;
-                width: 100%;
-                padding: 3px;
+                flex: 1 1 30%; /* Allow flexibility and minimum width */
+                padding: 10px;
                 border-radius: 5px;
                 background-color: #1B1A55; /* color2 */
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                margin: 0 10px;
+                margin: 10px 5px; /* Adjust margin for better spacing */
             }
         }
-        .feature h2 {
-            color: #abb2bf;
-        }
-
         .feature p {
-            padding-bottom: 20px;
+            margin: 0px;
         }
         .button-container {
             flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
@@ -96,43 +84,46 @@
             cursor: pointer;
             display: inline-block;
             background-color: #535C91; /* color3 */
-            padding: 5px 10px;
+            padding: 10px 20px; /* Adjust padding for better spacing */
             border-radius: 5px;
             text-decoration: none;
-            margin: 0 5px;
+            margin: 10px 5px; /* Adjust margin for better spacing */
         }
         .button p {
             color: #d3d9e3; /* color5 */
-        }
-        .button + .button {
-            margin-left: 20px; /* Adjust the padding between buttons here */
+            margin: 0; /* Remove default margin */
         }
         .center-links {
             display: grid;
             grid-template-columns: repeat(2, auto);
             justify-content: center;
-            gap: 20px; /* Adjust the space between links as needed */
-            margin-top: 20px;
-            margin-bottom: 20px;
+            gap: 10px; /* Adjust the space between links as needed */
+            margin: 20px 0; /* Add margin for better spacing */
+        }
+        .center-links a {
+            color: #9290C3;
+            text-decoration: none;
+        }
+        .center-links a:hover {
+            color: #fff;
         }
         .contact-links {
-            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             display: flex;
+            flex-wrap: wrap; /* Ensure elements wrap to the next line if needed */
             justify-content: center;
             padding: 10px 20px;
         }
-        a { color: #9290C3; }
-        a:link { color: #9290C3; }
-        a:visited { color: #6d4b8d; }
-        a:hover { color: #fff; }
-        a:active {
-            color: #9290C3; text-decoration:none; font-weight:normal; 
-            !important;
+        a {
+            color: #9290C3;
         }
-
+        a:hover {
+            color: #fff;
+        }
         .product-link {
             color: #9290C3; 
             cursor: pointer;
+            text-decoration: underline;
+            margin-bottom: 24px;
         }
         .title {
             font-family:'Lato', 'Arial', sans-serif;
@@ -155,7 +146,7 @@
             width: 300px;
         }
         .video-container {
-            padding: 30px 0px;
+            padding: 30px 0;
         }
         .small-text {
             font-size: 15px !important;
@@ -173,24 +164,24 @@
         {% if lang == "pt" %}
         <h2 class="sub-title">
             Alcance seus objetivos com soluções sob medida para o seu negócio!
-        </h2></br>
+        </h2>
         <p>
-            Seja você uma startup em ascensão ou uma empresa experiente, meu foco é impulsionar </br>o seu crescimento através de sistemas web e aplicativos móveis personalizados.
-        </p></br>
+            Seja você uma startup em ascensão ou uma empresa experiente, meu foco é impulsionar o seu crescimento através de sistemas web e aplicativos móveis personalizados.
+        </p>
         <p>
             Agende uma consulta gratuita e vamos juntos traçar o caminho para o seu sucesso!
-        </p></br>
+        </p>
 
         {% else %}
         <h2 class="sub-title">
             Reach your goals with solutions tailored to your business!
-        </h2></br>
+        </h2>
         <p>
-            Whether you are a rising startup or an experienced company, my focus is to drive</br>your growth through custom web systems and mobile applications.
-        </p></br>
+            Whether you are a rising startup or an experienced company, my focus is to drive your growth through custom web systems and mobile applications.
+        </p>
         <p>
             Schedule a free consultation and let’s chart the path to your success together!
-        </p></br>
+        </p>
         {% endif %}
 
         <div class="contact-links">
@@ -289,7 +280,7 @@
             {% endif %}
         </div>
 
-        <h2>
+        <h2 style="margin-bottom: 38px;">
             {% if lang == "pt" %}
                 Aplicativos desenvolvidos
             {% else %}
@@ -297,14 +288,13 @@
             {% endif %}
         </h2>
 
-
         <h3 class="product-link" onclick="window.location='https://petersoftwarehouse.com/mind-organizer';">
             <u>Mind Organizer</u>
         </h3>
 
         <p>
         {% if lang == "pt" %}
-            Transforme sua organização pessoal com o Mind-Organizer. </br>Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário,</br> tudo em uma plataforma simples e intuitiva.
+            Transforme sua organização pessoal com o Mind-Organizer. Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário, tudo em uma plataforma simples e intuitiva.
         {% else %}
             Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
         {% endif %}
