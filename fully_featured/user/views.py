@@ -227,7 +227,11 @@ def get_or_create_account_with_google(request):
     try:
         try:
             email = request.data.get("email")
+            fcmToken = request.data.get("fcmToken")
             user = UserModel.objects.get(email=email)
+            if user.fcmToken != fcmToken:
+                user.fcmToken = fcmToken
+                user.save()
             return Response({"token": user.auth_token.key, "created": False}, status=status.HTTP_200_OK)
         except UserModel.DoesNotExist:
             pass

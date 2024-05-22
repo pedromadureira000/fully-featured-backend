@@ -21,10 +21,15 @@ class AuthTokenSerializer(serializers.Serializer):
         label="Token",
         read_only=True
     )
+    fcmToken = serializers.CharField(
+        label="FCM Token",
+        write_only=True
+    )
 
     def validate(self, attrs):
         email = attrs.get('email')
         password = attrs.get('password')
+        fcmToken = attrs.get('fcmToken')
 
         user = authenticate(request=self.context.get('request'), username=email, password=password)
         # The authenticate call simply returns None for is_active=False
@@ -34,6 +39,9 @@ class AuthTokenSerializer(serializers.Serializer):
             msg = 'Unable to log in with provided credentials.'
             raise serializers.ValidationError(msg, code='authorization')
 
+        if user.fcmToken != fcmToken:
+            user.fcmToken = fcmToken
+            user.save()
         attrs['user'] = user
         return attrs
 

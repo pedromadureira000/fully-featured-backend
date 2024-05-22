@@ -62,6 +62,7 @@ class UserModel(UserBase, AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
     )
+    fcmToken = models.CharField(max_length=255, blank=True, null=True)
     subscription_status = models.IntegerField(choices=subscription_status, default=1)
     customer_stripe_id = models.CharField(max_length=30, blank=True, null=True)
     subscription_started_at = models.DateTimeField(blank=True, null=True)
