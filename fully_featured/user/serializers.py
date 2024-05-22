@@ -23,7 +23,9 @@ class AuthTokenSerializer(serializers.Serializer):
     )
     fcmToken = serializers.CharField(
         label="FCM Token",
-        write_only=True
+        write_only=True,
+        required=False,
+        allow_blank=True
     )
 
     def validate(self, attrs):
@@ -39,7 +41,7 @@ class AuthTokenSerializer(serializers.Serializer):
             msg = 'Unable to log in with provided credentials.'
             raise serializers.ValidationError(msg, code='authorization')
 
-        if user.fcmToken != fcmToken:
+        if fcmToken and user.fcmToken != fcmToken:
             user.fcmToken = fcmToken
             user.save()
         attrs['user'] = user
