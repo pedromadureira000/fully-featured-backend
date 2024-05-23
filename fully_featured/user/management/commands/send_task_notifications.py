@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 from django.core.management.base import BaseCommand
-from fully_featured.core.tasks import send_fcm_notification
+#  from fully_featured.core.tasks import send_fcm_notification
+from fully_featured.core.facade import send_fcm_notification
 from fully_featured.core.models import ToDo
+import time
+import random
 
 # Calculate the date 30 days ago from today
 
@@ -25,6 +28,9 @@ def send_task_notifications():
     for task in upcoming_tasks:
         title = task.title[0:60] + "..." if len(task.title) > 60 else task.title
         body = task.description[0:120] + "..." if len(task.description) > 120 else task.description
-        send_fcm_notification.delay(task.user.fcmToken, title, body)
+        timeout = random.uniform(0.1, 0.3)
+        time.sleep(timeout)
+        send_fcm_notification(task.user.fcmToken, title, body)
+        #  send_fcm_notification.delay(task.user.fcmToken, title, body)
     #  UserModel.objects.bulk_update(trial_users_older_than_30_days, ["subscription_status"]);
 
