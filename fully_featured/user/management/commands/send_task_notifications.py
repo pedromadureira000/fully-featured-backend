@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils import timezone
 from django.core.management.base import BaseCommand
 #  from fully_featured.core.tasks import send_fcm_notification
