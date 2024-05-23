@@ -23,3 +23,5 @@ DEFAULT_FROM_EMAIL=
 SERVER_EMAIL=
 BREVO_API_KEY=
 FROM_EMAIL="No Reply <no-reply@petersoftwarehouse.com>"
+
+PATH_FIREBASE_PUSH_NOTIFICATION_SERVICE_ACCOUNT_KEY=/home/ph/Projects/fully-featured-backend/secret_keys/pushnotifications-<code>.json
