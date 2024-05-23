@@ -402,7 +402,6 @@ https://ahmadalsajid.medium.com/daemonizing-celery-beat-with-systemd-97f1203e7b3
 1. We will create a /etc/default/celeryd configuration file.
 * `sudo nvim /etc/default/celeryd`
 
-``
 ### The names of the workers. This example create one worker
 CELERYD_NODES="worker1"
 
@@ -419,10 +418,10 @@ CELERYD_LOG_LEVEL=INFO
 
 ### Path to celery binary, that is in your virtual environment
 CELERY_BIN=/home/ubuntu/fully-featured-backend/.venv/bin/celery
-``
 
 2. Now, create another file for the worker 
 * `sudo nvim /etc/systemd/system/celeryd.service` with sudo privilege.
+
 ``
 [Unit]
 Description=Celery Service
@@ -479,8 +478,10 @@ sudo apt install cronie
 ``
 
 * cron that run python command once a day at 00:00
+* cron that run python command every 5 minutes.
 ``
 0 0 * * * /home/ubuntu/fully-featured-backend/.venv/bin/python /home/ubuntu/fully-featured-backend/manage.py check_trial_ended
+*/5 * * * * /home/ubuntu/fully-featured-backend/.venv/bin/python /home/ubuntu/fully-featured-backend/manage.py send_task_notifications
 ``
 
 Install SSL and set domain (22-04)

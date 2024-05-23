@@ -17,7 +17,7 @@ def send_task_notifications():
     now = datetime.utcnow()
     five_minutes_from_now = now + timedelta(minutes=5)
 
-    upcoming_tasks = ToDo.objects.select_related("user__fcmToken").filter(
+    upcoming_tasks = ToDo.objects.select_related("user").filter(
         notify_on_due=True,
         due_date__gte=now,
         due_date__lt=five_minutes_from_now
