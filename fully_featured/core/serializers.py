@@ -50,7 +50,7 @@ class ToDoSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        if validated_data["group"] != instance.group_id:
+        if validated_data["group"].id != instance.group_id:
             validated_data["created_at"] = datetime.now()
         if validated_data["status"] == 4 and instance.status != 4:
             validated_data["done_date"] = datetime.now()
@@ -113,7 +113,7 @@ class JournalSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        if validated_data["group"] != instance.group_id:
+        if validated_data["group"].id != instance.group_id:
             validated_data["created_at"] = datetime.now()
         return super().update(instance, validated_data)
 
@@ -173,7 +173,7 @@ class NoteSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        if validated_data["group"] != instance.group_id:
+        if validated_data["group"].id != instance.group_id:
             validated_data["created_at"] = datetime.now()
         return super().update(instance, validated_data)
 
@@ -233,7 +233,7 @@ class TermSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        if validated_data["group"] != instance.group_id:
+        if validated_data["group"].id != instance.group_id:
             validated_data["created_at"] = datetime.now()
         return super().update(instance, validated_data)
 
