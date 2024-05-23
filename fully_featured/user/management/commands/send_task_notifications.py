@@ -32,6 +32,7 @@ def send_task_notifications():
             body = task.description[0:120] + "..." if len(task.description) > 120 else task.description
             timeout = random.uniform(0.1, 0.3)
             time.sleep(timeout)
+            print('========================> send_fcm_notification > task.user.fcmToken: ',task.user.fcmToken )
             send_fcm_notification(task.user.fcmToken, title, body)
             #  send_fcm_notification.delay(task.user.fcmToken, title, body)
         #  UserModel.objects.bulk_update(trial_users_older_than_30_days, ["subscription_status"]);
