@@ -141,3 +141,5 @@ pgdata/
 flutter_web_app/
 
 downloads/
+
+secret_keys/

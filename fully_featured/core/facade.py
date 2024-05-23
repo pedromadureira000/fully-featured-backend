@@ -3,6 +3,7 @@ from django.core.validators import math
 #  from anymail.message import attach_inline_image_file
 from fully_featured.settings import BASE_URL, FROM_EMAIL
 from django.db.models import F
+from firebase_admin import messaging
 
 
 def send_account_confirmation_email(email, auth_token, lang):
@@ -81,3 +82,13 @@ def reorder_group_after_delete(user, model):
             group.order = index
             index = index + 1
     model.objects.bulk_update(groups, ["order"]);
+
+def send_fcm_notification(fcmToken, title, body):
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        token=fcmToken,
+    )
+    response = messaging.send(message)

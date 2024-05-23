@@ -5,6 +5,7 @@ from decouple import config, Csv
 from dj_database_url import parse as dburl
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+import firebase_admin
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +60,11 @@ ANYMAIL = {
     'BREVO_API_KEY': config('BREVO_API_KEY'),
 }
 FROM_EMAIL = config('FROM_EMAIL')
+
+cred = firebase_admin.credentials.Certificate(
+    config('PATH_FIREBASE_PUSH_NOTIFICATION_SERVICE_ACCOUNT_KEY')
+)
+firebase_admin.initialize_app(cred)
 
 # Application definition
 

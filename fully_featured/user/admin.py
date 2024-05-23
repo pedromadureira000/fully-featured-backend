@@ -34,7 +34,17 @@ class UserModelAdmin(admin.ModelAdmin):
     add_form_template = "admin/auth/user/add_form.html"
     change_user_password_template = None
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
+        (None, {"fields": (
+            "email",
+            "password",
+            "fcmToken",
+            "subscription_status",
+            "customer_stripe_id",
+            "subscription_started_at",
+            "subscription_canceled_at",
+            "subscription_failed_at",
+            "lang_for_communication",
+        )}),
         (_("Personal info"), {"fields": ("name", "whatsapp")}),
         (
             _("Permissions"),

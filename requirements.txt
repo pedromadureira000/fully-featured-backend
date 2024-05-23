@@ -14,3 +14,4 @@ stripe
 django-cors-headers
 django-anymail[brevo]
 ipython
+firebase-admin
