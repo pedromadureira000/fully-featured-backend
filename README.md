@@ -25,7 +25,7 @@ python manage.py admin_generator app_name
 
 ## Running celery
 ```
-celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_email
+celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_push_notifications
 ```
 
 ## Command to check if trial ended (meant to run once a day)

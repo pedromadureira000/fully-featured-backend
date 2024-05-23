@@ -355,7 +355,7 @@ Run redis
 ## Manually
 ``
 sudo docker ps -a
-sudo docker start 61 # if 61 is the redis id
+sudo docker start 61 # if 61 is the redis id (first two digits of id)
 ``
 ## Daemonizing Redis container
 1. `sudo nvim /etc/systemd/system/redis.service`
@@ -393,7 +393,7 @@ Run celery
 -----------------------------------------
 ## Just run it manualy
 ``
-celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_completion_to_user &
+celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_push_notifications &
 ``
 
 ## Daemonizing Celery with systemd
@@ -403,21 +403,21 @@ https://ahmadalsajid.medium.com/daemonizing-celery-beat-with-systemd-97f1203e7b3
 * `sudo nvim /etc/default/celeryd`
 
 ``
-# The names of the workers. This example create one worker
+### The names of the workers. This example create one worker
 CELERYD_NODES="worker1"
 
-# The name of the Celery App, should be the same as the python file
-# where the Celery tasks are defined
+### The name of the Celery App, should be the same as the python file
+### where the Celery tasks are defined
 CELERY_APP="fully_featured"
 
-# Log and PID directories
+### Log and PID directories
 CELERYD_LOG_FILE="/var/log/celery/%n%I.log"
 CELERYD_PID_FILE="/var/run/celery/%n.pid"
 
-# Log level
+### Log level
 CELERYD_LOG_LEVEL=INFO
 
-# Path to celery binary, that is in your virtual environment
+### Path to celery binary, that is in your virtual environment
 CELERY_BIN=/home/ubuntu/fully-featured-backend/.venv/bin/celery
 ``
 
@@ -433,7 +433,7 @@ Type=forking
 User=ubuntu
 Group=ubuntu
 WorkingDirectory=/home/ubuntu/fully-featured-backend
-ExecStart=/home/ubuntu/fully-featured-backend/.venv/bin/celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_completion_to_user
+ExecStart=/home/ubuntu/fully-featured-backend/.venv/bin/celery -A fully_featured worker -l INFO --pool=gevent --concurrency=8 --hostname=worker -E --queues=send_push_notifications
 Restart=always
 
 [Install]

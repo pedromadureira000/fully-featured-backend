@@ -210,3 +210,8 @@ CELERY_BROKER_URL = config("CELERY_URL", default="redis://localhost:6379")
 accept_content = ["application/json"]
 result_serializer = "json"
 timezone = TIME_ZONE
+
+TASK__MAX_RETRIES = config("TASK__MAX_RETRIES", default=2)
+TASK__DEFAULT_RETRY_DELAY = config(
+    "TASK__DEFAULT_RETRY_DELAY", default=60
+)

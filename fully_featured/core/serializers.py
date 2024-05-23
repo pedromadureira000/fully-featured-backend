@@ -36,7 +36,20 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ['id','title', 'description', 'completed', 'user_id', 'group', 'status', 'priority','due_date', 'created_at', 'done_date']
+        fields = [
+            'id',
+            'title',
+            'description',
+            'completed',
+            'user_id',
+            'group',
+            'status',
+            'priority',
+            'due_date',
+            'created_at',
+            'done_date',
+            'notify_on_due'
+        ]
         read_only_fields = ['id', 'user_id', 'created_at', 'done_date']
 
     def validate_title(self, value):

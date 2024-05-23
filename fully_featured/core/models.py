@@ -33,6 +33,7 @@ class ToDo(Base):
     priority = models.IntegerField(choices=priority_choices, default=3)
     due_date = models.DateTimeField("Due date", blank=True, null=True)
     done_date = models.DateTimeField("Done date", blank=True, null=True)
+    notify_on_due = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         #  if self.agent != Conversation.objects.get(id=self.id).agent:
