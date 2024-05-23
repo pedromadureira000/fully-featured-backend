@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from django.utils import timezone
 from django.core.management.base import BaseCommand
 #  from fully_featured.core.tasks import send_fcm_notification
 from fully_featured.core.facade import send_fcm_notification
@@ -19,7 +20,7 @@ class Command(BaseCommand):
 
 def send_task_notifications():
     try:
-        now = datetime.utcnow()
+        now = timezone.now()
         five_minutes_from_now = now + timedelta(minutes=5)
 
         upcoming_tasks = ToDo.objects.select_related("user").filter(
