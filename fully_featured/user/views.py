@@ -16,6 +16,7 @@ from fully_featured.settings import DEBUG, STRIPE_PAYMENT_LINK
 from django.shortcuts import redirect
 from django.http import HttpResponse
 import os
+from firebase_admin import auth
 
 from .serializers import AuthTokenSerializer, ChangeUserPasswordSerializer, GoogleUserSerializer, ProfileUpdateSerializer, UserSerializer
 
@@ -225,21 +226,37 @@ def reset_password(request, verification_code):
 @csrf_exempt
 def get_or_create_account_with_google(request):
     try:
+        email = request.data.get("email")
+        fcmToken = request.data.get("fcmToken")
+        id_token = request.data.get('idToken')
+        access_token = request.data.get('accessToken')
+        display_name = request.data.get('displayName')
+
+        # Verify ID token using Firebase Admin SDK
         try:
-            email = request.data.get("email")
-            fcmToken = request.data.get("fcmToken")
+            decoded_token = auth.verify_id_token(id_token)
+            uid = decoded_token['uid']
+            # ID token is valid, proceed with user creation/login
+        except Exception as error:
+            # Handle invalid/expired ID token ???????????????????????????//
+            if DEBUG:
+                print('========================> error: ',error )
+            else:
+                sentry_sdk.capture_exception(error)
+            return Response("Invalid google authentication token.", status=status.HTTP_403_FORBIDDEN)
+
+        try:
             user = UserModel.objects.get(email=email)
             if fcmToken and user.fcmToken != fcmToken:
                 user.fcmToken = fcmToken
                 user.save()
             return Response({"token": user.auth_token.key, "created": False}, status=status.HTTP_200_OK)
         except UserModel.DoesNotExist:
-            pass
-        serializer = GoogleUserSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            instance = serializer.save()
-            return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer = GoogleUserSerializer(data=request.data, context={"request": request})
+            if serializer.is_valid():
+                instance = serializer.save()
+                return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
         sentry_sdk.capture_exception(er)
         if DEBUG:
