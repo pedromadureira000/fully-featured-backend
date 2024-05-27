@@ -307,29 +307,29 @@
             </div>
         </div>
 
-        <div class="video-container">
-            {% if lang == "pt" %}
-                <iframe 
-                    class="video"
-                    src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen
-                ></iframe>
-            {% else %}
-                <iframe 
-                    class="video"
-                    src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen
-                ></iframe>
-            {% endif %}
-        </div>
+        {% comment %} <div class="video-container"> {% endcomment %}
+            {% comment %} {% if lang == "pt" %} {% endcomment %}
+                {% comment %} <iframe  {% endcomment %}
+                    {% comment %} class="video" {% endcomment %}
+                    {% comment %} src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W"  {% endcomment %}
+                    {% comment %} title="YouTube video player"  {% endcomment %}
+                    {% comment %} frameborder="0"  {% endcomment %}
+                    {% comment %} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" {% endcomment %}
+                    {% comment %} referrerpolicy="strict-origin-when-cross-origin"  {% endcomment %}
+                    {% comment %} allowfullscreen {% endcomment %}
+                {% comment %} ></iframe> {% endcomment %}
+            {% comment %} {% else %} {% endcomment %}
+                {% comment %} <iframe  {% endcomment %}
+                    {% comment %} class="video" {% endcomment %}
+                    {% comment %} src="https://www.youtube.com/embed/9bdS5oIoRcA?si=oy6BRZoNwpaKLKmf"  {% endcomment %}
+                    {% comment %} title="YouTube video player"  {% endcomment %}
+                    {% comment %} frameborder="0"  {% endcomment %}
+                    {% comment %} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" {% endcomment %}
+                    {% comment %} referrerpolicy="strict-origin-when-cross-origin"  {% endcomment %}
+                    {% comment %} allowfullscreen {% endcomment %}
+                {% comment %} ></iframe> {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
+        {% comment %} </div> {% endcomment %}
 
         <h2>
             {% if lang == "pt" %}
