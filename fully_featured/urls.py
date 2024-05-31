@@ -41,7 +41,7 @@ urlpatterns = [
     path("mind-organizer", mind_organizer_landing_page, name="mind_organizer_landing_page"),
     path("privacy_policy", privacy_policy, name="privacy_policy"),
     path("terms_of_use", terms_of_use, name="terms_of_use"),
-    *flutter_app_routes,
+    #  *flutter_app_routes,
     path("activate_account/<str:verification_code>", activate_account, name="activate_account"),
     path("reset_password/<str:verification_code>", reset_password, name="reset_password"),
     path("api/", include("fully_featured.core.urls")),
@@ -49,7 +49,7 @@ urlpatterns = [
     path("api/payment/", include("fully_featured.payment.urls")),
     path("admin/", admin.site.urls),
     path("download_apk", download_apk, name="download_apk"),
-    path("<path:resource>", flutter_redirect),
+    #  path("<path:resource>", flutter_redirect),
 ]
 
 def get_app_route(r):
