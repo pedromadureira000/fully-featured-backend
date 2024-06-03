@@ -63,7 +63,7 @@ sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 docker compose version
 
 #  finally
-sudo docker compose up -d -f deploymen-arm64.sh
+sudo docker compose up -d
 
 # Connect to default database and create the database that you will use
 psql postgres://admin_ph:asdf@localhost:5432/postgres
