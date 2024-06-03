@@ -291,7 +291,7 @@ def peter_saas_root(request):
                     'lang': language, 'BASE_URL': BASE_URL, 'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK
                 }
             )
-    return redirect("https://app.petersoftwarehouse.com")
+    return redirect("https://mindorganizer.app")
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
@@ -309,7 +309,7 @@ def mind_organizer_landing_page(request):
                 'lang': language, 'BASE_URL': BASE_URL, 'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK
             }
         )
-    return redirect("https://app.petersoftwarehouse.com")
+    return redirect("https://mindorganizer.app")
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
@@ -325,7 +325,7 @@ def privacy_policy(request):
             "privacy_policy.html",
             context={'lang': language}
         )
-    return redirect("https://app.petersoftwarehouse.com")
+    return redirect("https://mindorganizer.app")
 
 
 @api_view(['GET'])
@@ -342,7 +342,7 @@ def terms_of_use(request):
             "terms_of_use.html",
             context={'lang': language}
         )
-    return redirect("https://app.petersoftwarehouse.com")
+    return redirect("https://mindorganizer.app")
 
 
 @api_view(['GET'])

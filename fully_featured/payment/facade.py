@@ -40,7 +40,7 @@ def _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass
         access_platform_txt_call = f'<p>Clique para definir sua senha <a href="{reset_password_url}">{reset_password_url}</a></p>' if lang == "pt" else f'<p>Click to set your password <a href="{reset_password_url}">{reset_password_url}</a></p>'
  
     else:
-        access_platform_txt_call = '<p>Acesse sua conta em <a href="https://app.petersoftwarehouse.com/">https://app.petersoftwarehouse.com/</a></p>' if lang == "pt" else 'Access your account at <a href="https://app.petersoftwarehouse.com/">https://app.petersoftwarehouse.com/</a></p>'
+        access_platform_txt_call = '<p>Acesse sua conta em <a href="https://mindorganizer.app/">https://mindorganizer.app/</a></p>' if lang == "pt" else 'Access your account at <a href="https://mindorganizer.app/">https://mindorganizer.app/</a></p>'
 
     if lang == "pt":
         html = f"""<p>Olá {user.name}</p>
