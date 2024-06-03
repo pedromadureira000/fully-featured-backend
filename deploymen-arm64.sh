@@ -52,6 +52,7 @@ alias gup='cd fully-featured-backend && git pull && source .venv/bin/activate &&
 DOCKER_CONFIG=${DOCKER_CONFIG:-/usr/local/lib/docker}
 sudo mkdir -p $DOCKER_CONFIG/cli-plugins
 sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-armv6 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+# sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-aarch64 -o $DOCKER_CONFIG/cli-plugins/docker-compose (_does both work ?????_)
 
 # Apply executable permissions to the binary:
 
@@ -62,7 +63,7 @@ sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 docker compose version
 
 #  finally
-sudo docker compose up -d
+sudo docker compose up -d -f deploymen-arm64.sh
 
 # Connect to default database and create the database that you will use
 psql postgres://admin_ph:asdf@localhost:5432/postgres

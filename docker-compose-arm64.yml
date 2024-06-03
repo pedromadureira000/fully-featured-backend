@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  database:
+    container_name: fully_featured_db
+    # platform: linux/arm64v8
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_PASSWORD=asdf
+      - POSTGRES_USER=admin_ph
+    ports:
+      - 5432:5432
+
+volumes:
+  database_data:
