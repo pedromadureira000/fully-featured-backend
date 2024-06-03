@@ -97,6 +97,7 @@ alias gl='git log --graph --abbrev-commit'
 alias gb='git branch'
 alias journal='journalctl -e'
 alias used_space='sudo du -h --max-depth=1 | sort -h'
+alias cl='clear'
 alias gup='cd fully-featured-backend && git pull && source .venv/bin/activate && python manage.py migrate && python manage.py collectstatic --noinput && cd .. && sudo systemctl restart gunicorn && sudo systemctl restart celeryd && echo "Done"'
 ``
 
@@ -109,7 +110,15 @@ You must run this in the same folder where the 'docker-compose.yml' file is.
 ``
 DOCKER_CONFIG=${DOCKER_CONFIG:-/usr/local/lib/docker}
 sudo mkdir -p $DOCKER_CONFIG/cli-plugins
+``
+* download x86_64 version
+``
 sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+``
+* download arm64 version
+``
+sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-armv6 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+#sudo curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-aarch64 -o $DOCKER_CONFIG/cli-plugins/docker-compose (_does both work ?????_)
 ``
 
 * Apply executable permissions to the binary:
@@ -141,6 +150,12 @@ pip install --upgrade pip
 pip install -r requirements.txt
 cp contrib/env-sample .env
 vim .env
+``
+* If want to restore db
+- create db backup upload it, and load it
+
+* If want to create db
+``
 python3 manage.py migrate
 python3 manage.py createsuperuser
 ``
@@ -218,14 +233,13 @@ It will be dead. The gunicorn.service will not be active yet since the socket ha
 sudo systemctl status gunicorn  
 ``
 
-Test the socket activation
------------------------------------------
+<!-- Test the socket activation -->
+<!-- ----------------------------------------- -->
 
-It must return a html response
-
-``
-curl --unix-socket /run/gunicorn.sock localhost 
-``
+<!-- It must return a html response -->
+<!-- `` -->
+<!-- curl --unix-socket /run/gunicorn.sock localhost  # _DONT WORK ANYMORE?_ -->
+<!-- `` -->
 
 If you don't receive a html, check the logs. Check your /etc/systemd/system/gunicorn.service file for problems. If you make changes to the /etc/systemd/system/gunicorn.service file, reload the daemon to reread the service definition and restart the Gunicorn process:
 -----------------------------------------
@@ -250,7 +264,7 @@ sudo nvim /etc/nginx/sites-available/fully-featured
 server {
         listen 80;
         # Above is the server IP
-        server_name petersoftwarehouse.com app.petersoftwarehouse.com;
+        server_name petersoftwarehouse.com;
 
         location = /favicon.ico { access_log off; log_not_found off; }
 
@@ -522,7 +536,7 @@ sudo snap install --classic certbot
 ## Obtaining an SSL Certificate
 * run it (with nginx plugin)
 ``
-sudo certbot --nginx -d petersoftwarehouse.com -d app.petersoftwarehouse.com
+sudo certbot --nginx -d petersoftwarehouse.com
 ``
 
 ## Verifying Certbot Auto-Renewal
