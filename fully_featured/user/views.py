@@ -120,7 +120,7 @@ def activate_account(request, verification_code):
             "failed_account_verification.html",
             context={'lang': language}
         )
-    login_url = f"{BASE_URL}/login"
+    login_url = f"https://mindorganizer.app/login"
     return render(
         request,
         "successful_account_verification.html",
