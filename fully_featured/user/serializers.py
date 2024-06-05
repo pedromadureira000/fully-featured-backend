@@ -62,7 +62,11 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data['password']
         name = validated_data['name']
         whatsapp = validated_data['whatsapp']
-        user = UserModel.objects.create_user(username_field, password, name=name, whatsapp=whatsapp)
+        customer_country = validated_data['customer_country']
+        user = UserModel.objects.create_user(
+            username_field, password, name=name, whatsapp=whatsapp,
+            customer_country=customer_country,
+        )
         user.set_password(password)
         user.save()
         return user
@@ -134,9 +138,13 @@ class GoogleUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         username_field = validated_data['email']
+        customer_country = validated_data['customer_country']
         password = get_random_string(length=26)
         name = validated_data['displayName']
-        user = UserModel.objects.create_user(username_field, password, name=name, whatsapp="")
+        user = UserModel.objects.create_user(
+            username_field, password, name=name, whatsapp="",
+            customer_country=customer_country,
+        )
         user.is_active = True # google account will not have confirmation e-mail
         user.save()
         return user

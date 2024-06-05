@@ -43,7 +43,7 @@ class UserModelAdmin(admin.ModelAdmin):
             "subscription_started_at",
             "subscription_canceled_at",
             "subscription_failed_at",
-            "lang_for_communication",
+            "customer_country",
         )}),
         (_("Personal info"), {"fields": ("name", "whatsapp")}),
         (

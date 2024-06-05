@@ -41,21 +41,19 @@ def stripe_webhook(request):
         customer_name = event['data']['object']['customer_name']
         customer_phone = event['data']['object']['customer_phone']
         customer_country = event['data']['object']['customer_address']['country']
-        lang = "pt" if customer_country == "BR" else "en"
         try:
             user = UserModel.objects.get(email=customer_email)
             if user.subscription_status != 3:
                 user.subscription_status = 3
                 user.subscription_started_at = datetime.now()
                 user.customer_stripe_id=customer_stripe_id
-                user.lang_for_communication=lang
                 user.save()
-                send_subscription_success_email(user, lang)
+                send_subscription_success_email(user, user.customer_country)
                 return Response({"success": "Already existant account subscribed or Re-subscribed."})
             else:
                 return Response({"success": "Just another payment"})
         except UserModel.DoesNotExist:
-            password = "aljdfkajsfafiajsdlfuweuflaj"
+            password = "aljdfkajsfafiajsdlfuweuflaj" # TODO THID SHOULD BE RANDOM
             username_field = customer_email
             user = UserModel.objects.create_user(
                 username_field,
@@ -65,9 +63,9 @@ def stripe_webhook(request):
                 subscription_status=3,
                 subscription_started_at = datetime.now(),
                 customer_stripe_id=customer_stripe_id,
-                lang_for_communication=lang,
+                customer_country=customer_country,
             )
-            send_account_created_email_with_change_password_link(user, lang)
+            send_account_created_email_with_change_password_link(user, customer_country)
             return Response({"success": "customer subscribed, account was created, and email with change password link was sent"})
 
     if event['type'] == 'customer.subscription.updated':
@@ -98,7 +96,7 @@ def stripe_webhook(request):
                 user.subscription_canceled_at = None
                 user.subscription_started_at = datetime.now()
                 user.save()
-                send_subscription_success_email(user, user.lang_for_communication)
+                send_subscription_success_email(user, user.customer_country)
                 return Response({
                     "success": "subscription_was_renewed",
                     "previous_attributes": previous_attributes,
@@ -113,13 +111,15 @@ def stripe_webhook(request):
             })
         except UserModel.DoesNotExist as er:
             # TODO understand this cases
-            with sentry_sdk.push_scope() as scope:
-                scope.set_context("additional_info", {
-                    "custom_message": "Could not found customer",
-                    "customer_stripe_id": customer_stripe_id,
-                    "details": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?"
-                })
-                sentry_sdk.capture_exception(er)
+            # NOTE: I can't waste my free sentry quota. 
+            # This is called if payment failed in the first try. Subscription is created on sentry with customer.(for a day, I think)
+            #  with sentry_sdk.push_scope() as scope:
+                #  scope.set_context("additional_info", {
+                    #  "custom_message": "Could not found customer",
+                    #  "customer_stripe_id": customer_stripe_id,
+                    #  "details": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?"
+                #  })
+                #  sentry_sdk.capture_exception(er)
             return Response({
                 "success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?",
                 "previous_attributes": previous_attributes,
@@ -137,7 +137,7 @@ def stripe_webhook(request):
             user.subscription_status = 4
             user.subscription_canceled_at = datetime.now()
             user.save()
-            send_subscription_canceled_email_due_to_unpaid_bill(user, user.lang_for_communication)
+            send_subscription_canceled_email_due_to_unpaid_bill(user, user.customer_country)
             return Response({
                 "success": "subscription_was_cancelled on customer.subscription.deleted, becouse of unpaid bill",
                 "canceled_at": canceled_at,
@@ -148,7 +148,7 @@ def stripe_webhook(request):
             user.subscription_status = 5
             user.subscription_canceled_at = datetime.now()
             user.save()
-            send_subscription_canceled_email(user, user.lang_for_communication)
+            send_subscription_canceled_email(user, user.customer_country)
             return Response({
                 "success": "subscription_was_cancelled on customer.subscription.deleted",
                 "canceled_at": canceled_at,
@@ -166,7 +166,7 @@ def stripe_webhook(request):
         if billing_reason != "subscription_create":
             try:
                 user = UserModel.objects.get(email=customer_email)
-                send_payment_failed_email(user, user.lang_for_communication)
+                send_payment_failed_email(user, user.customer_country)
                 return Response({"success": "invoice.payment_failed"})
             except UserModel.DoesNotExist as er:
                 return Response({"success": "invoice.payment_failed but user was not found. Probably becouse user without account did not manage to make subscription succesfully"})

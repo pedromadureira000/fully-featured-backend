@@ -1,12 +1,12 @@
 from django.core.mail import EmailMultiAlternatives
-from fully_featured.settings import BASE_URL, FROM_EMAIL, STRIPE_PAYMENT_LINK
+from fully_featured.settings import BASE_URL, FROM_EMAIL, STRIPE_PAYMENT_LINK, STRIPE_PAYMENT_LINK_BR
 
 
-def send_subscription_success_email(user, lang):
+def send_subscription_success_email(user, country):
     email = user.email
-    subject = "Bem-vindo ao Mind-Organizer! Sua assinatura está confirmada 🎉" if lang == "pt" else "Welcome to Mind-Organizer! Your Subscription is Confirmed 🎉"
+    subject = "Bem-vindo ao Mind-Organizer! Sua assinatura está confirmada 🎉" if country == "pt" else "Welcome to Mind-Organizer! Your Subscription is Confirmed 🎉"
     auth_token = user.auth_token.key
-    body = _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass=False)
+    body = _get_subscription_success_email_html_body(user, country, auth_token, reset_pass=False)
 
     msg = EmailMultiAlternatives(
         subject=subject,
@@ -18,11 +18,11 @@ def send_subscription_success_email(user, lang):
     msg.attach_alternative(body, "text/html")
     msg.send()
 
-def send_account_created_email_with_change_password_link(user, lang):
+def send_account_created_email_with_change_password_link(user, country):
     email = user.email
     auth_token = user.auth_token.key
-    subject = "Bem-vindo ao Mind-Organizer! Sua assinatura está confirmada 🎉" if lang == "pt" else "Welcome to Mind-Organizer! Your Subscription is Confirmed 🎉"
-    body = _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass=True)
+    subject = "Bem-vindo ao Mind-Organizer! Sua assinatura está confirmada 🎉" if country == "pt" else "Welcome to Mind-Organizer! Your Subscription is Confirmed 🎉"
+    body = _get_subscription_success_email_html_body(user, country, auth_token, reset_pass=True)
 
     msg = EmailMultiAlternatives(
         subject=subject,
@@ -34,15 +34,15 @@ def send_account_created_email_with_change_password_link(user, lang):
     msg.attach_alternative(body, "text/html")
     msg.send()
 
-def _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass):
+def _get_subscription_success_email_html_body(user, country, auth_token, reset_pass):
     reset_password_url =  f"{BASE_URL}/reset_password/{auth_token}"
     if reset_pass:
-        access_platform_txt_call = f'<p>Clique para definir sua senha <a href="{reset_password_url}">{reset_password_url}</a></p>' if lang == "pt" else f'<p>Click to set your password <a href="{reset_password_url}">{reset_password_url}</a></p>'
+        access_platform_txt_call = f'<p>Clique para definir sua senha <a href="{reset_password_url}">{reset_password_url}</a></p>' if country == "pt" else f'<p>Click to set your password <a href="{reset_password_url}">{reset_password_url}</a></p>'
  
     else:
-        access_platform_txt_call = '<p>Acesse sua conta em <a href="https://mindorganizer.app/">https://mindorganizer.app/</a></p>' if lang == "pt" else 'Access your account at <a href="https://mindorganizer.app/">https://mindorganizer.app/</a></p>'
+        access_platform_txt_call = '<p>Acesse sua conta em <a href="https://mindorganizer.app/">https://mindorganizer.app/</a></p>' if country == "pt" else 'Access your account at <a href="https://mindorganizer.app/">https://mindorganizer.app/</a></p>'
 
-    if lang == "pt":
+    if country == "pt":
         html = f"""<p>Olá {user.name}</p>
         <p>Sou Pedro Madureira, o fundador da <strong>Mind-Organizer</strong>, e gostaria de agradecer pessoalmente por se inscrever!</p>
         {access_platform_txt_call}
@@ -72,12 +72,12 @@ def _get_subscription_success_email_html_body(user, lang, auth_token, reset_pass
         """
     return html
 
-def send_subscription_canceled_email(user, lang):
+def send_subscription_canceled_email(user, country):
     email = user.email
     user_name = user.name
-    subject = "Cancelamento da Inscrição" if lang == "pt" else "Subscription Canceled"
+    subject = "Cancelamento da Inscrição" if country == "pt" else "Subscription Canceled"
     
-    if lang == "pt":
+    if country == "pt":
         body = f"""
         <!DOCTYPE html>
         <html lang="pt-BR">
@@ -126,13 +126,13 @@ def send_subscription_canceled_email(user, lang):
     msg.attach_alternative(body, "text/html")
     msg.send()
 
-def send_subscription_canceled_email_due_to_unpaid_bill(user, lang):
+def send_subscription_canceled_email_due_to_unpaid_bill(user, country):
     email = user.email
     user_name = user.name
-    subject = "Cancelamento da Inscrição por Falta de Pagamento" if lang == "pt" else "Subscription Canceled Due to Unpaid Bill"
-    stripe_payment_link = STRIPE_PAYMENT_LINK
+    subject = "Cancelamento da Inscrição por Falta de Pagamento" if country == "pt" else "Subscription Canceled Due to Unpaid Bill"
+    stripe_payment_link = STRIPE_PAYMENT_LINK_BR if country == "pt" else STRIPE_PAYMENT_LINK
     
-    if lang == "pt":
+    if country == "pt":
         body = f"""
         <!DOCTYPE html>
         <html lang="pt-BR">
@@ -183,13 +183,13 @@ def send_subscription_canceled_email_due_to_unpaid_bill(user, lang):
     msg.attach_alternative(body, "text/html")
     msg.send()
 
-def send_payment_failed_email(user, lang):
+def send_payment_failed_email(user, country):
     email = user.email
     user_name = user.name
-    stripe_payment_link = STRIPE_PAYMENT_LINK
-    subject = "Falha no Pagamento da Inscrição" if lang == "pt" else "Subscription Payment Failed"
+    stripe_payment_link = STRIPE_PAYMENT_LINK_BR if country == "pt" else STRIPE_PAYMENT_LINK
+    subject = "Falha no Pagamento da Inscrição" if country == "pt" else "Subscription Payment Failed"
     
-    if lang == "pt":
+    if country == "pt":
         body = f"""
         <!DOCTYPE html>
         <html lang="pt-BR">

@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        {% if lang == "pt" %}
+        {% if country == "BR" %}
         <h2 class="sub-title">
             Alcance seus objetivos com soluções sob medida para o seu negócio!
         </h2>
@@ -198,7 +198,7 @@
         </div>
 
         <h2>
-            {% if lang == "pt" %}
+            {% if country == "BR" %}
                 Vantagens
             {% else %}
                 Benefits
@@ -208,14 +208,14 @@
         <div class="features">
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Soluções sob medida
                     {% else %}
                         Tailor-made solutions
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Atendo às suas necessidades específicas, garantindo um produto único e eficaz.
                     {% else %}
                         I meet your specific needs, ensuring a unique and effective product.
@@ -224,14 +224,14 @@
             </div>
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Integração de IA
                     {% else %}
                         AI Integration
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Utilizo as últimas inovações tecnológicas para oferecer produtos inteligentes e eficientes.
                     {% else %}
                         I use the latest technological innovations to offer smart and efficient products.
@@ -240,14 +240,14 @@
             </div>
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Parcerias duradouras
                     {% else %}
                         Lasting partnerships
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Ofereço suporte e colaboração contínuos, construindo relacionamentos de longo prazo.
                     {% else %}
                         I offer ongoing support and collaboration, building long-term relationships.
@@ -257,7 +257,7 @@
         </div>
 
         <div class="video-container">
-            {% if lang == "pt" %}
+            {% if country == "BR" %}
                 <iframe 
                     class="video"
                     src="https://www.youtube.com/embed/KCOGmHML1gU?si=fB3gnloqI2-ktM1W" 
@@ -281,7 +281,7 @@
         </div>
 
         <h2 style="margin-bottom: 38px;">
-            {% if lang == "pt" %}
+            {% if country == "BR" %}
                 Aplicativos desenvolvidos
             {% else %}
                 Developed applications 
@@ -293,7 +293,7 @@
         </h3>
 
         <p>
-        {% if lang == "pt" %}
+        {% if country == "BR" %}
             Transforme sua organização pessoal com o Mind-Organizer. Gerencie tarefas, registre anotações, pratique journaling e expanda seu vocabulário, tudo em uma plataforma simples e intuitiva.
         {% else %}
             Transform your personal organization with Mind-Organizer. Manage tasks, record notes, practice journaling and expand your vocabulary, all on a simple and intuitive platform.
@@ -303,14 +303,14 @@
         <div class="features">
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Gerenciar tarefas
                     {% else %}
                         Manage Tasks
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Simplifique sua vida gerenciando tarefas sem esforço.
                     {% else %}
                         Simplify your life by effortlessly managing tasks.
@@ -319,14 +319,14 @@
             </div>
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Faça anotações
                     {% else %}
                         Take Notes
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Faça anotações para manter seus pensamentos organizados.
                     {% else %}
                         Jot down notes to keep your thoughts organized.
@@ -335,14 +335,14 @@
             </div>
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Pratique Journaling
                     {% else %}
                         Practice Journaling
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Registre seus pensamentos para obter clareza mental.
                     {% else %}
                         Journal your thoughts for mental clarity.
@@ -351,14 +351,14 @@
             </div>
             <div class="feature">
                 <h3>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Construa glossários
                     {% else %}
                         Build Glossaries
                     {% endif %}
                 </h3>
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Expanda seu vocabulário para aumentar a produtividade.
                     {% else %}
                         Expand your vocabulary for enhanced productivity.
@@ -369,49 +369,52 @@
         <div class="button-container">
             <div class="button" onclick="window.location='https://mindorganizer.app/sign_up';">
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Iniciar teste gratuito de 30 dias
                     {% else %}
                         Start a 30 Days Free Trial 
                     {% endif %}
                 </p>
                 <p class="small-text">
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         (Não é necessário cartão de crédito)
                     {% else %}
                         (No credit card required)
                     {% endif %}
                 </p>
             </div>
-            <div class="button" onclick="window.location='{{STRIPE_PAYMENT_LINK}}';">
-                <p>
-                    {% if lang == "pt" %}
+            {% if country == "BR" %}
+                <div class="button" onclick="window.location='{{STRIPE_PAYMENT_LINK_BR}}';">
+                    <p>
                         Iniciar assinatura
-                    {% else %}
+                    </p>
+                    <p class="small-text">
+                        (R$ 4,50 por mês)
+                    </p>
+                </div>
+            {% else %}
+                <div class="button" onclick="window.location='{{STRIPE_PAYMENT_LINK}}';">
+                    <p>
                         Start subscription
-                    {% endif %}
-                </p>
-                <p class="small-text">
-                    {% if lang == "pt" %}
-                        ($4,50 dolares por mês)
-                    {% else %}
+                    </p>
+                    <p class="small-text">
                         ($4.50 per month)
-                    {% endif %}
-                </p>
-            </div>
+                    </p>
+                </div>
+            {% endif %}
         </div>
 
         <div class="button-container">
             <div class="button" onclick="window.location='{{BASE_URL}}/download_apk';">
                 <p>
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         Baixe o App para Android (Em formato APK)
                     {% else %}
                         Download the app for Android in APK format
                     {% endif %}
                 </p>
                 <p class="small-text">
-                    {% if lang == "pt" %}
+                    {% if country == "BR" %}
                         (Disponível em breve na Play Store)
                     {% else %}
                         (Available soon on the Play Store)
@@ -425,7 +428,7 @@
         </div>
 
         <h2>
-            {% if lang == "pt" %}
+            {% if country == "BR" %}
                 Entre em contato
             {% else %}
                 Contact
@@ -446,14 +449,14 @@
 
         <div class="center-links">
             <a href="https://petersoftwarehouse.com/privacy_policy">
-            {% if lang == "pt" %}
+            {% if country == "BR" %}
                 Políticas de privacidade
             {% else %}
                 Privacy Policy
             {% endif %}
             </a>
             <a href="https://petersoftwarehouse.com/terms_of_use">
-            {% if lang == "pt" %}
+            {% if country == "BR" %}
                 Termos de uso
             {% else %}
                 Terms of use

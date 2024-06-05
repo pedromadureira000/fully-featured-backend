@@ -1,5 +1,5 @@
 from fully_featured.core.facade import send_account_confirmation_email
-from fully_featured.user.facade import send_reset_user_password_email
+from fully_featured.user.facade import get_client_ip, get_country_code_from_ip, send_reset_user_password_email
 from fully_featured.user.models import UserModel
 from rest_framework import status
 from rest_framework.response import Response
@@ -9,10 +9,9 @@ from rest_framework import status, permissions
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from fully_featured.settings import BASE_URL
 from django.db import transaction
 import sentry_sdk
-from fully_featured.settings import DEBUG, STRIPE_PAYMENT_LINK
+from fully_featured.settings import DEBUG, STRIPE_PAYMENT_LINK, BASE_URL, STRIPE_PAYMENT_LINK_BR
 from django.shortcuts import redirect
 from django.http import HttpResponse
 import os
@@ -67,12 +66,10 @@ def sign_up(request):
         serializer = UserSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             with transaction.atomic():
+                country = get_country_code_from_ip(get_client_ip(request))
+                serializer.validated_data['customer_country'] = country
                 instance = serializer.save()
-                language = "en"
-                http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-                if "pt" in http_accept_language:
-                    language = "pt"
-                send_account_confirmation_email(instance.email, instance.auth_token.key, language)
+                send_account_confirmation_email(instance.email, instance.auth_token.key, country)
             return Response({"success": "user created. Pls confirm email."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as er:
@@ -104,10 +101,7 @@ def change_password(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def activate_account(request, verification_code):
-    language = "en"
-    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-    if "pt" in http_accept_language:
-        language = "pt"
+    country = get_country_code_from_ip(get_client_ip(request))
     try:
         user = UserModel.objects.get(auth_token=verification_code)
         user.is_active = True
@@ -118,13 +112,13 @@ def activate_account(request, verification_code):
         return render(
             request,
             "failed_account_verification.html",
-            context={'lang': language}
+            context={'country': country}
         )
     login_url = f"https://mindorganizer.app/login"
     return render(
         request,
         "successful_account_verification.html",
-        context={'login_url': login_url, 'lang': language}
+        context={'login_url': login_url, 'country': country}
     )
 
 @api_view(['POST'])
@@ -139,11 +133,8 @@ def reset_password_email(request):
             user = UserModel.objects.get(email=email)
         except UserModel.DoesNotExist:
             return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        language = "en"
-        http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-        if "pt" in http_accept_language:
-            language = "pt"
-        send_reset_user_password_email(user.email, user.auth_token.key, language)
+        country = get_country_code_from_ip(get_client_ip(request))
+        send_reset_user_password_email(user.email, user.auth_token.key, country)
         return Response(status=status.HTTP_200_OK)
     except Exception as er:
         sentry_sdk.capture_exception(er)
@@ -156,10 +147,7 @@ def reset_password_email(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def reset_password(request, verification_code):
-    language = "en"
-    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-    if "pt" in http_accept_language:
-        language = "pt"
+    country = get_country_code_from_ip(get_client_ip(request))
     try:
         user = UserModel.objects.get(auth_token=verification_code)
         token = user.auth_token.key
@@ -167,13 +155,13 @@ def reset_password(request, verification_code):
         return render(
             request,
             "invalid_reset_password_link.html",
-            context={'lang': language}
+            context={'country': country}
         )
     if request.method == 'GET':
         return render(
             request,
             "reset_password.html",
-            context={'token': token, 'lang': language}
+            context={'token': token, 'country': country}
         )
     if request.method == 'POST':
         password = request.POST.get("password")
@@ -181,15 +169,15 @@ def reset_password(request, verification_code):
         token = request.POST.get("token")
         error_msg = None
         if password != password_confirm:
-            if language == "en":
-                error_msg = "Passwords do not match. Please ensure that both passwords are equal."  
-            else:
+            if country == "BR":
                 error_msg = "As senhas não coincidem. Certifique-se de que ambas as senhas sejam iguais."
+            else:
+                error_msg = "Passwords do not match. Please ensure that both passwords are equal."  
         if error_msg:
             return render(
                 request,
                 "reset_password.html",
-                {"error": error_msg, 'lang': language},
+                {"error": error_msg, 'country': country},
                 status=400
             )
         else:
@@ -202,21 +190,21 @@ def reset_password(request, verification_code):
                 return render(
                     request,
                     "reset_password_success.html",
-                    {'lang': language},
+                    {'country': country},
                     status=200
                 )
             except Exception as er:
                 sentry_sdk.capture_exception(er)
                 if DEBUG:
                     print('========================> er: ',er )
-                if language == "en":
-                    error_msg = "An unexpected error occurred. Try again later."
-                else:
+                if country == "BR":
                     error_msg = "Um erro inesperado ocorreu. Tente novamente mais tarde."
+                else:
+                    error_msg = "An unexpected error occurred. Try again later."
                 return render(
                     request,
                     "reset_password.html",
-                    {"error": error_msg, 'lang': language},
+                    {"error": error_msg, 'country': country},
                     status=500
                 )
 
@@ -254,6 +242,7 @@ def get_or_create_account_with_google(request):
         except UserModel.DoesNotExist:
             serializer = GoogleUserSerializer(data=request.data, context={"request": request})
             if serializer.is_valid():
+                serializer.validated_data['customer_country'] = get_country_code_from_ip(get_client_ip(request))
                 instance = serializer.save()
                 return Response({"token": instance.auth_token.key, "created": True}, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -279,16 +268,16 @@ def delete_user_view(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def peter_saas_root(request):
-    language = "en"
-    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-    if "pt" in http_accept_language:
-        language = "pt"
+    country = get_country_code_from_ip(get_client_ip(request))
     if DEBUG or request.get_host() == "petersoftwarehouse.com":
             return render(
                 request,
                 "home.html",
                 context={
-                    'lang': language, 'BASE_URL': BASE_URL, 'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK
+                    'BASE_URL': BASE_URL,
+                    'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK,
+                    'STRIPE_PAYMENT_LINK_BR': STRIPE_PAYMENT_LINK_BR,
+                    'country': country
                 }
             )
     return redirect("https://mindorganizer.app")
@@ -297,16 +286,16 @@ def peter_saas_root(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def mind_organizer_landing_page(request):
-    language = "en"
-    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-    if "pt" in http_accept_language:
-        language = "pt"
+    country = get_country_code_from_ip(get_client_ip(request))
     if DEBUG or request.get_host() == "petersoftwarehouse.com":
         return render(
             request,
             "mind_organizer_landing_page.html",
             context={
-                'lang': language, 'BASE_URL': BASE_URL, 'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK
+                'BASE_URL': BASE_URL,
+                'STRIPE_PAYMENT_LINK': STRIPE_PAYMENT_LINK,
+                'STRIPE_PAYMENT_LINK_BR': STRIPE_PAYMENT_LINK_BR,
+                'country': country
             }
         )
     return redirect("https://mindorganizer.app")
@@ -315,15 +304,12 @@ def mind_organizer_landing_page(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def privacy_policy(request):
-    language = "en"
-    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-    if "pt" in http_accept_language:
-        language = "pt"
     if DEBUG or request.get_host() == "petersoftwarehouse.com":
+        country = get_country_code_from_ip(get_client_ip(request))
         return render(
             request,
             "privacy_policy.html",
-            context={'lang': language}
+            context={'country': country}
         )
     return redirect("https://mindorganizer.app")
 
@@ -332,15 +318,12 @@ def privacy_policy(request):
 @permission_classes([permissions.AllowAny])
 @csrf_exempt
 def terms_of_use(request):
-    language = "en"
-    http_accept_language = request.META.get("HTTP_ACCEPT_LANGUAGE", "")
-    if "pt" in http_accept_language:
-        language = "pt"
     if DEBUG or request.get_host() == "petersoftwarehouse.com":
+        country = get_country_code_from_ip(get_client_ip(request))
         return render(
             request,
             "terms_of_use.html",
-            context={'lang': language}
+            context={'country': country}
         )
     return redirect("https://mindorganizer.app")
 
@@ -365,3 +348,13 @@ def download_apk(request):
         if DEBUG:
             print(f"{er}")
         return Response(data={"error": "An unexpected error occurred. Try again later."}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@login_required
+@csrf_exempt
+def get_country(request):
+    try:
+        country = get_country_code_from_ip(get_client_ip(request))
+        return Response({"country_code": country}, status=status.HTTP_200_OK)
+    except Exception:
+        return Response({"country_code": "XX"}, status=status.HTTP_200_OK)

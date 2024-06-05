@@ -7,6 +7,7 @@ from fully_featured.user.views import (
     reset_password_email,
     get_or_create_account_with_google,
     delete_user_view,
+    get_country,
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path('reset_password_email', reset_password_email, name='reset_password_email'),
     path('get_or_create_account_with_google', get_or_create_account_with_google, name='get_or_create_account_with_google'),
     path('delete_user_view', delete_user_view, name='delete_user_view'),
+    path('get_country', get_country, name='get_country'),
 ]

@@ -6,10 +6,10 @@ from django.db.models import F
 from firebase_admin import messaging
 
 
-def send_account_confirmation_email(email, auth_token, lang):
+def send_account_confirmation_email(email, auth_token, country):
     activate_url =  f"{BASE_URL}/activate_account/{auth_token}"
-    subject = "Por favor, ative sua conta" if lang == "pt" else "Please, activate your account"
-    body = f"Clique para ativar sua conta: {activate_url}" if lang == "pt" else f"Click to activate your account: {activate_url}"
+    subject = "Por favor, ative sua conta" if country == "BR" else "Please, activate your account"
+    body = f"Clique para ativar sua conta: {activate_url}" if country == "BR" else f"Click to activate your account: {activate_url}"
     msg = EmailMultiAlternatives(
         subject=subject,
         body=body,
@@ -20,7 +20,7 @@ def send_account_confirmation_email(email, auth_token, lang):
     #  html = """<img alt="Logo" src="cid:{logo_cid}">
               #  <p>Please <a href="https://example.com/activate">activate</a>
               #  your account</p>""".format(logo_cid=logo_cid)
-    html = f'<p>Ative sua conta clicando neste link {activate_url}</p>' if lang == "pt" else f'<p>Please activate your account by clicking on this link {activate_url}</p>' 
+    html = f'<p>Ative sua conta clicando neste link {activate_url}</p>' if country == "BR" else f'<p>Please activate your account by clicking on this link {activate_url}</p>' 
     # TODO fix the html link block. useh ssl and my own domain
     #  html = f'<p><b>Please</b> <a href="{activate_url}">activate</a>your account</p>'
     msg.attach_alternative(html, "text/html")

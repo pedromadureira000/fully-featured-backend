@@ -143,3 +143,5 @@ flutter_web_app/
 downloads/
 
 secret_keys/
+
+GeoLite2-Country/
