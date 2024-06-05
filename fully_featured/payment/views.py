@@ -116,6 +116,8 @@ def stripe_webhook(request):
             # TODO understand this cases
             # NOTE: I can't waste my free sentry quota. 
             # This is called if payment failed in the first try. Subscription is created on sentry with customer.(for a day, I think)
+            # NOTE: this can also happen becouse invoice.paid is the webhook that save 'customer_stripe_id' field, and when user makes the 
+            #  subscription, 'customer.subscription.updated' might be sent before invoice.paid, so the user don't have this field yet.
             #  with sentry_sdk.push_scope() as scope:
                 #  scope.set_context("additional_info", {
                     #  "custom_message": "Could not found customer",
@@ -124,7 +126,7 @@ def stripe_webhook(request):
                 #  })
                 #  sentry_sdk.capture_exception(er)
             return Response({
-                "success": "customer.subscription.updated, but user was not found. What happened? Maybe user updated his stripe account?",
+                "success": "customer.subscription.updated, but user was not found by customer_stripe_id.",
                 "previous_attributes": previous_attributes,
                 "canceled_at": canceled_at,
                 "status": status,
