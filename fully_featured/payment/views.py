@@ -40,7 +40,6 @@ def stripe_webhook(request):
         customer_email = event['data']['object']['customer_email']
         customer_name = event['data']['object']['customer_name']
         customer_phone = event['data']['object']['customer_phone']
-        customer_country = event['data']['object']['customer_address']['country']
         try:
             user = UserModel.objects.get(email=customer_email)
             if user.subscription_status != 3:
@@ -53,6 +52,10 @@ def stripe_webhook(request):
             else:
                 return Response({"success": "Just another payment"})
         except UserModel.DoesNotExist:
+            if event['data']['object']['customer_address']:
+                customer_country = event['data']['object']['customer_address']['country']
+            else:
+                customer_country = "ZZ"
             password = "aljdfkajsfafiajsdlfuweuflaj" # TODO THID SHOULD BE RANDOM
             username_field = customer_email
             user = UserModel.objects.create_user(

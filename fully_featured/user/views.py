@@ -118,7 +118,7 @@ def activate_account(request, verification_code):
     return render(
         request,
         "successful_account_verification.html",
-        context={'login_url': login_url, 'country': country}
+        context={'login_url': login_url, 'country': user.customer_country}
     )
 
 @api_view(['POST'])
@@ -161,7 +161,7 @@ def reset_password(request, verification_code):
         return render(
             request,
             "reset_password.html",
-            context={'token': token, 'country': country}
+            context={'token': token, 'country': user.customer_country}
         )
     if request.method == 'POST':
         password = request.POST.get("password")
@@ -169,7 +169,7 @@ def reset_password(request, verification_code):
         token = request.POST.get("token")
         error_msg = None
         if password != password_confirm:
-            if country == "BR":
+            if user.customer_country == "BR":
                 error_msg = "As senhas não coincidem. Certifique-se de que ambas as senhas sejam iguais."
             else:
                 error_msg = "Passwords do not match. Please ensure that both passwords are equal."  
@@ -177,7 +177,7 @@ def reset_password(request, verification_code):
             return render(
                 request,
                 "reset_password.html",
-                {"error": error_msg, 'country': country},
+                {"error": error_msg, 'country': user.customer_country},
                 status=400
             )
         else:
@@ -190,21 +190,21 @@ def reset_password(request, verification_code):
                 return render(
                     request,
                     "reset_password_success.html",
-                    {'country': country},
+                    {'country': user.customer_country},
                     status=200
                 )
             except Exception as er:
                 sentry_sdk.capture_exception(er)
                 if DEBUG:
                     print('========================> er: ',er )
-                if country == "BR":
+                if user.customer_country == "BR":
                     error_msg = "Um erro inesperado ocorreu. Tente novamente mais tarde."
                 else:
                     error_msg = "An unexpected error occurred. Try again later."
                 return render(
                     request,
                     "reset_password.html",
-                    {"error": error_msg, 'country': country},
+                    {"error": error_msg, 'country': user.customer_country},
                     status=500
                 )
 
