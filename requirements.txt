@@ -1,10 +1,10 @@
 Django
 djangorestframework
-celery[redis]
-gevent
+#celery[redis]
+#gevent
 dj-database-url
 python-decouple
-django-celery-beat
+#django-celery-beat
 django-extensions
 gunicorn
 psycopg2-binary

@@ -209,6 +209,11 @@ ExecStart=/home/ubuntu/fully-featured-backend/.venv/bin/gunicorn --access-logfil
 WantedBy=multi-user.target
 ``
 
+* with 2 vCPUs
+``
+ExecStart=/home/ubuntu/fully-featured-backend/.venv/bin/gunicorn --access-logfile - --workers 5 --bind unix:/run/gunicorn.sock fully_featured.wsgi:application --threads 2
+``
+
 Start and enable the Gunicorn socket
 -----------------------------------------
 ``
@@ -564,3 +569,7 @@ It could also be mailjet, mailgun, sendgrid or aws SES
 Important observations 🚨⚠️📢❗
 ================
 *  When you stop/start your instance, the IP address will change. If you reboot the instance, it will keep the same IP addresses.
+
+Performance changes
+================
+https://harshshah8996.medium.com/configure-nginx-for-a-production-environment-be0e02a3d9e8

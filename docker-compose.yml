@@ -14,6 +14,8 @@ services:
       - POSTGRES_USER=admin_ph
     ports:
       - 5432:5432
+    network_mode: "host" #is used for sharing the same networking space with the Host. For example you can want to access an application that is running on your Linux PC from the container. If you want to link services together, you can use links, or depends_on, and if the services are on different hosts just create an overlay network
+    # command: -c 'max_connections=200'
 
 volumes:
   database_data:
