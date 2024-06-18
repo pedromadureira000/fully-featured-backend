@@ -404,23 +404,21 @@
             {% endif %}
         </div>
 
-        <div class="button-container">
-            <div class="button" onclick="window.location='{{BASE_URL}}/download_apk';">
-                <p>
-                    {% if country == "BR" %}
-                        Baixe o App para Android (Em formato APK)
-                    {% else %}
-                        Download the app for Android in APK format
-                    {% endif %}
-                </p>
-                <p class="small-text">
-                    {% if country == "BR" %}
-                        (Disponível em breve na Play Store)
-                    {% else %}
-                        (Available soon on the Play Store)
-                    {% endif %}
-                </p>
-            </div>
+        <div onclick="window.location='https://play.google.com/store/apps/details?id=com.petersaas.mindorganizer&pcampaignid=web_share';">
+            {% if country == "BR" %}
+                <img
+                    src="{% static 'disponivel-google-play-badge.png' %}"
+                    alt="Google Play Download Page"
+                    width="220"
+                    style="padding-top: 6px;"
+                >
+            {% else %}
+                <img
+                    src="{% static 'en_badge_web_generic.png' %}"
+                    alt="Google Play Download Page"
+                    width="250"
+                >
+            {% endif %}
         </div>
 
         <div class="video-container">
